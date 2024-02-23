@@ -47,7 +47,7 @@ func main() {
 	})
 
 	http.HandleFunc("/", Server)
-	if err := http.ListenAndServe(":8989", nil); err != nil {
+	if err := http.ListenAndServe("0.0.0.0:8989", nil); err != nil {
 		fmt.Println("Error starting the server")
 		return
 	}
