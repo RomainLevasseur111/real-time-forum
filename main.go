@@ -20,7 +20,7 @@ func main() {
 
 	fs := http.FileServer(http.Dir("static"))
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
-	fmt.Println("Server starting...\nServer hosted at http://localhost:8989/")
+	fmt.Println("Server starting...\nServer hosted at http://" + IP + ":8989/")
 
 	http.HandleFunc("/echo", func(w http.ResponseWriter, r *http.Request) {
 		conn, err := upgrader.Upgrade(w, r, nil) // error ignored for simplicity

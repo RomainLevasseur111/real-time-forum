@@ -12,12 +12,12 @@
     <pre id="output"></pre>
     
     <script>
-    const IP = "172.16.0.247";
-    const fallbackIP = "localhost";
-    var input = document.getElementById("input");
+    let IP = "{{.IP}}";
     var output = document.getElementById("output");
     var socket = new WebSocket("ws://" + IP + ":8989/echo");
 
+
+    // do not use this in the forum
     socket.onopen = function () {
         output.innerHTML += "Status: Connected to " + IP + "\n";
     };
@@ -28,20 +28,11 @@
 
     socket.onerror = function (error) {
         output.innerHTML += "Error connecting to " + IP + "\n";
-        socket = new WebSocket("ws://" + fallbackIP + ":8989/echo");
-        output.innerHTML += "Falling back to localhost...\n";
-
-        socket.onopen = function () {
-            output.innerHTML += "Status: Connected to " + fallbackIP + "\n";
-        };
-
-        socket.onmessage = function (e) {
-            output.innerHTML += "Server: " + e.data + "\n";
-        };
-
     };
+    //
 
     function send() {
+        var input = document.getElementById("input");
         socket.send(input.value);
         input.value = "";
     }
