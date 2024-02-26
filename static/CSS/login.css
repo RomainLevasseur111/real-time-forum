@@ -1,74 +1,70 @@
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-    background-color: #333;
-    color: white;
-}
-
-h1 {
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
     margin: 0;
-    text-align: center;
-    flex-grow: 1;
-}
-
-#loginbutton,
-#registerbutton {
-    background-color: #333;
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-    border-radius: 5px;
+    padding: 0;
     display: flex;
-    gap: 10px;
+    flex-direction: column;
+    align-items: center;
 }
 
-.container {
-    width: 300px;
-    padding: 16px;
-    background-color: white;
-    margin: 0 auto;
-    margin-top: 100px;
-    border: 1px solid black;
-    border-radius: 4px;
-}
-input[type="text"],
-input[type="password"] {
+header {
     width: 100%;
-    padding: 15px;
-    margin: 5px 0 22px 0;
-    border: none;
-    background: #f1f1f1;
-}
-input[type="text"]:focus,
-input[type="password"]:focus {
-    background-color: #ddd;
-    outline: none;
-}
-.btn {
-    background-color: #4caf50;
+    background-color: #007bff;
+    padding: 20px 0;
+    text-align: center;
     color: white;
-    padding: 16px 20px;
-    margin: 8px 0;
-    border: none;
-    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+.forms-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.form-section {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 400px;
+}
+
+.or {
+    margin: 0 20px;
+}
+
+.form-section input {
+    left: 5%;
+    width: 95%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 3px;
+    border: 1px solid #ddd;
+}
+.form-section select,
+.form-section button {
     width: 100%;
-    opacity: 0.9;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 3px;
+    border: 1px solid #ddd;
 }
-.btn:hover {
-    opacity: 1;
+
+.form-section button {
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
 }
-#register,
-#homepage,
-#userpage,
-#postpage,
-#error {
-    visibility: hidden;
+
+.form-section button:hover {
+    background-color: #0056b3;
+}
+
+.form-section select {
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
 }
