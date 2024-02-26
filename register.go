@@ -103,6 +103,7 @@ func Registration(w http.ResponseWriter, r *http.Request) {
 	db, err := sql.Open(DRIVER, DB)
 	if err != nil {
 		fmt.Println(err)
+		Error(w, http.StatusInternalServerError)
 		return
 	}
 	defer db.Close()
@@ -120,6 +121,7 @@ func Registration(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		fmt.Println(err)
+		Error(w, http.StatusInternalServerError)
 		return
 	}
 

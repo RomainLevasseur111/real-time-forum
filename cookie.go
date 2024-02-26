@@ -25,6 +25,7 @@ func GiveCookie(w http.ResponseWriter, nickname string) {
 	db, err := sql.Open(DRIVER, DB)
 	if err != nil {
 		fmt.Println(err)
+		Error(w, http.StatusInternalServerError)
 		return
 	}
 	defer db.Close()
@@ -36,6 +37,7 @@ func GiveCookie(w http.ResponseWriter, nickname string) {
 
 	if err != nil {
 		fmt.Println(err)
+		Error(w, http.StatusInternalServerError)
 		return
 	}
 

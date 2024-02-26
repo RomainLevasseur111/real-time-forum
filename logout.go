@@ -7,7 +7,7 @@ import (
 
 func Logout(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "POST" {
-		// error 405 method not allowed
+		Error(w, http.StatusMethodNotAllowed)
 		return
 	}
 
