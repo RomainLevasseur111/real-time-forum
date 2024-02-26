@@ -13,6 +13,7 @@ func Server(w http.ResponseWriter, r *http.Request) {
 		"IP": IP,
 	}
 
+	// log the login / register page
 	if err != nil {
 		tmpl, err := template.ParseFiles("./templates/index.html")
 		if err != nil {
@@ -27,8 +28,8 @@ func Server(w http.ResponseWriter, r *http.Request) {
 		}
 		return
 	}
-	// log the homepage
 
+	// log the homepage
 	db, err := sql.Open(DRIVER, DB)
 	if err != nil {
 		fmt.Println(err)
