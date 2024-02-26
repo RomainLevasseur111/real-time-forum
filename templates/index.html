@@ -4,36 +4,78 @@
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="/static/CSS/homepage.css" />
+        <script src="/static/js/fichierjs.js"></script>
         <title>Chat</title>
     </head>
     <body>
-        <input id="input" type="text" />
-        <button onclick="send()">Send</button>
-        <pre id="output"></pre>
+        <div class="header">
+            <h1>FORUM</h1>
+            <button id="loginbutton" onclick="LoginPage()">Login</button>
+            <button id="registerbutton" onclick="RegisterPage()">
+                Register
+            </button>
+        </div>
+        <div id="homepage">salut c'est la homepage sava?</div>
+        <div id="register">
+            <form action="/register" method="post">
+                <label for="nickname">Surnom:</label>
+                <input type="text" id="nickname" name="nickname" /><br />
 
-        <script>
-            let IP = "{{.IP}}";
-            var output = document.getElementById("output");
-            var socket = new WebSocket("ws://" + IP + ":8989/echo");
+                <label for="age">Âge:</label>
+                <input
+                    type="number"
+                    id="age"
+                    name="age"
+                    min="1"
+                    max="120"
+                /><br />
 
-            // do not use this in the forum
-            socket.onopen = function () {
-                output.innerHTML += "Status: Connected to " + IP + "\n";
-            };
+                <label for="gender">Sexe:</label>
+                <select id="gender" name="gender">
+                    <option value="male">Homme</option>
+                    <option value="female">Femme</option>
+                    <option value="other">Autre</option></select
+                ><br />
 
-            socket.onmessage = function (e) {
-                output.innerHTML += "Server: " + e.data + "\n";
-            };
+                <label for="firstName">Prénom:</label>
+                <input type="text" id="firstName" name="firstName" /><br />
 
-            socket.onerror = function (error) {
-                output.innerHTML += "Error connecting to " + IP + "\n";
-            };
+                <label for="lastName">Nom:</label>
+                <input type="text" id="lastName" name="lastName" /><br />
 
-            function send() {
-                var input = document.getElementById("input");
-                socket.send(input.value);
-                input.value = "";
-            }
-        </script>
+                <label for="email">E-mail:</label>
+                <input type="email" id="email" name="email" /><br />
+
+                <label for="password">Mot de passe:</label>
+                <input type="password" id="password" name="password" /><br />
+
+                <input type="submit" value="Envoyer" />
+            </form>
+        </div>
+        <div id="login">
+            <div class="container">
+                <label for="uname"><b>Login</b></label>
+                <input
+                    type="text"
+                    placeholder="Entrer le nom d'utilisateur"
+                    name="uname"
+                    required
+                />
+
+                <label for="psw"><b>Mot de passe</b></label>
+                <input
+                    type="password"
+                    placeholder="Entrer le mot de passe"
+                    name="psw"
+                    required
+                />
+
+                <button type="submit" class="btn">Connexion</button>
+            </div>
+        </div>
+        <div id="userpage">userapge</div>
+        <div id="postpage">postpage</div>
+        <div id="error">ereuer</div>
     </body>
 </html>
