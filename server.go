@@ -7,7 +7,15 @@ import (
 )
 
 func Server(w http.ResponseWriter, r *http.Request) {
-	data := map[string]string{
+	cookie, err := r.Cookie("sessionID")
+	if err != nil {
+		// log the register / login page
+		return
+	}
+	// log the homepage with the cookie
+	fmt.Println(cookie)
+
+	data := map[string]interface{}{
 		"IP": IP,
 	}
 

@@ -7,6 +7,7 @@ import (
 	"net/mail"
 	"strconv"
 	"strings"
+	"time"
 
 	"golang.org/x/crypto/bcrypt"
 )
@@ -29,69 +30,101 @@ func Registration(w http.ResponseWriter, r *http.Request) {
 	var errMsg string
 	errMsg = CheckName(nickname)
 	if errMsg != "" {
+		fmt.Println(errMsg)
 		return
 	}
 	if !NicknameAlreadyExists(nickname) {
 		errMsg = "Nickname already exists"
+		fmt.Println(errMsg)
 		return
 	}
 
 	errMsg = CheckName(firstname)
-	fmt.Println(errMsg)
 	if errMsg != "" {
+		fmt.Println(errMsg)
 		return
 	}
 
 	errMsg = CheckName(lastname)
 	if errMsg != "" {
+		fmt.Println(errMsg)
 		return
 	}
 
 	ageInt, err := strconv.Atoi(age)
 	if err != nil {
 		errMsg = "Invalid age format"
+		fmt.Println(errMsg)
 		return
 	}
 	if ageInt < 0 {
 		errMsg = "Age can't be negative"
+		fmt.Println(errMsg)
 		return
 	}
 
 	if gender != "male" && gender != "female" && gender != "other" {
 		errMsg = "Invalid gender format"
+		fmt.Println(errMsg)
 		return
 	}
 
 	_, err = mail.ParseAddress(email)
 	if err != nil {
 		errMsg = "Invalid email address"
+		fmt.Println(errMsg)
 		return
 	}
 	if !EmailAlreadyExist(email) {
 		errMsg = "Email already exists"
+		fmt.Println(errMsg)
 		return
 	}
 
 	if len(password) > 30 {
 		errMsg = "Password can't have more than 30 characters"
+		fmt.Println(errMsg)
 		return
 	}
 	if len(password) < 8 {
 		errMsg = "Password can't have less than 8 characters"
+		fmt.Println(errMsg)
 		return
 	}
-	// psw, err := HashPassword(password)
+	psw, err := HashPassword(password)
 	if err != nil {
 		errMsg = "Error hashing your password, try another password"
+		fmt.Println(errMsg)
 		return
 	}
-	fmt.Println(nickname, age, gender, firstname, lastname, email, password)
 
-	// If regisgtration is successful:
+	// If registration is successful:
 	// Store datas in database
+	db, err := sql.Open(DRIVER, DB)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer db.Close()
+
+	today := time.Now()
+	_, err = db.Exec(`INSERT INTO USERS VALUES(NULL, ?, ?, ?, ?, ?, ?, ?, "", ?, "", NULL)`,
+		nickname,
+		ageInt,
+		gender,
+		firstname,
+		lastname,
+		email,
+		psw,
+		today)
+
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 
 	// Create a session cookie
-	Successful_Login(w)
+	GiveCookie(w, nickname)
 
 	// Redirect to another page
 	http.Redirect(w, r, "/", http.StatusMovedPermanently)
@@ -122,9 +155,18 @@ func HashPassword(password string) (string, error) {
 
 // Check if Email already Exist
 func EmailAlreadyExist(email string) bool {
-	db, _ := sql.Open(DRIVER, DB)
+	db, err := sql.Open(DRIVER, DB)
+	if err != nil {
+		fmt.Println(err)
+		return false
+	}
 	defer db.Close()
-	rows, _ := db.Query("SELECT email FROM USERS WHERE email = ?", email)
+
+	rows, err := db.Query("SELECT email FROM USERS WHERE email = ?", email)
+	if err != nil {
+		fmt.Println(err)
+		return false
+	}
 
 	var emailExists string
 
@@ -136,9 +178,18 @@ func EmailAlreadyExist(email string) bool {
 
 // Check if nickname already exists
 func NicknameAlreadyExists(nickname string) bool {
-	db, _ := sql.Open(DRIVER, DB)
+	db, err := sql.Open(DRIVER, DB)
+	if err != nil {
+		fmt.Println(err)
+		return false
+	}
 	defer db.Close()
-	rows, _ := db.Query("SELECT nickname FROM USERS WHERE nickname = ?", nickname)
+
+	rows, err := db.Query("SELECT nickname FROM USERS WHERE nickname = ?", nickname)
+	if err != nil {
+		fmt.Println(err)
+		return false
+	}
 
 	var nicknameExists string
 

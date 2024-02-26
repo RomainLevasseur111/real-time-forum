@@ -30,8 +30,7 @@ func CreateDatabase() {
 		pfp TEXT,
 		creationdate DATE,
 		cookie TEXT,
-		expiration DATE,
-		session INTEGER DEFAULT 0
+		expiration DATE
 	);
 	 
 	`

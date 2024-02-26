@@ -1,24 +1,14 @@
 package main
 
 import (
+	"database/sql"
+	"fmt"
+	"net/http"
+	"time"
+
+	"github.com/google/uuid"
 	_ "github.com/mattn/go-sqlite3"
 )
-
-func checkCookie() {
-	/*
-			// Get the sessionID from the cookie
-			sessionID, err := r.Cookie("sessionID")
-			if err != nil {
-				http.Redirect(w, r, "/login", http.StatusSeeOther)
-				return
-			}
-			// Verify sessionID in the database
-
-			// If valid, serve the dashboard content
-			// Else, redirect to login
-		}
-	*/
-}
 
 //
 // LOG-OUT
@@ -35,3 +25,33 @@ func checkCookie() {
 
 	// Redirect to login page probably
 */
+
+func GiveCookie(w http.ResponseWriter, nickname string) {
+	sessionID := uuid.New().String()
+	expirationDate := time.Now().Add(24 * time.Hour)
+
+	// Store sessionID in the database with user info
+	db, err := sql.Open(DRIVER, DB)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer db.Close()
+
+	_, err = db.Exec("UPDATE USERS SET cookie = ?, expiration = ? WHERE nickname = ?;",
+		sessionID,
+		expirationDate,
+		nickname)
+
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	// Set a cookie with the sessionID
+	http.SetCookie(w, &http.Cookie{
+		Name:    "sessionID",
+		Value:   sessionID,
+		Expires: expirationDate,
+	})
+}
