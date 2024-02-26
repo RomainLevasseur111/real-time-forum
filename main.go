@@ -25,7 +25,8 @@ func main() {
 	http.HandleFunc("/echo", func(w http.ResponseWriter, r *http.Request) {
 		conn, err := upgrader.Upgrade(w, r, nil)
 		if err != nil {
-			panic(err)
+			fmt.Println(err)
+			return
 		}
 
 		clients = append(clients, conn)
@@ -33,6 +34,7 @@ func main() {
 		for {
 			msgType, msg, err := conn.ReadMessage()
 			if err != nil {
+				fmt.Println(err)
 				return
 			}
 
@@ -40,6 +42,7 @@ func main() {
 
 			for _, client := range clients {
 				if err = client.WriteMessage(msgType, msg); err != nil {
+					fmt.Println(err)
 					return
 				}
 			}

@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"fmt"
 	"net/http"
 	"net/mail"
 	"strconv"
@@ -13,14 +14,15 @@ import (
 func Registration(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "POST" {
 		// error 405 method not allowed
+		return
 	}
 
 	// Check if registeration datas are correct
 	nickname := r.FormValue("nickname")
 	age := r.FormValue("age")
 	gender := r.FormValue("gender")
-	firstname := r.FormValue("firstname")
-	lastname := r.FormValue("lastname")
+	firstname := r.FormValue("firstName")
+	lastname := r.FormValue("lastName")
 	email := r.FormValue("email")
 	password := r.FormValue("password")
 
@@ -35,6 +37,7 @@ func Registration(w http.ResponseWriter, r *http.Request) {
 	}
 
 	errMsg = CheckName(firstname)
+	fmt.Println(errMsg)
 	if errMsg != "" {
 		return
 	}
@@ -54,7 +57,7 @@ func Registration(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if gender != "man" && gender != "woman" && gender != "other" {
+	if gender != "male" && gender != "female" && gender != "other" {
 		errMsg = "Invalid gender format"
 		return
 	}
@@ -77,11 +80,12 @@ func Registration(w http.ResponseWriter, r *http.Request) {
 		errMsg = "Password can't have less than 8 characters"
 		return
 	}
-	psw, err := HashPassword(password)
+	// psw, err := HashPassword(password)
 	if err != nil {
 		errMsg = "Error hashing your password, try another password"
 		return
 	}
+	fmt.Println(nickname, age, gender, firstname, lastname, email, password)
 
 	// If regisgtration is successful:
 	// Store datas in database
@@ -90,6 +94,7 @@ func Registration(w http.ResponseWriter, r *http.Request) {
 	Successful_Login(w)
 
 	// Redirect to another page
+	http.Redirect(w, r, "/", http.StatusMovedPermanently)
 }
 
 func CheckName(name string) string {
@@ -133,7 +138,7 @@ func EmailAlreadyExist(email string) bool {
 func NicknameAlreadyExists(nickname string) bool {
 	db, _ := sql.Open(DRIVER, DB)
 	defer db.Close()
-	rows, _ := db.Query("SELECT username FROM USERS WHERE nickname = ?", nickname)
+	rows, _ := db.Query("SELECT nickname FROM USERS WHERE nickname = ?", nickname)
 
 	var nicknameExists string
 
