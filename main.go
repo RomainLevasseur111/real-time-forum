@@ -47,6 +47,9 @@ func main() {
 	})
 
 	http.HandleFunc("/", Server)
+	http.HandleFunc("/register", Registration)
+	http.HandleFunc("/login", Login)
+
 	if err := http.ListenAndServe("0.0.0.0:8989", nil); err != nil {
 		fmt.Println("Error starting the server")
 		return
