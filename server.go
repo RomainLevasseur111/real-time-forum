@@ -24,7 +24,7 @@ func Server(w http.ResponseWriter, r *http.Request) {
 
 	var connectedUser USER
 
-	row := db.QueryRow(`SELECT id, nickname, age, gender, firstname, lastname, email, pfp, creationdate FROM POSTS WHERE cookie = ?;`, cookie)
+	row := db.QueryRow(`SELECT id, nickname, age, gender, firstname, lastname, email, pfp, creationdate FROM USERS WHERE cookie = ?;`, cookie.Value)
 	err = row.Scan(
 		&connectedUser.Id,
 		&connectedUser.NickName,
