@@ -1,0 +1,46 @@
+Registration
+    Nickname
+    Age
+    Gender
+    First Name
+    Last Name
+    E-mail
+    Password(hash)
+
+Login
+    Nickname or Email
+    Password
+
+
+Session and cookies
+
+
+Able to logout from any page
+
+
+Creation of posts and comments
+    Create posts
+        Posts will have categories as in the first forum
+    Create comments on the posts
+    See posts in a feed display
+        See comments only if they click on a post
+
+
+Private Messages
+    Section to show who is online/offline and able to talk to:
+        This section must be organized by the last message sent (just like discord). If the user is new and does not present messages you must organize it in alphabetic order.
+        The user must be able to send private messages to the users who are online.
+        This section must be visible at all times.
+
+    Section that when clicked on the user that you want to send a message, reloads the past messages. Chats between users must:
+        Be visible, for this you will have to be able to see the previous messages that you had with the user
+        Reload the last 10 messages and when scrolled up to see more messages you must provide the user with 10 more, without spamming the scroll event. Do not forget what you learned!! (Throttle, Debounce)
+
+    Messages must have a specific format:
+        A date that shows when the message was sent
+        The user name, that identifies the user that sent the message
+If a user sends a message, the other user should receive the notification of the new message without refreshing the page
+
+
+Define DB
+

@@ -1,42 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat</title>
-</head>
-<body>
-    <input id="input" type="text" />
-    <button onclick="send()">Send</button>
-    <pre id="output"></pre>
-    
-    <script>
-    let IP = "{{.IP}}";
-    var output = document.getElementById("output");
-    var socket = new WebSocket("ws://" + IP + ":8989/echo");
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Chat</title>
+    </head>
+    <body>
+        <input id="input" type="text" />
+        <button onclick="send()">Send</button>
+        <pre id="output"></pre>
 
+        <script>
+            let IP = "{{.IP}}";
+            var output = document.getElementById("output");
+            var socket = new WebSocket("ws://" + IP + ":8989/echo");
 
-    // do not use this in the forum
-    socket.onopen = function () {
-        output.innerHTML += "Status: Connected to " + IP + "\n";
-    };
+            // do not use this in the forum
+            socket.onopen = function () {
+                output.innerHTML += "Status: Connected to " + IP + "\n";
+            };
 
-    socket.onmessage = function (e) {
-        output.innerHTML += "Server: " + e.data + "\n";
-    };
+            socket.onmessage = function (e) {
+                output.innerHTML += "Server: " + e.data + "\n";
+            };
 
-    socket.onerror = function (error) {
-        output.innerHTML += "Error connecting to " + IP + "\n";
-    };
-    //
+            socket.onerror = function (error) {
+                output.innerHTML += "Error connecting to " + IP + "\n";
+            };
 
-    function send() {
-        var input = document.getElementById("input");
-        socket.send(input.value);
-        input.value = "";
-    }
-
-    </script>
-</body>
+            function send() {
+                var input = document.getElementById("input");
+                socket.send(input.value);
+                input.value = "";
+            }
+        </script>
+    </body>
 </html>
