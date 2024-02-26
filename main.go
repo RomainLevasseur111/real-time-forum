@@ -23,7 +23,7 @@ func main() {
 	fmt.Println("Server starting...\nServer hosted at http://" + IP + ":8989/")
 
 	http.HandleFunc("/echo", func(w http.ResponseWriter, r *http.Request) {
-		conn, err := upgrader.Upgrade(w, r, nil) // error ignored for simplicity
+		conn, err := upgrader.Upgrade(w, r, nil)
 		if err != nil {
 			panic(err)
 		}
