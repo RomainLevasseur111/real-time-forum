@@ -17,7 +17,7 @@ header {
     margin-bottom: 20px;
 }
 
-.forms-container {
+#forms-container {
     display: flex;
     justify-content: center;
     align-items: center;

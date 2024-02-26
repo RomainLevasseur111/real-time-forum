@@ -7,12 +7,10 @@
         <link rel="stylesheet" href="/static/CSS/login.css" />
     </head>
     <body>
-        <script> let IP = "{{.IP}}"; </script>
-        <script src="./static/js/script.js"></script>
         <header>
             <h1>Real time forum</h1>
         </header>
-        <div class="forms-container">
+        <div id="forms-container">
             <section class="form-section">
                 <h2>Login</h2>
                 <form action="/login" method="post">
@@ -81,5 +79,8 @@
                 </form>
             </section>
         </div>
+        <div id="IP" value="{{.IP}}"></div>
+        <div id="connectedUser" value="{{.ConnectedUser}}"></div>
+        <script src="../static/js/script.js"></script>
     </body>
 </html>

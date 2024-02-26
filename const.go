@@ -5,7 +5,7 @@ import "time"
 const (
 	DB     = "./data.db"
 	DRIVER = "sqlite3"
-	IP     = "192.168.100.249"
+	IP     = "192.168.101.10"
 )
 
 type USER struct { // user structure
