@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	"html/template"
 	"net/http"
@@ -12,11 +13,37 @@ func Server(w http.ResponseWriter, r *http.Request) {
 		// log the register / login page
 		return
 	}
-	// log the homepage with the cookie
-	fmt.Println(cookie)
+	// log the homepage
+
+	db, err := sql.Open(DRIVER, DB)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer db.Close()
+
+	var connectedUser USER
+
+	row := db.QueryRow(`SELECT id, nickname, age, gender, firstname, lastname, email, pfp, creationdate FROM POSTS WHERE cookie = ?;`, cookie)
+	err = row.Scan(
+		&connectedUser.Id,
+		&connectedUser.NickName,
+		&connectedUser.Age,
+		&connectedUser.Gender,
+		&connectedUser.FirstName,
+		&connectedUser.LastName,
+		&connectedUser.Email,
+		&connectedUser.Pfp,
+		&connectedUser.CreationDate,
+	)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 
 	data := map[string]interface{}{
-		"IP": IP,
+		"IP":            IP,
+		"ConnectedUser": connectedUser,
 	}
 
 	tmpl, err := template.ParseFiles("./templates/index.html")
