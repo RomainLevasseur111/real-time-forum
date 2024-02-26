@@ -8,6 +8,11 @@ import (
 )
 
 func Server(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/" {
+		Error(w, http.StatusNotFound)
+		return
+	}
+
 	cookie, err := r.Cookie("sessionID")
 	data := map[string]interface{}{
 		"IP": IP,

@@ -10,6 +10,15 @@
         <header>
             <h1>Real time forum</h1>
         </header>
+        {{if and (.Code) (.Name) (.Msg)}}
+        <div class="Box">
+            <div class="Msg">
+                <h2>{{.Code}} - {{.Name}}</h1>
+                <h3>{{.Msg}}</h3>
+                <a href="/"><button class="button_error">Home Page</button></a>
+            </div>
+        </div>
+        {{else}}
         <div id="forms-container">
             <section class="form-section">
                 <h2>Login</h2>
@@ -82,5 +91,6 @@
         <div id="IP" value="{{.IP}}"></div>
         <div id="connectedUser" value="{{.ConnectedUser}}"></div>
         <script src="../static/js/script.js"></script>
+        {{end}}
     </body>
 </html>

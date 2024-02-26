@@ -10,12 +10,7 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-//
-// LOG-OUT
-
-/*
-	// Invalidate session by removing it from the database
-
+func GiveCookie(w http.ResponseWriter, nickname string) {
 	// Clear the sessionID cookie
 	http.SetCookie(w, &http.Cookie{
 		Name:    "sessionID",
@@ -23,10 +18,6 @@ import (
 		Expires: time.Unix(0, 0),
 	})
 
-	// Redirect to login page probably
-*/
-
-func GiveCookie(w http.ResponseWriter, nickname string) {
 	sessionID := uuid.New().String()
 	expirationDate := time.Now().Add(24 * time.Hour)
 
