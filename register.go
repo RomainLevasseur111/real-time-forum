@@ -77,7 +77,7 @@ func Registration(w http.ResponseWriter, r *http.Request) {
 		errMsg = "Password can't have less than 8 characters"
 		return
 	}
-	psw, err := HashPassword(password)
+	//psw, err := HashPassword(password)
 	if err != nil {
 		errMsg = "Error hashing your password, try another password"
 		return
@@ -133,7 +133,7 @@ func EmailAlreadyExist(email string) bool {
 func NicknameAlreadyExists(nickname string) bool {
 	db, _ := sql.Open(DRIVER, DB)
 	defer db.Close()
-	rows, _ := db.Query("SELECT username FROM USERS WHERE nickname = ?", nickname)
+	rows, _ := db.Query("SELECT nickname FROM USERS WHERE nickname = ?", nickname)
 
 	var nicknameExists string
 
