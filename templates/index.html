@@ -12,7 +12,9 @@
         <header>
             <h1>Real time forum</h1>
             {{if .ConnectedUser}}
-            <p>logout</p>
+            <form action="/logout" method="post">
+                <button class="logout-btn">logout</button>
+            </form>
             {{end}}
         </header>
 
