@@ -17,7 +17,9 @@ socket.onerror = function (error) {
     //output.innerHTML += "Error connecting to " + IP + "\n";
 };*/
 
+/*
 if (connectedUser != "") {
     console.log("oktamer");
     document.getElementById("forms-container").innerHTML = "";
 }
+*/

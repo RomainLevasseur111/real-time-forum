@@ -4,13 +4,18 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Real Time Forum</title>
-        <link rel="stylesheet" href="/static/CSS/login.css" />
+        <link rel="stylesheet" href="" />
+        <link rel="stylesheet" href="/static/CSS/header.css" />
     </head>
     <body>
         <header>
             <h1>Real time forum</h1>
         </header>
-        {{if and (.Code) (.Name) (.Msg)}} <!--error page-->
+        
+        <!--error page-->
+        {{if and (.Code) (.Name) (.Msg)}}
+        <script>document.querySelector('link[rel="stylesheet"]').href = "/static/CSS/error.css";</script>
+
         <div class="Box">
             <div class="Msg">
                 <h2>{{.Code}} - {{.Name}}</h1>
@@ -18,10 +23,17 @@
                 <a href="/"><button class="button_error">Home Page</button></a>
             </div>
         </div>
-        <script>document.querySelector('link[rel="stylesheet"]').href = "/static/CSS/error.css";</script>
-        {{else}} <!--login page-->
+
+        <!--home page -- user is connected and there is no error -->
+        {{else if .ConnectedUser}}
+        <script>document.querySelector('link[rel="stylesheet"]').href = "/static/CSS/homepage.css";</script>
+
+        <!--login page-->
+        {{else}}
         <script>document.querySelector('link[rel="stylesheet"]').href = "/static/CSS/login.css";</script>
+
         <div id="forms-container">
+
             <section class="form-section">
                 <h2>Login</h2>
                 <form action="/login" method="post">
@@ -40,7 +52,9 @@
                     <button type="submit">Login</button>
                 </form>
             </section>
+
             <span class="or">or</span>
+
             <section class="form-section">
                 <h2>Register</h2>
                 <form action="/register" method="post">
@@ -89,10 +103,9 @@
                     <button type="submit">Register</button>
                 </form>
             </section>
+
         </div>
-        <div id="IP" value="{{.IP}}"></div>
-        <div id="connectedUser" value="{{.ConnectedUser}}"></div>
-        <script src="../static/js/script.js"></script>
         {{end}}
+
     </body>
 </html>
