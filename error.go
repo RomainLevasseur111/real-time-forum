@@ -18,6 +18,9 @@ func Error(w http.ResponseWriter, statusCode int) {
 	case http.StatusMethodNotAllowed:
 		name = "Method not allowed"
 		msg = "The requested method is not allowed for the URL"
+	case http.StatusBadRequest:
+		name = "Bad request"
+		msg = "Request header or cookie too large"
 	default:
 		name = "Internal Server Error"
 		msg = "The server encountered an internal error or misconfiguration and was unable to complete your request"
