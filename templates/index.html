@@ -12,7 +12,7 @@
         <header>
             <h1>Real time forum</h1>
         </header>
-        
+
         <!--error page-->
         {{if and (.Code) (.Name) (.Msg)}}
         <script>document.querySelector('link[rel="stylesheet"]').href = "/static/CSS/error.css";</script>
@@ -29,12 +29,14 @@
         {{else if .ConnectedUser}}
         <script>document.querySelector('link[rel="stylesheet"]').href = "/static/CSS/homepage.css";</script>
 
+        <p>This is a test post.</p>
+
         <div class="collapsible-chat">
             <button type="button" class="collapsible">
-                <img class="collapsible-img" src="https://cc-prod.scene7.com/is/image/CCProdAuthor/adobe-firefly-marquee-text-to-image-0-desktop-1000x1000?$pjpeg$&jpegSize=300&wid=1000">
+                <img class="collapsible-img" src="../static/img/chat.png">
             </button>
             <div class="collapsible-content">
-                <p>This is a test content.</p>
+                <p>This is a test message.</p>
             </div>
         </div>
         <script src="../static/js/collapsible.js"></script>

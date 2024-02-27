@@ -1,10 +1,10 @@
  /* Style the button that is used to open and close the collapsible content */
  .collapsible {
-    background-color: gray;
+    background-color: #007bff;
     color: #444;
     cursor: pointer;
     width: 60px;
-    height: 80vh;
+    height: calc(100vh -  80px);
     border: none;
     outline: none;
     font-size: 15px;
@@ -12,18 +12,18 @@
   
   /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
   .collapsible-active, .collapsible:hover {
-    background-color: #ccc;
+    background-color: #266ab3;
   }
   
   /* Style the collapsible content. Note: hidden by default */
   .collapsible-content {
     background-color: gray;
-    height: 0;
+    height: calc(100vh -  80px);
     width: 0vw;
     min-width: 0;
     overflow: hidden;
+    white-space: nowrap;
     transition: width 0.2s ease-out;
-    /*transition: height 0.2s ease-out;*/
   }
 
   .collapsible:after {
@@ -45,4 +45,8 @@
 
   .collapsible-chat {
     display: flex;
+    justify-content: flex-start; /* Aligns children to the start of the container */
+    position: fixed; /* Fixes the position of the container */
+    left:  0; /* Positions it to the left edge */
+    top: 80px ;
   }
