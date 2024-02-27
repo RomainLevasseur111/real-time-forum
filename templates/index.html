@@ -10,7 +10,7 @@
         <header>
             <h1>Real time forum</h1>
         </header>
-        {{if and (.Code) (.Name) (.Msg)}}
+        {{if and (.Code) (.Name) (.Msg)}} <!--error page-->
         <div class="Box">
             <div class="Msg">
                 <h2>{{.Code}} - {{.Name}}</h1>
@@ -19,7 +19,7 @@
             </div>
         </div>
         <script>document.querySelector('link[rel="stylesheet"]').href = "/static/CSS/error.css";</script>
-        {{else}}
+        {{else}} <!--login page-->
         <script>document.querySelector('link[rel="stylesheet"]').href = "/static/CSS/login.css";</script>
         <div id="forms-container">
             <section class="form-section">

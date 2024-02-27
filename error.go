@@ -3,9 +3,11 @@ package main
 import (
 	"fmt"
 	"html/template"
+	"log"
 	"net/http"
 )
 
+// log error page
 func Error(w http.ResponseWriter, statusCode int) {
 	var msg string
 	var name string
@@ -25,9 +27,12 @@ func Error(w http.ResponseWriter, statusCode int) {
 		name = "Internal Server Error"
 		msg = "The server encountered an internal error or misconfiguration and was unable to complete your request"
 	}
+
 	t, err := template.ParseFiles("./templates/index.html")
 	if err != nil {
 		fmt.Println(err)
+		log.Fatal(err)
+		return
 	}
 
 	errmap := map[string]string{
@@ -38,6 +43,7 @@ func Error(w http.ResponseWriter, statusCode int) {
 
 	if err := t.Execute(w, errmap); err != nil {
 		fmt.Println(err)
+		log.Fatal(err)
 		return
 	}
 }
