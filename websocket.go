@@ -1,8 +1,10 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	"net/http"
+	"strings"
 )
 
 func Websocket(w http.ResponseWriter, r *http.Request) {
@@ -33,6 +35,27 @@ func Websocket(w http.ResponseWriter, r *http.Request) {
 		}
 
 		fmt.Printf("%s sent: %s\n", conn.RemoteAddr(), string(msg))
+
+		// format: sendername/receivername/date/content
+		msgData := strings.SplitAfterN(string(msg), " ", 4)
+
+		db, err := sql.Open(DRIVER, DB)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		defer db.Close()
+
+		_, err = db.Exec(`INSERT INTO MESSAGES VALUES(NULL, ?, ?, ?, ?)`,
+			msgData[0],
+			msgData[1],
+			msgData[2],
+			msgData[3])
+
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
 
 		for _, client := range clients {
 			if err = client.WriteMessage(msgType, msg); err != nil {

@@ -5,9 +5,11 @@ import (
 	"net/http"
 )
 
-func main() {
+func init() {
 	CreateDatabase()
+}
 
+func main() {
 	fs := http.FileServer(http.Dir("static"))
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 	fmt.Println("Server starting...\nServer hosted at http://" + IP + ":8989/")
@@ -20,6 +22,7 @@ func main() {
 
 	if err := http.ListenAndServe("0.0.0.0:8989", nil); err != nil {
 		fmt.Println("Error starting the server")
+		fmt.Println(err)
 		return
 	}
 }

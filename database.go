@@ -34,10 +34,10 @@ func CreateDatabase() {
 	);
 	CREATE TABLE IF NOT EXISTS MESSAGES (
 		messageid INTEGER PRIMARY KEY AUTOINCREMENT,
-		sendername TEXT,
-		receivername TEXT,
-		content TEXT NOT NULL,
-		FOREIGN KEY(receiverid) REFERENCES USERS(id)
+		sendername VARCHAR(20),
+		receivername VARCHAR(20),
+		date TEXT,
+		content TEXT NOT NULL
 	);
 	 
 	`
