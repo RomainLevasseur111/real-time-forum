@@ -28,14 +28,25 @@ func main() {
 			fmt.Println(err)
 			return
 		}
+		defer conn.Close()
 
 		clients = append(clients, conn)
+
+		defer func() {
+			// Remove the connection from the clients slice when it's closed
+			for i, client := range clients {
+				if client == conn {
+					clients = append(clients[:i], clients[i+1:]...)
+					break
+				}
+			}
+		}()
 
 		for {
 			msgType, msg, err := conn.ReadMessage()
 			if err != nil {
 				fmt.Println(err)
-				return
+				break
 			}
 
 			fmt.Printf("%s sent: %s\n", conn.RemoteAddr(), string(msg))
@@ -43,7 +54,7 @@ func main() {
 			for _, client := range clients {
 				if err = client.WriteMessage(msgType, msg); err != nil {
 					fmt.Println(err)
-					return
+					break
 				}
 			}
 		}
