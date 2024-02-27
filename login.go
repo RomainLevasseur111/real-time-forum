@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"html/template"
 	"net/http"
 )
 
@@ -48,6 +49,15 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		GiveCookie(w, name)
 		http.Redirect(w, r, "/", http.StatusMovedPermanently)
 	} else {
-		http.Redirect(w, r, "/", http.StatusMovedPermanently)
+		tmpl, err := template.ParseFiles("./templates/index.html")
+		if err != nil{
+			fmt.Println(err)
+			return
+		}
+		var erreur string = "We did not recognize your nickname, email or password in our database, you better try again otherwise we will find you and we will kill you."
+		errorMsg := map[string]interface{}{
+			"Error":  erreur,
+		}
+		tmpl.Execute(w, errorMsg)
 	}
 }

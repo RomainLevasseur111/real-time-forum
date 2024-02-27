@@ -17,7 +17,6 @@
             </form>
             {{end}}
         </header>
-
         <!--error page-->
         {{if and (.Code) (.Name) (.Msg)}}
         <script>document.querySelector('link[rel="stylesheet"]').href = "/static/CSS/error.css";</script>
@@ -69,6 +68,8 @@
                     />
                     <button type="submit">Login</button>
                 </form>
+                <div id="logerror">{{.Error}}
+                </div>
             </section>
 
             <span class="or">or</span>
