@@ -20,7 +20,6 @@
     background-color: gray;
     height: calc(100vh -  80px);
     width: 0vw;
-    min-width: 0;
     overflow: hidden;
     white-space: nowrap;
     transition: width 0.2s ease-out;
