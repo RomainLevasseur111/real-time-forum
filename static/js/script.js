@@ -1,25 +1,25 @@
-//var output = document.getElementById("output");
 let IP = document.getElementById("IP").getAttribute("value");
 let connectedUser = document
     .getElementById("connectedUser")
     .getAttribute("value");
-// var socket = new WebSocket("ws://" + IP + ":8989/echo");
-var cssLink = document.querySelector('link[rel="stylesheet"]');
-/*socket.onopen = function () {
-    //output.innerHTML += "Status: Connected to " + IP + "\n";
+
+var socket = new WebSocket("ws://" + IP + ":8989/echo");
+
+socket.onopen = function () {
+    console.log("websocket connected");
 };
 
 socket.onmessage = function (e) {
-    //output.innerHTML += "Server: " + e.data + "\n";
+    console.log("test");
+    output.innerHTML += "Server: " + e.data + "\n";
 };
 
 socket.onerror = function (error) {
-    //output.innerHTML += "Error connecting to " + IP + "\n";
-};*/
+    console.log("Error in websocket");
+};
 
-/*
-if (connectedUser != "") {
-    console.log("oktamer");
-    document.getElementById("forms-container").innerHTML = "";
+function send() {
+    var chat_input = document.getElementById("chat-input");
+    socket.send(chat_input.value);
+    chat_input.value = "";
 }
-*/

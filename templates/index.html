@@ -39,7 +39,14 @@
                 <img class="collapsible-img" src="../static/img/chat.png">
             </button>
             <div class="collapsible-content">
-                <p>This is a test message.</p>
+                <div id="IP" value={{.IP}}></div>
+                <div id="connectedUser" value="{{.ConnectedUser}}"></div>
+                <script src="../static/js/script.js"></script>
+
+                <input id="chat-input" type="text" />
+                <button onclick="send()">Send</button>
+
+                <pre id="output"></pre>
             </div>
         </div>
         <script src="../static/js/collapsible.js"></script>
