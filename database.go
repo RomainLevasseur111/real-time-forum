@@ -32,6 +32,13 @@ func CreateDatabase() {
 		cookie TEXT,
 		expiration DATE
 	);
+	CREATE TABLE IF NOT EXISTS MESSAGES (
+		messageid INTEGER PRIMARY KEY AUTOINCREMENT,
+		sendername TEXT,
+		receivername TEXT,
+		content TEXT NOT NULL,
+		FOREIGN KEY(receiverid) REFERENCES USERS(id)
+	);
 	 
 	`
 	_, err = db.Exec(r)

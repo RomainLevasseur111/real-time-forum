@@ -1,11 +1,23 @@
 package main
 
-import "time"
+import (
+	"time"
+
+	"github.com/gorilla/websocket"
+)
 
 const (
 	DB     = "./data.db"
 	DRIVER = "sqlite3"
 	IP     = "192.168.100.249"
+)
+
+var (
+	clients  []*websocket.Conn
+	upgrader = websocket.Upgrader{
+		ReadBufferSize:  1024,
+		WriteBufferSize: 1024,
+	}
 )
 
 type USER struct { // user structure

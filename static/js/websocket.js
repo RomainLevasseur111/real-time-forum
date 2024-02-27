@@ -13,7 +13,10 @@ function connect() {
     };
 
     socket.onmessage = function (event) {
-        output.innerHTML += event.data;
+        const messageDiv = document.createElement("div");
+        messageDiv.className = "message";
+        messageDiv.innerHTML = event.data;
+        output.appendChild(messageDiv);
     };
 
     socket.onclose = function(event) {
