@@ -5,7 +5,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Real Time Forum</title>
         <link rel="stylesheet" href="" />
-        <link rel="stylesheet" href="/static/CSS/header.css" />
+        <link rel="stylesheet" href="/static/CSS/header.css"/>
+        <link rel="stylesheet" href="/static/CSS/chat.css" />
     </head>
     <body>
         <header>
@@ -27,6 +28,16 @@
         <!--home page -- user is connected and there is no error -->
         {{else if .ConnectedUser}}
         <script>document.querySelector('link[rel="stylesheet"]').href = "/static/CSS/homepage.css";</script>
+
+        <div class="collapsible-chat">
+            <button type="button" class="collapsible">
+                <img class="collapsible-img" src="https://cc-prod.scene7.com/is/image/CCProdAuthor/adobe-firefly-marquee-text-to-image-0-desktop-1000x1000?$pjpeg$&jpegSize=300&wid=1000">
+            </button>
+            <div class="collapsible-content">
+                <p>This is a test content.</p>
+            </div>
+        </div>
+        <script src="../static/js/collapsible.js"></script>
 
         <!--login page-->
         {{else}}
