@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-func Websocket(w http.ResponseWriter, r *http.Request) {
+func Chat_Websocket(w http.ResponseWriter, r *http.Request) {
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		fmt.Println(err)
@@ -25,6 +25,14 @@ func Websocket(w http.ResponseWriter, r *http.Request) {
 				break
 			}
 		}
+
+		// Remove the connection from the clients in the struct
+		for i, c := range connection {
+			if c.Conn == conn {
+				connection = append(connection[:i], connection[i+1:]...)
+				break
+			}
+		}
 	}()
 
 	for {
@@ -34,10 +42,28 @@ func Websocket(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 
-		fmt.Printf("%s sent: %s\n", conn.RemoteAddr(), string(msg))
+		if !strings.Contains(string(msg), " ") {
+
+			var conn_ CONNECTIONS
+			conn_.Conn = conn
+			conn_.Name = string(msg)
+
+			fmt.Printf("Connection of %s from %s\n", conn_.Name, conn.RemoteAddr())
+
+			connection = append(connection, conn_)
+			continue
+		}
 
 		// format: sendername/receivername/date/content
 		msgData := strings.SplitAfterN(string(msg), " ", 4)
+
+		var conn_ CONNECTIONS
+		conn_.Conn = conn
+		conn_.Name = msgData[0][:len(msgData[0])-1]
+
+		fmt.Printf("%s\n", string(msg))
+
+		connection = append(connection, conn_)
 
 		db, err := sql.Open(DRIVER, DB)
 		if err != nil {
@@ -46,14 +72,12 @@ func Websocket(w http.ResponseWriter, r *http.Request) {
 		}
 		defer db.Close()
 
+		rows := db.QueryRow("SELECT pfp FROM USERS WHERE nickname = ?", msgData[0][:len(msgData[0])-1])
 		var pfp string
-		rows, err := db.Query("SELECT pfp FROM USERS WHERE nickname = ?", msgData[0])
+		err = rows.Scan(&pfp)
 		if err != nil {
 			fmt.Println(err)
 			return
-		}
-		for rows.Next() {
-			rows.Scan(&pfp)
 		}
 
 		_, err = db.Exec(`INSERT INTO MESSAGES VALUES(NULL, ?, ?, ?, ?, ?)`,
@@ -68,11 +92,21 @@ func Websocket(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		temp := msgData[0] + " " + msgData[1] + " " + msgData[2] + " " + pfp + " " + msgData[3]
+		temp := msgData[0] + " " + msgData[2] + " " + pfp + " " + msgData[3] + " "
 
+		count := 0
 		for _, client := range clients {
-			if err = client.WriteMessage(msgType, []byte(temp)); err != nil {
-				fmt.Println(err)
+			for _, c := range connection {
+				if (c.Name == msgData[1][:len(msgData[1])-1] || c.Name == msgData[0][:len(msgData[0])-1]) && c.Conn == client {
+					count++
+					if err = client.WriteMessage(msgType, []byte(temp)); err != nil {
+						fmt.Println(err)
+						break
+					}
+					break
+				}
+			}
+			if count == 2 {
 				break
 			}
 		}

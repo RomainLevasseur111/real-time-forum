@@ -13,7 +13,6 @@ func Server(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-
 	cookie, err := r.Cookie("sessionID")
 	data := map[string]interface{}{
 		"IP": IP,
@@ -41,12 +40,9 @@ func Server(w http.ResponseWriter, r *http.Request) {
 	}
 	var connectedUser *USER
 
-	
-	fmt.Println(err)
 	if cookie != nil {
 		connectedUser, _ = checkCookie(cookie)
 	}
-
 
 	// log the homepage
 	db, err := sql.Open(DRIVER, DB)
@@ -74,5 +70,4 @@ func Server(w http.ResponseWriter, r *http.Request) {
 		Error(w, http.StatusInternalServerError)
 		return
 	}
-
 }

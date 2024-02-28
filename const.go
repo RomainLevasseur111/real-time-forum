@@ -19,6 +19,7 @@ var (
 		ReadBufferSize:  1024,
 		WriteBufferSize: 1024,
 	}
+	connection []CONNECTIONS
 )
 
 type USER struct { // user structure
@@ -34,4 +35,9 @@ type POST struct { // post structure
 type CATEGORY struct { // Category structure
 	Name  string
 	Posts int
+}
+
+type CONNECTIONS struct {
+	Conn *websocket.Conn
+	Name string
 }

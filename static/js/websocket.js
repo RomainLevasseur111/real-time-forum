@@ -15,32 +15,34 @@ function connect() {
     };
 
     socket.onmessage = function (event) {
+        setTimeout(() => {
         const messageDiv = document.createElement("div");
         messageDiv.className = "message";
 
-        let msgData = event.data.split(" "); 
-
         const senderName_msg = document.createElement("div");
         senderName_msg.className = "senderName_msg";
-        senderName_msg.innerHTML = msgData[0];
+        senderName_msg.innerHTML = event.data.split(" ")[0];
         messageDiv.appendChild(senderName_msg);
 
         const date_msg = document.createElement("div");
         date_msg.className = "date_msg";
-        date_msg.innerHTML = msgData[2];
+        date_msg.innerHTML = event.data.split(" ")[2];
         messageDiv.appendChild(date_msg);
 
         const pfp_msg = document.createElement("div");
         pfp_msg.className = "pfp_msg";
-        pfp_msg.innerHTML = msgData[3];
+        pfp_msg.innerHTML = event.data.split(" ")[4];
         messageDiv.appendChild(pfp_msg);
+
+        let temp = event.data.split(" ").slice(5).join(" ").slice(0, -1);
 
         const content_msg = document.createElement("div");
         content_msg.className = "content_msg";
-        content_msg.innerHTML = msgData[4];
+        content_msg.innerHTML = temp;
         messageDiv.appendChild(content_msg);
         
         output.appendChild(messageDiv);
+        }, 50);
     };
 
     socket.onclose = function(event) {
@@ -58,8 +60,11 @@ function send() {
     var d = new Date();
     var datestring = (d.getMonth()+1) + "/" + d.getDate() + "/" + d.getFullYear() + "_" + d.getHours() + ":" + d.getMinutes() + " ";
 
-    socket.send(parts[0] + " receiverNameHere " + datestring + chat_input.value);
+    socket.send(parts[0] + " testtesttest " + datestring + chat_input.value);
     chat_input.value = "";
 }
 
 connect();
+setTimeout(() => {
+    socket.send(parts[0]);
+}, 500);

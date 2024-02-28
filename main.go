@@ -18,7 +18,7 @@ func main() {
 	http.HandleFunc("/register", Registration)
 	http.HandleFunc("/login", Login)
 	http.HandleFunc("/logout", Logout)
-	http.HandleFunc("/echo", Websocket)
+	http.HandleFunc("/echo", Chat_Websocket)
 	http.HandleFunc("/publish", Publish)
 
 	if err := http.ListenAndServe("0.0.0.0:8989", nil); err != nil {
