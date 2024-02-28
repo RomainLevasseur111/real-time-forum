@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Real Time Forum</title>
         <link rel="stylesheet" href="" />
-        <link rel="stylesheet" href="/static/CSS/header.css"/>
+        <link rel="stylesheet" href="/static/CSS/header.css" />
         <link rel="stylesheet" href="/static/CSS/chat.css" />
     </head>
     <body>
@@ -19,11 +19,14 @@
         </header>
         <!--error page-->
         {{if and (.Code) (.Name) (.Msg)}}
-        <script>document.querySelector('link[rel="stylesheet"]').href = "/static/CSS/error.css";</script>
+        <script>
+            document.querySelector('link[rel="stylesheet"]').href =
+                "/static/CSS/error.css";
+        </script>
 
         <div class="Box">
             <div class="Msg">
-                <h2>{{.Code}} - {{.Name}}</h1>
+                <h2>{{.Code}} - {{.Name}}</h2>
                 <h3>{{.Msg}}</h3>
                 <a href="/"><button class="button_error">Home Page</button></a>
             </div>
@@ -31,16 +34,16 @@
 
         <!--home page -- user is connected and there is no error -->
         {{else if .ConnectedUser}}
-        <script>document.querySelector('link[rel="stylesheet"]').href = "/static/CSS/homepage.css";</script>
-
-        <p>This is a test post.</p>
-
+        <script>
+            document.querySelector('link[rel="stylesheet"]').href =
+                "/static/CSS/homepage.css";
+        </script>
         <div class="collapsible-chat">
             <button type="button" class="collapsible">
-                <img class="collapsible-img" src="../static/img/chat.png">
+                <img class="collapsible-img" src="../static/img/chat.png" />
             </button>
             <div class="collapsible-content">
-                <div id="IP" value={{.IP}}></div>
+                <div id="IP" value="{{.IP}}"></div>
                 <div id="connectedUser" value="{{.ConnectedUser}}"></div>
                 <script src="../static/js/websocket.js"></script>
 
@@ -50,14 +53,116 @@
                 <div id="output"></div>
             </div>
         </div>
+
+        <!-- Home page content-->
+
+        <div id="homepage">
+            <form action="/publish" method="post" class="posting">
+                <div class="postuserinfo">
+                    <img
+                        class="pfp"
+                        src="{{.ConnectedUser.Pfp}}"
+                        alt="{{.ConnectedUser.NickName}}'s profile picture"
+                    />
+                    <h4>{{.ConnectedUser.NickName}}</h4>
+                </div>
+                <section class="postsection">
+                    <label for="postarea">NEW POST</label>
+                    <label for="category">Category</label>
+                    <input type="text" name="category1" list="cat" id="cat1" />
+                    <datalist id="cat">
+                        {{range .Categories}}
+                        <option>{{.Name}}</option>
+                        {{end}}
+                    </datalist>
+                    <input type="text" name="category2" list="cat" id="cat2" />
+                    <datalist id="cat">
+                        {{range .Categories}}
+                        <option>{{.Name}}</option>
+                        {{end}}
+                    </datalist>
+
+                    <textarea
+                        name="content"
+                        class="postarea"
+                        placeholder="Publish a post"
+                        required
+                    ></textarea>
+                    <div class="errorBox">
+                        <span>{{.PostError}} </span>
+                    </div>
+                    <button type="submit">Post</button>
+                </section>
+            </form>
+            <div class="allposts">
+                {{range .Posts}}
+                <div class="rangepost">
+                    <a href="/user/{{.Userid}}">
+                        <img
+                            class="pfp"
+                            src="{{.Userpfp}}"
+                            alt="{{.Username}}'s profile picture"
+                        />
+                        <span class="userid">{{.Username}}</span>
+                    </a>
+                    <span class="name_c">Category</span>
+                    <div class="category">{{.Category}} {{.CategoryB}}</div>
+                    <!--<a href="/post/{{.Postid}}">-->
+                    <p class="content">{{.Content}}</p>
+                    <!--</a>-->
+                    <div class="stats">
+                        <form action="/useraction" method="post">
+                            <input
+                                type="hidden"
+                                name="postid"
+                                value="{{.Postid}}"
+                            />
+                            <button name="action" type="submit" value="like">
+                                Like
+                            </button>
+                            {{.Likes}}
+                            <button name="action" type="submit" value="dislike">
+                                Dislike
+                            </button>
+                            {{.Dislikes}}
+                        </form>
+                        <div class="children comments">
+                            <!-- <a href="/post/{{.Postid}}">-->
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    d="M5.45455 15L1 18.5V3C1 2.44772 1.44772 2 2 2H17C17.5523 2 18 2.44772 18 3V15H5.45455ZM4.76282 13H16V4H3V14.3851L4.76282 13ZM8 17H18.2372L20 18.3851V8H21C21.5523 8 22 8.44772 22 9V22.5L17.5455 19H9C8.44772 19 8 18.5523 8 18V17Z"
+                                    fill="#fff"
+                                ></path>
+                            </svg>
+                            <!--</a>-->
+                            <span> {{.Comments}} </span>
+                        </div>
+                    </div>
+                </div>
+                {{end}}
+            </div>
+        </div>
+
+        <!-- Post page content-->
+
+        <div id="postpage">pqistojzaegepage</div>
+
+        <!-- User page content-->
+
+        <div id="userpage">usrezpagez</div>
         <script src="../static/js/collapsible.js"></script>
 
         <!--login page-->
         {{else}}
-        <script>document.querySelector('link[rel="stylesheet"]').href = "/static/CSS/login.css";</script>
+        <script>
+            document.querySelector('link[rel="stylesheet"]').href =
+                "/static/CSS/login.css";
+        </script>
 
         <div id="forms-container">
-
             <section class="form-section">
                 <h2>Login</h2>
                 <form action="/login" method="post">
@@ -75,8 +180,7 @@
                     />
                     <button type="submit">Login</button>
                 </form>
-                <div id="logerror">{{.Error}}
-                </div>
+                <div id="logerror">{{.Error}}</div>
             </section>
 
             <span class="or">or</span>
@@ -129,9 +233,7 @@
                     <button type="submit">Register</button>
                 </form>
             </section>
-
         </div>
         {{end}}
-
     </body>
 </html>

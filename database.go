@@ -39,7 +39,33 @@ func CreateDatabase() {
 		date TEXT,
 		content TEXT NOT NULL
 	);
-	 
+	CREATE TABLE IF NOT EXISTS POSTS(
+		userid INTEGER NOT NULL,
+		postid INTEGER PRIMARY KEY AUTOINCREMENT,
+		commentid INTEGER DEFAULT NULL,
+		username TEXT NOT NULL,
+		category TEXT DEFAULT NULL,
+		categoryB TEXT DEFAULT NULL,
+		userpfp TEXT NOT NULL,
+		content TEXT NOT NULL,
+		postdate DATE NOT NULL,
+		FOREIGN KEY(category) REFERENCES CATEGORIES(name),
+		FOREIGN KEY(userid) REFERENCES USERS(id),
+		FOREIGN KEY(commentid) REFERENCES POSTS(id)
+	);
+	CREATE TABLE IF NOT EXISTS CATEGORIES(
+		name TEXT UNIQUE,
+		posts INTEGER
+	);
+	CREATE TABLE IF NOT EXISTS LikesDislikes (
+		id INTEGER PRIMARY KEY,
+		userid INTEGER NOT NULL,
+		postid INTEGER NOT NULL,
+		likestatus TEXT NOT NULL CHECK(likestatus IN ('like', 'dislike')),
+		FOREIGN KEY(userid) REFERENCES USERS(id),
+		FOREIGN KEY(postid) REFERENCES POSTS(id)
+	);
+
 	`
 	_, err = db.Exec(r)
 	if err != nil {

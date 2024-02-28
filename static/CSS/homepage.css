@@ -1,0 +1,194 @@
+#userpage,
+#postpage {
+    visibility: hidden;
+}
+/* General Form Styling */
+.posting {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    font-family: "Bitter", serif;
+}
+
+/* Profile Picture and User Info */
+.postuserinfo {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.pfp {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+h4 {
+    margin: 0;
+    color: #2a88ad;
+}
+
+/* Post Section */
+.postsection {
+    margin-top: 20px;
+}
+
+.postsection label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #888;
+}
+
+/* Inputs and Textarea */
+.postarea {
+    width: 96%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+#cat1 {
+    justify-content: center;
+    width: 45%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+#cat2 {
+    justify-content: center;
+    width: 45%;
+    padding: 10px;
+    padding-left: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+textarea {
+    resize: none;
+    height: 150px;
+}
+
+/* Datalist */
+datalist {
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+/* Error Box */
+.errorBox {
+    color: red;
+    margin-bottom: 20px;
+}
+
+/* Submit Button */
+button[type="submit"] {
+    background: #2a88ad;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background: #2a6881;
+}
+/* General Post Container */
+.allposts {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+/* Individual Post Card */
+.rangepost {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    padding: 20px;
+}
+
+/* Profile Picture and User Info */
+.rangepost a {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    text-decoration: none;
+}
+
+.pfp {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.userid {
+    color: #333;
+}
+
+.name_c {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+/* Content and Category */
+.category {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.content {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Interaction Buttons */
+.stats {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.stats button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    color: #888;
+}
+
+.stats button:hover {
+    color: #2a88ad;
+}
+
+/* Comments */
+.children.comments {
+    display: flex;
+    align-items: center;
+    color: #888;
+}
+
+.children.comments svg {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+}
