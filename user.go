@@ -2,7 +2,7 @@ package main
 
 import "database/sql"
 
-func getAllUsers() (users []USER, err error) {
+func GetAllUsers() (users []USER, err error) {
 	db, err := sql.Open(DRIVER, DB)
 	if err != nil {
 		return nil, err
@@ -17,7 +17,7 @@ func getAllUsers() (users []USER, err error) {
 	for rows.Next() {
 		var user USER
 		err = rows.Scan(
-			&user.Username,
+			&user.NickName,
 			&user.Pfp,
 		)
 		if err != nil {

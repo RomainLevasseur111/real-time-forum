@@ -42,7 +42,7 @@ func Server(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	users, err := GetAllUser()
+	users, err := GetAllUsers()
 	if err != nil {
 		fmt.Println(err)
 		Error(w, http.StatusInternalServerError)
