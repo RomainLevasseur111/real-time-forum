@@ -34,10 +34,21 @@ func Server(w http.ResponseWriter, r *http.Request) {
 		}
 		return
 	}
-	posts, err := getAllPosts()
+
+	posts, err := GetAllPosts()
 	if err != nil {
 		fmt.Println(err)
+		Error(w, http.StatusInternalServerError)
+		return
 	}
+
+	users, err := GetAllUser()
+	if err != nil {
+		fmt.Println(err)
+		Error(w, http.StatusInternalServerError)
+		return
+	}
+
 	var connectedUser *USER
 
 	if cookie != nil {
@@ -56,6 +67,7 @@ func Server(w http.ResponseWriter, r *http.Request) {
 	data["ConnectedUser"] = connectedUser
 	data["Posts"] = posts
 	data["Categories"] = GetCategories()
+	data["Users"] = users
 
 	tmpl, err := template.ParseFiles("./templates/index.html")
 	if err != nil {
