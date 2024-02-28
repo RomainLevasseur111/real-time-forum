@@ -46,10 +46,21 @@ func Websocket(w http.ResponseWriter, r *http.Request) {
 		}
 		defer db.Close()
 
-		_, err = db.Exec(`INSERT INTO MESSAGES VALUES(NULL, ?, ?, ?, ?)`,
+		var pfp string
+		rows, err := db.Query("SELECT pfp FROM USERS WHERE nickname = ?", msgData[0])
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		for rows.Next() {
+			rows.Scan(&pfp)
+		}
+
+		_, err = db.Exec(`INSERT INTO MESSAGES VALUES(NULL, ?, ?, ?, ?, ?)`,
 			msgData[0],
 			msgData[1],
 			msgData[2],
+			pfp,
 			msgData[3])
 
 		if err != nil {
@@ -57,8 +68,10 @@ func Websocket(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
+		temp := msgData[0] + " " + msgData[1] + " " + msgData[2] + " " + pfp + " " + msgData[3]
+
 		for _, client := range clients {
-			if err = client.WriteMessage(msgType, msg); err != nil {
+			if err = client.WriteMessage(msgType, []byte(temp)); err != nil {
 				fmt.Println(err)
 				break
 			}

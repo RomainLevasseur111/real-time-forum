@@ -23,17 +23,22 @@ function connect() {
         const senderName_msg = document.createElement("div");
         senderName_msg.className = "senderName_msg";
         senderName_msg.innerHTML = msgData[0];
-        messageDiv.appendChild(senderName_msg)
+        messageDiv.appendChild(senderName_msg);
 
         const date_msg = document.createElement("div");
         date_msg.className = "date_msg";
         date_msg.innerHTML = msgData[2];
-        messageDiv.appendChild(date_msg)
+        messageDiv.appendChild(date_msg);
+
+        const pfp_msg = document.createElement("div");
+        pfp_msg.className = "pfp_msg";
+        pfp_msg.innerHTML = msgData[3];
+        messageDiv.appendChild(pfp_msg);
 
         const content_msg = document.createElement("div");
         content_msg.className = "content_msg";
-        content_msg.innerHTML = msgData[3];
-        messageDiv.appendChild(content_msg)
+        content_msg.innerHTML = msgData[4];
+        messageDiv.appendChild(content_msg);
         
         output.appendChild(messageDiv);
     };

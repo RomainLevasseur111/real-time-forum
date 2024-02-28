@@ -37,6 +37,7 @@ func CreateDatabase() {
 		sendername VARCHAR(20),
 		receivername VARCHAR(20),
 		date TEXT,
+		pfp TEXT,
 		content TEXT NOT NULL
 	);
 	 
