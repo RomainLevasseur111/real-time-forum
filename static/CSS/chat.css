@@ -18,11 +18,12 @@
 
 /* Style the collapsible content. Note: hidden by default */
 .collapsible-content {
-    background-color: gray;
+    background-color: #36393F; /* Darker background for Discord-like appearance */
     height: calc(100vh - 80px);
     width: 0vw;
-    overflow: hidden;
-    white-space: nowrap;
+    overflow-y: scroll; /* Enable vertical scrolling */
+    overflow-x: hidden;
+    word-wrap: break-word;
     transition: width 0.2s ease-out;
 }
 
@@ -50,4 +51,109 @@
     left: 0; /* Positions it to the left edge */
     top: 80px;
     width: 30%;
+}
+
+/* General container for messages */
+.message {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #36393F; /* Dark background */
+    border-radius: 5px;
+    max-width: 100%;
+    margin-left: auto; /* Align messages to the right */
+    background: linear-gradient(to bottom, #36393F 0%, #2F3136 100%); /* Gradient for softer look */
+    word-wrap: break-word;
+}
+
+
+.senderName_msg, .date_msg, .content_msg {
+    color: #DCDDDE; /* Light text color */
+}
+
+/* Sender's name */
+.senderName_msg {
+    font-size: 14px;
+    font-weight: bold;
+    margin-right: 5px;
+    
+}
+
+/* Date of the message */
+.date_msg {
+    font-size: 12px;
+    margin-right: 10px;
+}
+
+/* Profile picture */
+.pfp_msg {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+/* Message content */
+.content_msg {
+    flex-grow: 1;
+    font-size: 14px;
+    line-height: 1.5;
+    word-wrap: break-word;
+}
+
+#chat-input {
+    width: 80%;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    background-color: #40444B; /* Darker input background */
+    color: #DCDDDE; /* Light text color */
+}
+
+#chat-input:focus {
+    background-color: #40444B; /* Maintain darker background on focus */
+}
+
+#chat-send-button {
+    background-color: #7289DA; /* Discord blue */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+#chat-send-button:hover {
+    background-color: #5865F2; /* Darker blue on hover */
+}
+
+.msg-inputs {
+    display: flex;
+    width: 100%;
+    padding: 10px;
+}
+
+.msg-inputs .msg-input {
+    width: 80%;
+    color: #DCDDDE; /* Light text color */
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.msg-inputs .send-btn {
+    background-color: #7289DA; /* Discord blue */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.msg-inputs .send-btn:hover {
+    background-color: #5865F2; /* Darker blue on hover */
 }

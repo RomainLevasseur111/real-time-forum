@@ -24,14 +24,9 @@ function connect() {
         senderName_msg.innerHTML = event.data.split(" ")[0];
         messageDiv.appendChild(senderName_msg);
 
-        const date_msg = document.createElement("div");
-        date_msg.className = "date_msg";
-        date_msg.innerHTML = event.data.split(" ")[2];
-        messageDiv.appendChild(date_msg);
-
-        const pfp_msg = document.createElement("div");
+        const pfp_msg = document.createElement("img");
         pfp_msg.className = "pfp_msg";
-        pfp_msg.innerHTML = event.data.split(" ")[4];
+        pfp_msg.src = event.data.split(" ")[4];
         messageDiv.appendChild(pfp_msg);
 
         let temp = event.data.split(" ").slice(5).join(" ").slice(0, -1);
@@ -40,8 +35,14 @@ function connect() {
         content_msg.className = "content_msg";
         content_msg.innerHTML = temp;
         messageDiv.appendChild(content_msg);
+
+        const date_msg = document.createElement("div");
+        date_msg.className = "date_msg";
+        date_msg.innerHTML = event.data.split(" ")[2];
+        messageDiv.appendChild(date_msg);
         
         output.appendChild(messageDiv);
+        output.scrollTop = output.scrollHeight;
         }, 50);
     };
 
@@ -68,3 +69,11 @@ connect();
 setTimeout(() => {
     socket.send(parts[0]);
 }, 500);
+
+document.getElementById("msg-input").addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+        console.log("test");
+        event.preventDefault(); // Prevent the default form submission
+        send(); // Call your send function
+    }
+});

@@ -46,12 +46,15 @@
             <div class="collapsible-content">
                 <div id="IP" value="{{.IP}}"></div>
                 <div id="connectedUser" value="{{.ConnectedUser}}"></div>
-                <script src="../static/js/websocket.js"></script>
 
-                <input id="chat-input" type="text" />
-                <button onclick="send()">Send</button>
+                <div class="msg-inputs">
+                    <input class="msg-input" type="text" placeholder="Message" id="chat-input" />
+                    <button class="send-btn" type="button" onclick="send()">Send</button>
+                </div>
 
                 <div id="output"></div>
+
+                <script src="../static/js/websocket.js"></script>
             </div>
         </div>
 
