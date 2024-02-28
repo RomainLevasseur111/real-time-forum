@@ -12,11 +12,24 @@ func Server(w http.ResponseWriter, r *http.Request) {
 		Error(w, http.StatusNotFound)
 		return
 	}
+	posts, err := getAllPosts()
+	if err != nil {
+		fmt.Println(err)
+	}
+	var connectedUser *USER
 
 	cookie, err := r.Cookie("sessionID")
+	if cookie != nil {
+		connectedUser, _ = checkCookie(cookie)
+	}
+
 	data := map[string]interface{}{
 		"IP": IP,
+		"connectedUser": connectedUser,
+		"Posts":      posts,
+		"Categories": GetCategories(),
 	}
+
 
 	// log the login / register page
 	if err != nil {
@@ -45,7 +58,7 @@ func Server(w http.ResponseWriter, r *http.Request) {
 	}
 	defer db.Close()
 
-	var connectedUser USER
+
 
 	row := db.QueryRow(`SELECT id, nickname, age, gender, firstname, lastname, email, pfp, creationdate FROM USERS WHERE cookie = ?;`, cookie.Value)
 	err = row.Scan(
@@ -80,4 +93,5 @@ func Server(w http.ResponseWriter, r *http.Request) {
 		Error(w, http.StatusInternalServerError)
 		return
 	}
+
 }

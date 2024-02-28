@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 	"net/http"
 	"time"
@@ -47,4 +48,37 @@ func GiveCookie(w http.ResponseWriter, nickname string) {
 		Value:   sessionID,
 		Expires: expirationDate,
 	})
+}
+func checkCookie(cookie *http.Cookie) (*USER, error) {
+	if cookie == nil {
+		err := errors.New("no inputed cookie")
+		return nil, err
+	}
+
+	db, err := sql.Open(DRIVER, DB)
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+	defer db.Close()
+
+	value := cookie.Value
+	var u USER
+	sts := "SELECT id, email, nickname, pfp, creationdate FROM USERS WHERE cookie=?;"
+
+	row := db.QueryRow(sts, value)
+	err = row.Scan(
+		&u.Id,
+		&u.Email,
+		&u.NickName,
+		&u.Pfp,
+		&u.CreationDate,
+	)
+
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+
+	return &u, nil
 }

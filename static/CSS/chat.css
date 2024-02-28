@@ -1,51 +1,53 @@
- /* Style the button that is used to open and close the collapsible content */
- .collapsible {
+/* Style the button that is used to open and close the collapsible content */
+.collapsible {
     background-color: #007bff;
     color: #444;
     cursor: pointer;
     width: 60px;
-    height: calc(100vh -  80px);
+    height: calc(100vh - 80px);
     border: none;
     outline: none;
     font-size: 15px;
-  }
-  
-  /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
-  .collapsible-active, .collapsible:hover {
+}
+
+/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+.collapsible-active,
+.collapsible:hover {
     background-color: #266ab3;
-  }
-  
-  /* Style the collapsible content. Note: hidden by default */
-  .collapsible-content {
+}
+
+/* Style the collapsible content. Note: hidden by default */
+.collapsible-content {
     background-color: gray;
-    height: calc(100vh -  80px);
+    height: calc(100vh - 80px);
     width: 0vw;
     overflow: hidden;
     white-space: nowrap;
     transition: width 0.2s ease-out;
-  }
+}
 
-  .collapsible:after {
-    content: '\02795'; /* Unicode character for "plus" sign (+) */
+.collapsible:after {
+    content: "\02795"; /* Unicode character for "plus" sign (+) */
     font-size: 13px;
     color: white;
     float: right;
     margin-left: 5px;
-  }
-  
-  .collapsible-active:after {
-    content: "\2796"; /* Unicode character for "minus" sign (-) */
-  }
+}
 
-  .collapsible-img {
+.collapsible-active:after {
+    content: "\2796"; /* Unicode character for "minus" sign (-) */
+}
+
+.collapsible-img {
     height: 50px;
     width: 50px;
-  }
+}
 
-  .collapsible-chat {
+.collapsible-chat {
     display: flex;
     justify-content: flex-start; /* Aligns children to the start of the container */
     position: fixed; /* Fixes the position of the container */
-    left:  0; /* Positions it to the left edge */
-    top: 80px ;
-  }
+    left: 0; /* Positions it to the left edge */
+    top: 80px;
+    width: 30%;
+}
