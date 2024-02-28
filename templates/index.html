@@ -98,14 +98,13 @@
                 {{range .Posts}}
                 <div class="rangepost">
                     <!--<a href="/user/{{.Userid}}">-->
-                        <img
-                            class="pfp"
-                            src="{{.Userpfp}}"
-                            alt="{{.Username}}'s profile picture"
-                        />
-                        <span class="userid">{{.Username}}</span>
+                    <img
+                        class="pfp"
+                        src="{{.Userpfp}}"
+                        alt="{{.Username}}'s profile picture"
+                    />
+                    <span class="userid">{{.Username}}</span>
                     <!--</a>-->
-                    <span class="name_c">Category</span>
                     <div class="category">{{.Category}} {{.CategoryB}}</div>
                     <!--<a href="/post/{{.Postid}}">-->
                     <p class="content">{{.Content}}</p>

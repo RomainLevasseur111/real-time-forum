@@ -142,11 +142,6 @@ button[type="submit"]:hover {
     color: #333;
 }
 
-.name_c {
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
 /* Content and Category */
 .category {
     font-size: 14px;

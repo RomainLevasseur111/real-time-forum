@@ -109,7 +109,7 @@ func Registration(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 
 	today := time.Now()
-	_, err = db.Exec(`INSERT INTO USERS VALUES(NULL, ?, ?, ?, ?, ?, ?, ?, "", ?, "", NULL)`,
+	_, err = db.Exec(`INSERT INTO USERS VALUES(NULL, ?, ?, ?, ?, ?, ?, ?, "https://i.stack.imgur.com/l60Hf.png", ?, "", NULL)`,
 		nickname,
 		ageInt,
 		gender,
