@@ -9,7 +9,7 @@ import (
 const (
 	DB      = "./data.db"
 	DRIVER  = "sqlite3"
-	IP      = "192.168.101.10"
+	IP      = "192.168.100.250"
 	DATEFMT = "2006-01-02 15:04:05"
 )
 
