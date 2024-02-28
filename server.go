@@ -12,25 +12,12 @@ func Server(w http.ResponseWriter, r *http.Request) {
 		Error(w, http.StatusNotFound)
 		return
 	}
-	posts, err := getAllPosts()
-	if err != nil {
-		fmt.Println(err)
-	}
-	var connectedUser *USER
+
 
 	cookie, err := r.Cookie("sessionID")
-	if cookie != nil {
-		connectedUser, _ = checkCookie(cookie)
-	}
-
 	data := map[string]interface{}{
 		"IP": IP,
-		"connectedUser": connectedUser,
-		"Posts":      posts,
-		"Categories": GetCategories(),
 	}
-
-
 	// log the login / register page
 	if err != nil {
 		tmpl, err := template.ParseFiles("./templates/index.html")
@@ -48,6 +35,18 @@ func Server(w http.ResponseWriter, r *http.Request) {
 		}
 		return
 	}
+	posts, err := getAllPosts()
+	if err != nil {
+		fmt.Println(err)
+	}
+	var connectedUser *USER
+
+	
+	fmt.Println(err)
+	if cookie != nil {
+		connectedUser, _ = checkCookie(cookie)
+	}
+
 
 	// log the homepage
 	db, err := sql.Open(DRIVER, DB)
@@ -58,27 +57,9 @@ func Server(w http.ResponseWriter, r *http.Request) {
 	}
 	defer db.Close()
 
-
-
-	row := db.QueryRow(`SELECT id, nickname, age, gender, firstname, lastname, email, pfp, creationdate FROM USERS WHERE cookie = ?;`, cookie.Value)
-	err = row.Scan(
-		&connectedUser.Id,
-		&connectedUser.NickName,
-		&connectedUser.Age,
-		&connectedUser.Gender,
-		&connectedUser.FirstName,
-		&connectedUser.LastName,
-		&connectedUser.Email,
-		&connectedUser.Pfp,
-		&connectedUser.CreationDate,
-	)
-	if err != nil {
-		fmt.Println(err)
-		Error(w, http.StatusBadRequest)
-		return
-	}
-
 	data["ConnectedUser"] = connectedUser
+	data["Posts"] = posts
+	data["Categories"] = GetCategories()
 
 	tmpl, err := template.ParseFiles("./templates/index.html")
 	if err != nil {
