@@ -1,5 +1,32 @@
 package main
 
-func GetAllUser() (users []USER, err error) {
+import "database/sql"
+
+func getAllUsers() (users []USER, err error) {
+	db, err := sql.Open(DRIVER, DB)
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
+
+	rows, err := db.Query("SELECT nickname, pfp FROM USERS;")
+	if err != nil {
+		return nil, err
+	}
+
+	for rows.Next() {
+		var user USER
+		err = rows.Scan(
+			&user.Username,
+			&user.Pfp,
+		)
+		if err != nil {
+			return nil, err
+		}
+
+		users = append(users, user)
+
+	}
+
 	return users, nil
 }
