@@ -58,11 +58,13 @@ function connect() {
 function send() {
     var chat_input = document.getElementById("chat-input");
 
-    var d = new Date();
-    var datestring = (d.getMonth()+1) + "/" + d.getDate() + "/" + d.getFullYear() + "_" + d.getHours() + ":" + d.getMinutes() + " ";
-
-    socket.send(parts[0] + " testtesttest " + datestring + chat_input.value);
-    chat_input.value = "";
+    if (chat_input.value != "") {
+        var d = new Date();
+        var datestring = (d.getMonth()+1) + "/" + d.getDate() + "/" + d.getFullYear() + "_" + d.getHours() + ":" + d.getMinutes() + " ";
+    
+        socket.send(parts[0] + " testtesttest " + datestring + chat_input.value);
+        chat_input.value = "";
+    }
 }
 
 connect();

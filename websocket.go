@@ -57,6 +57,11 @@ func Chat_Websocket(w http.ResponseWriter, r *http.Request) {
 		// format: sendername/receivername/date/content
 		msgData := strings.SplitAfterN(string(msg), " ", 4)
 
+		if len(msgData) != 4 || msgData[3] == "" {
+			fmt.Println("empty message")
+			continue
+		}
+
 		var conn_ CONNECTIONS
 		conn_.Conn = conn
 		conn_.Name = msgData[0][:len(msgData[0])-1]
