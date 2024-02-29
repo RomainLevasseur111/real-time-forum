@@ -47,6 +47,16 @@
                 <div id="IP" value="{{.IP}}"></div>
                 <div id="connectedUser" value="{{.ConnectedUser}}"></div>
 
+                    {{range .Users}}
+                    <button class="nickname_button" type="button" onclick="render_chat('{{.NickName}}')">{{.NickName}}</button>
+                    {{end}}
+
+                <div id="header_chat" class="header_chat">
+                <button class="hide_chat_button" type="button" onclick="hide_chat()">
+                    <img class="hide_chat_img" src="../static/img/go_back.png">
+                </button>
+                </div>
+
                 <div class="msg-inputs">
                     <input class="msg-input" type="text" placeholder="Message" id="chat-input" />
                     <button class="send-btn" type="button" onclick="send()">Send</button>
@@ -55,6 +65,7 @@
                 <div id="output"></div>
 
                 <script src="../static/js/websocket.js"></script>
+                <script src="../static/js/chat.js"></script>
             </div>
         </div>
 

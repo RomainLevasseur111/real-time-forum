@@ -67,7 +67,7 @@
 }
 
 
-.senderName_msg, .date_msg, .content_msg {
+.senderName_msg, .content_msg {
     color: #DCDDDE; /* Light text color */
 }
 
@@ -83,6 +83,7 @@
 .date_msg {
     font-size: 12px;
     margin-right: 10px;
+    color: #bbbfc488;
 }
 
 /* Profile picture */
@@ -98,7 +99,8 @@
     flex-grow: 1;
     font-size: 14px;
     line-height: 1.5;
-    word-wrap: break-word;
+    overflow-wrap: break-word;
+    min-width: 0;
 }
 
 #chat-input {
@@ -155,4 +157,23 @@
 
 .msg-inputs .send-btn:hover {
     background-color: #5865F2; /* Darker blue on hover */
+}
+
+.hide_chat_img {
+    width: 25px;
+    height: 25px;
+}
+
+.hide_chat_button {
+    background-color: #36393F;
+    border: none;
+    cursor: pointer;
+}
+
+.header_chat {
+    height: 30px;
+    font-size: 14px;
+    color: #bbbfc488;
+    border: none;
+    outline: none;
 }

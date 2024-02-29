@@ -35,6 +35,27 @@ func Chat_Websocket(w http.ResponseWriter, r *http.Request) {
 		}
 	}()
 
+	send := func(msgData []string, pfp string, msgType int) {
+		temp := msgData[0] + " " + msgData[2] + " " + pfp + " " + msgData[3] + " "
+
+		count := 0
+		for _, client := range clients {
+			for _, c := range connection {
+				if (c.Name == msgData[1][:len(msgData[1])-1] || c.Name == msgData[0][:len(msgData[0])-1]) && c.Conn == client {
+					count++
+					if err = client.WriteMessage(msgType, []byte(temp)); err != nil {
+						fmt.Println(err)
+						break
+					}
+					break
+				}
+			}
+			if count == 2 {
+				break
+			}
+		}
+	}
+
 	for {
 		msgType, msg, err := conn.ReadMessage()
 		if err != nil {
@@ -59,6 +80,22 @@ func Chat_Websocket(w http.ResponseWriter, r *http.Request) {
 
 		if len(msgData) != 4 || msgData[3] == "" {
 			fmt.Println("empty message")
+			continue
+		}
+
+		if msgData[0] == "GAM " && msgData[3] == "_" {
+			messages, err := GetConversation(msgData[1], msgData[2])
+			if err != nil {
+				fmt.Println(err)
+				return
+			}
+
+			for _, message := range messages {
+				var temp []string
+				temp = append(temp, message.sendername, message.receivername, message.date, message.content)
+				send(temp, message.pfp, msgType)
+			}
+
 			continue
 		}
 
@@ -97,23 +134,7 @@ func Chat_Websocket(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		temp := msgData[0] + " " + msgData[2] + " " + pfp + " " + msgData[3] + " "
+		send(msgData, pfp, msgType)
 
-		count := 0
-		for _, client := range clients {
-			for _, c := range connection {
-				if (c.Name == msgData[1][:len(msgData[1])-1] || c.Name == msgData[0][:len(msgData[0])-1]) && c.Conn == client {
-					count++
-					if err = client.WriteMessage(msgType, []byte(temp)); err != nil {
-						fmt.Println(err)
-						break
-					}
-					break
-				}
-			}
-			if count == 2 {
-				break
-			}
-		}
 	}
 }

@@ -41,3 +41,7 @@ type CONNECTIONS struct {
 	Conn *websocket.Conn
 	Name string
 }
+
+type MESSAGES struct {
+	sendername, receivername, date, pfp, content string
+}

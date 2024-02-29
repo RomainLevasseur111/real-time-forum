@@ -3,6 +3,7 @@ let connectedUser = document
     .getElementById("connectedUser")
     .getAttribute("value");
 let socket;
+let receivername_;
 const parts = connectedUser.split(" ");
 parts[0] = parts[0].substring(1);
 
@@ -38,7 +39,7 @@ function connect() {
 
         const date_msg = document.createElement("div");
         date_msg.className = "date_msg";
-        date_msg.innerHTML = event.data.split(" ")[2];
+        date_msg.innerHTML = event.data.split(" ")[2].split("_").join("<br>");
         messageDiv.appendChild(date_msg);
         
         output.appendChild(messageDiv);
@@ -60,9 +61,13 @@ function send() {
 
     if (chat_input.value != "") {
         var d = new Date();
-        var datestring = (d.getMonth()+1) + "/" + d.getDate() + "/" + d.getFullYear() + "_" + d.getHours() + ":" + d.getMinutes() + " ";
+        var datestring = (d.getMonth()+1).toString().padStart(2, '0') + "/" + 
+                 d.getDate().toString().padStart(2, '0') + "/" + 
+                 d.getFullYear() + "_" + 
+                 d.getHours().toString().padStart(2, '0') + ":" + 
+                 d.getMinutes().toString().padStart(2, '0') + " ";
     
-        socket.send(parts[0] + " testtesttest " + datestring + chat_input.value);
+        socket.send(parts[0] + " " + receivername_ + " " + datestring + chat_input.value);
         chat_input.value = "";
     }
 }
@@ -72,10 +77,3 @@ setTimeout(() => {
     socket.send(parts[0]);
 }, 500);
 
-document.getElementById("chat-input").addEventListener('keydown', function(event) {
-    if (event.key === 'Enter') {
-        console.log("test");
-        event.preventDefault(); // Prevent the default form submission
-        send(); // Call your send function
-    }
-});
