@@ -39,16 +39,25 @@ function hide_chat() {
 
     // ask the websocket all the user
     socket.send("U_N " + parts[0]);
+
     setTimeout(() => {
-        AllUser.forEach(name => {
-            if (name != parts[0]) {
+        AllUser.forEach((user, i) => {
+            if (user != parts[0] && (i)%3 === 0) {
                 const nickname_button = document.createElement("button");
                 nickname_button.className = "nickname_button";
                 nickname_button.type = "button";
                 nickname_button.onclick = () => {
-                    render_chat(name);
+                    render_chat(user);
                 };
-                nickname_button.innerHTML = name;
+                const nick_img = document.createElement("img");
+                nick_img.src = AllUser[i+2];
+                if (AllUser[i+2] === "../static/img/connected.png") {
+                    nick_img.style.height = "12px";
+                    nick_img.style.width = "12px";
+                };
+                nick_img.className = "nick_img";
+                nickname_button.innerHTML = user;
+                nickname_button.appendChild(nick_img);
                 document.getElementById("nickname_button_div").appendChild(nickname_button);
             };
         });

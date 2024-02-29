@@ -82,9 +82,24 @@ func Chat_Websocket(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 
+			// sort users by alphabetical order
+			for i := range users {
+				for j := i; j < len(users); j++ {
+					if strings.ToLower(users[i].NickName) > strings.ToLower(users[j].NickName) {
+						users[i], users[j] = users[j], users[i]
+					}
+				}
+			}
+
 			temp := "U_N "
 			for _, user := range users {
-				temp += user.NickName + " "
+				isConnected := "../static/img/disconnected.webp"
+				for _, c := range connection {
+					if c.Name == user.NickName {
+						isConnected = "../static/img/connected.png"
+					}
+				}
+				temp += user.NickName + " " + user.Pfp + " " + isConnected + " "
 			}
 
 			for _, client := range clients {

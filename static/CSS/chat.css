@@ -170,19 +170,24 @@
     cursor: pointer;
 }
 
-.header_chat {
+ .header_chat {
     height: 30px;
     font-size: 14px;
     color: #bbbfc488;
     border: none;
     outline: none;
     display: none;
-}
+ }
 
-#output {
+ #output {
     display: none;
-}
+ }
 
  .nickname_button_div {
     display: block;
  }
+
+.nick_img {
+    width: 15px;
+    height: 15px;
+}
