@@ -50,7 +50,6 @@
     position: fixed; /* Fixes the position of the container */
     left: 0; /* Positions it to the left edge */
     top: 80px;
-    width: 30%;
 }
 
 /* General container for messages */

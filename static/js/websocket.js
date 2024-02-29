@@ -70,7 +70,7 @@ setTimeout(() => {
     socket.send(parts[0]);
 }, 500);
 
-document.getElementById("msg-input").addEventListener('keydown', function(event) {
+document.getElementById("chat-input").addEventListener('keydown', function(event) {
     if (event.key === 'Enter') {
         console.log("test");
         event.preventDefault(); // Prevent the default form submission
