@@ -75,6 +75,37 @@ func Chat_Websocket(w http.ResponseWriter, r *http.Request) {
 			continue
 		}
 
+		if string(msg)[0:4] == "U_N " {
+			users, err := GetAllUsers()
+			if err != nil {
+				fmt.Println(err)
+				return
+			}
+
+			temp := "U_N "
+			for _, user := range users {
+				temp += user.NickName + " "
+			}
+
+			for _, client := range clients {
+				for _, c := range connection {
+					if string(msg)[4:] == c.Name && c.Conn == client {
+						if err = client.WriteMessage(msgType, []byte(temp)); err != nil {
+							fmt.Println(err)
+							break
+						}
+						temp = ""
+						break
+					}
+				}
+				if temp == "" {
+					break
+				}
+			}
+
+			continue
+		}
+
 		// format: sendername/receivername/date/content
 		msgData := strings.SplitAfterN(string(msg), " ", 4)
 

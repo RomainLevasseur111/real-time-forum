@@ -22,25 +22,41 @@ function render_chat(nickname) {
     header_chat.appendChild(conversation);
 
     document.querySelector('#output').innerHTML = "";
+    // ask the websocket the conversation
     socket.send("GAM " + nickname + " " + parts[0] + " _");
 
     document.querySelector('.msg-inputs').style.display = 'block';
     document.querySelector('#output').style.display = 'block';
     document.querySelector('.header_chat').style.display = 'flex';
-    var elements = document.querySelectorAll('.nickname_button');
-    elements.forEach(function(element) {
-        element.style.display = 'none';
-    });
+    document.querySelector('.nickname_button_div').style.display = 'none';
 }
 
 function hide_chat() {
     document.querySelector('.msg-inputs').style.display = 'none';
     document.querySelector('#output').style.display = 'none';
     document.querySelector('.header_chat').style.display = 'none';
-    var elements = document.querySelectorAll('.nickname_button');
-    elements.forEach(function(element) {
-        element.style.display = 'block';
-    });
+    document.getElementById("nickname_button_div").innerHTML = "";
+
+    // ask the websocket all the user
+    socket.send("U_N " + parts[0]);
+    setTimeout(() => {
+        AllUser.forEach(name => {
+            if (name != parts[0]) {
+                const nickname_button = document.createElement("button");
+                nickname_button.className = "nickname_button";
+                nickname_button.type = "button";
+                nickname_button.onclick = () => {
+                    render_chat(name);
+                };
+                nickname_button.innerHTML = name;
+                document.getElementById("nickname_button_div").appendChild(nickname_button);
+            };
+        });
+    }, 100);
+
+    document.querySelector('.nickname_button_div').style.display = 'block';
 }
 
-hide_chat();
+setTimeout(() => {
+    hide_chat()
+}, 500);

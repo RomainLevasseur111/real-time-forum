@@ -47,11 +47,7 @@
                 <div id="IP" value="{{.IP}}"></div>
                 <div id="connectedUser" value="{{.ConnectedUser}}"></div>
 
-                {{range .Users}}
-                    {{if ne .NickName $.ConnectedUser.NickName}}
-                        <button class="nickname_button" type="button" onclick="render_chat('{{.NickName}}')">{{.NickName}}</button>
-                    {{end}}
-                {{end}}
+                <div id="nickname_button_div" class="nickname_button_div"></div>
 
                 <div id="header_chat" class="header_chat">
                 <button class="hide_chat_button" type="button" onclick="hide_chat()">

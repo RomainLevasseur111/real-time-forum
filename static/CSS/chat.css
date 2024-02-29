@@ -132,7 +132,7 @@
 }
 
 .msg-inputs {
-    display: flex;
+    display: none;
     width: 100%;
     padding: 10px;
 }
@@ -176,4 +176,13 @@
     color: #bbbfc488;
     border: none;
     outline: none;
+    display: none;
 }
+
+#output {
+    display: none;
+}
+
+ .nickname_button_div {
+    display: block;
+ }

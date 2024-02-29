@@ -4,6 +4,7 @@ let connectedUser = document
     .getAttribute("value");
 let socket;
 let receivername_;
+let AllUser = [];
 const parts = connectedUser.split(" ");
 parts[0] = parts[0].substring(1);
 
@@ -17,6 +18,9 @@ function connect() {
 
     socket.onmessage = function (event) {
         setTimeout(() => {
+        if (event.data.substring(0, 4) === "U_N ") {
+            AllUser = event.data.substring(4, event.data.length-1).split(" ");
+        } else {
         const messageDiv = document.createElement("div");
         messageDiv.className = "message";
 
@@ -44,6 +48,7 @@ function connect() {
         
         output.appendChild(messageDiv);
         output.scrollTop = output.scrollHeight;
+        }
         }, 50);
     };
 
