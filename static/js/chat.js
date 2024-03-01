@@ -35,12 +35,12 @@ function hide_chat() {
     document.querySelector('.msg-inputs').style.display = 'none';
     document.querySelector('#output').style.display = 'none';
     document.querySelector('.header_chat').style.display = 'none';
-    document.getElementById("nickname_button_div").innerHTML = "";
 
     // ask the websocket all the user
     socket.send("U_N " + parts[0]);
 
     setTimeout(() => {
+        document.getElementById("nickname_button_div").innerHTML = "";
         AllUser.forEach((user, i) => {
             if (user != parts[0] && (i)%3 === 0) {
                 const nickname_button = document.createElement("button");
@@ -49,21 +49,30 @@ function hide_chat() {
                 nickname_button.onclick = () => {
                     render_chat(user);
                 };
-                const nick_img = document.createElement("img");
-                nick_img.src = AllUser[i+2];
+                const conn_img = document.createElement("img");
+                conn_img.src = AllUser[i+2];
                 if (AllUser[i+2] === "../static/img/connected.png") {
-                    nick_img.style.height = "12px";
-                    nick_img.style.width = "12px";
+                    conn_img.style.height = "17px";
+                    conn_img.style.width = "17px";
                 };
-                nick_img.className = "nick_img";
-                nickname_button.innerHTML = user;
-                nickname_button.appendChild(nick_img);
+                conn_img.className = "conn_img";
+                const pfp_chat_img = document.createElement("img");
+                pfp_chat_img.src = AllUser[i+1];
+                pfp_chat_img.className = "pfp_chat_img"
+                nickname_button.appendChild(pfp_chat_img);
+                nickname_button.innerHTML += user;
+                nickname_button.appendChild(conn_img);
                 document.getElementById("nickname_button_div").appendChild(nickname_button);
             };
         });
     }, 100);
 
     document.querySelector('.nickname_button_div').style.display = 'block';
+    setTimeout(() => {
+        if (document.querySelector('.msg-inputs').style.display === 'none') {
+            hide_chat();
+        }
+    }, 2500);
 }
 
 setTimeout(() => {

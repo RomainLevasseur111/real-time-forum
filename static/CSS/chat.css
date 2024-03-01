@@ -187,7 +187,18 @@
     display: block;
  }
 
-.nick_img {
-    width: 15px;
-    height: 15px;
+.conn_img {
+    width: 20px;
+    height: 20px;
+}
+
+.pfp_chat_img {
+    height: 35px;
+    width: 35px;
+    border-radius: 50%;
+}
+
+.nickname_button {
+    display: flex;
+    font-size: 17px;
 }
