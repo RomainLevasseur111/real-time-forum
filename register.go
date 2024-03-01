@@ -28,6 +28,11 @@ func Registration(w http.ResponseWriter, r *http.Request) {
 	password := r.FormValue("password")
 
 	var errMsg string
+	if len(nickname) > 9 {
+		errMsg = "Nickname can't have more than 9 characters"
+		fmt.Println(errMsg)
+		return
+	}
 	errMsg = CheckName(nickname)
 	if errMsg != "" {
 		fmt.Println(errMsg)

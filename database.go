@@ -20,7 +20,7 @@ func CreateDatabase() {
 	r := `
 	CREATE TABLE IF NOT EXISTS USERS (
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
-		nickname VARCHAR(20) UNIQUE,
+		nickname VARCHAR(9) UNIQUE,
 		age INTEGER NOT NULL,
 		gender TEXT,
 		firstname VARCHAR(20),

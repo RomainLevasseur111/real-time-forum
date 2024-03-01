@@ -67,7 +67,7 @@ function hide_chat() {
         });
     }, 100);
 
-    document.querySelector('.nickname_button_div').style.display = 'block';
+    document.querySelector('.nickname_button_div').style.display = 'grid';
     setTimeout(() => {
         if (document.querySelector('.msg-inputs').style.display === 'none') {
             hide_chat();

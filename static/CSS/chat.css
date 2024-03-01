@@ -1,6 +1,6 @@
 /* Style the button that is used to open and close the collapsible content */
 .collapsible {
-    background-color: #007bff;
+    background: linear-gradient(45deg, #36393F, #2C2F33);
     color: #444;
     cursor: pointer;
     width: 60px;
@@ -13,12 +13,12 @@
 /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
 .collapsible-active,
 .collapsible:hover {
-    background-color: #266ab3;
+    background-color: #2C2F33;
 }
 
 /* Style the collapsible content. Note: hidden by default */
 .collapsible-content {
-    background-color: #36393F; /* Darker background for Discord-like appearance */
+    background: linear-gradient(45deg, #36393F, #2C2F33);
     height: calc(100vh - 80px);
     width: 0vw;
     overflow-y: scroll; /* Enable vertical scrolling */
@@ -117,8 +117,8 @@
     background-color: #40444B; /* Maintain darker background on focus */
 }
 
-#chat-send-button {
-    background-color: #7289DA; /* Discord blue */
+.send-btn {
+    background: linear-gradient(135deg, #5865F2, #9579F6); /* Gradient background */
     color: white;
     border: none;
     padding: 10px 15px;
@@ -127,7 +127,7 @@
     margin-left: 10px;
 }
 
-#chat-send-button:hover {
+.send-btn:hover {
     background-color: #5865F2; /* Darker blue on hover */
 }
 
@@ -184,8 +184,13 @@
  }
 
  .nickname_button_div {
-    display: block;
- }
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Auto-fill the grid with buttons that have a minimum width of 200px */
+    gap: 10px; /* Add some gap between the buttons */
+    padding: 20px; /* Add padding inside the container */
+    background-color: #2C2F33; /* Dark background to mimic Discord's interface */
+    border-radius: 5px; /* Slight border-radius for a softer look */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+}
 
 .conn_img {
     width: 20px;
@@ -200,5 +205,31 @@
 
 .nickname_button {
     display: flex;
+    align-items: center; /* Align items vertically in the center */
+    justify-content: space-between; /* Space out the content */
     font-size: 17px;
+    padding: 10px 15px; /* Add padding for better spacing */
+    background: linear-gradient(135deg, #5865F2, #9579F6); /* Gradient background */
+    color: #FFFFFF; /* Text color */
+    border: none; /* Remove default border */
+    border-radius: 20px; /* Rounded corners */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    cursor: pointer; /* Cursor changes to pointer on hover */
+    transition: all 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.nickname_button:hover {
+    background: linear-gradient(135deg, #6B73FF, #9579F6); /* Slightly change gradient on hover */
+    transform: translateY(-2px); /* Move button up on hover */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2); /* Increase shadow on hover */
+}
+
+.nickname_button:active {
+    transform: translateY(0); /* Keep button in place on click */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Revert shadow on click */
+}
+
+
+.conn_img, .pfp_chat_img {
+    margin-left: 10px; /* Space out images from the text */
 }
