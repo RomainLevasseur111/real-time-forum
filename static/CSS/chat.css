@@ -67,7 +67,7 @@
 }
 
 
-.senderName_msg, .content_msg {
+.content_msg {
     color: #DCDDDE; /* Light text color */
 }
 
@@ -76,6 +76,7 @@
     font-size: 14px;
     font-weight: bold;
     margin-right: 5px;
+    color: #9579F6;
     
 }
 
@@ -165,7 +166,7 @@
 }
 
 .hide_chat_button {
-    background-color: #36393F;
+    background: linear-gradient(45deg, #36393F, #2F3136);
     border: none;
     cursor: pointer;
 }

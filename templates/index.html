@@ -111,12 +111,14 @@
                 {{range .Posts}}
                 <div class="rangepost">
                     <!--<a href="/user/{{.Userid}}">-->
+                    <div class="postuserinfo">
                     <img
                         class="pfp"
                         src="{{.Userpfp}}"
                         alt="{{.Username}}'s profile picture"
                     />
                     <span class="userid">{{.Username}}</span>
+                    </div>
                     <!--</a>-->
                     <div class="category">{{.Category}} {{.CategoryB}}</div>
                     <!--<a href="/post/{{.Postid}}">-->
