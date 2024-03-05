@@ -6,9 +6,9 @@
 }
 
 .form-section {
-    background-color: #fff;
+    background: linear-gradient(to bottom, #36393F 0%, #2F3136 100%);;
     padding: 20px;
-    border-radius: 5px;
+    border-radius: 5%;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     width: 400px;
 }
@@ -23,33 +23,61 @@
     padding: 10px;
     margin-bottom: 10px;
     border-radius: 3px;
-    border: 1px solid #ddd;
+    background: linear-gradient(to bottom, #36393F 0%, #2F3136 100%);;
+    border: 1px solid #9579F6;
+    color: #e5ebf388;
 }
-.form-section select,
+.form-section select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
 .form-section button {
     width: 100%;
     padding: 10px;
     margin-bottom: 10px;
-    border-radius: 3px;
-    border: 1px solid #ddd;
-}
-
-.form-section button {
-    background-color: #007bff;
-    color: white;
-    cursor: pointer;
+    background: linear-gradient(135deg, #5865F2, #9579F6); /* Gradient background */
+    color: #FFFFFF; /* Text color */
+    border: none; /* Remove default border */
+    border-radius: 20px; /* Rounded corners */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    cursor: pointer; /* Cursor changes to pointer on hover */
+    transition: all 0.3s ease; /* Smooth transition for hover effect */
 }
 
 .form-section button:hover {
-    background-color: #0056b3;
+    background: linear-gradient(135deg, #6B73FF, #9579F6); /* Slightly change gradient on hover */
+    transform: translateY(-2px); /* Move button up on hover */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2); /* Increase shadow on hover */
+}
+
+.form-section button:active {
+    transform: translateY(0); /* Keep button in place on click */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Revert shadow on click */
 }
 
 .form-section select {
     padding: 10px;
-    background-color: #fff;
-    border: 1px solid #ddd;
+    background: linear-gradient(to bottom, #36393F 0%, #2F3136 100%);;
+    border: 1px solid #9579F6;
+    color: #bbbfc488;
 }
 
 #logerror {
-    color: red;
+    color: #9579F6;
+}
+
+.login_txt {
+    color: #9579F6;
+}
+
+.input_type_number { 
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+.input_type_number::-webkit-inner-spin-button,
+.input_type_number::-webkit-outer-spin-button { 
+      -webkit-appearance: none; 
 }
