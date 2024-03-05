@@ -22,15 +22,32 @@
     width: 95%;
     padding: 10px;
     margin-bottom: 10px;
-    border-radius: 3px;
-    background: linear-gradient(to bottom, #36393F 0%, #2F3136 100%);;
+    background: linear-gradient(to bottom, #36393F 0%, #2F3136 100%);
     border: 1px solid #9579F6;
     color: #e5ebf388;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
+
+.form-section input:hover,
+.form-section input:focus {
+    border-color: #555;
+    box-shadow: 0 0 10px rgba(85, 121, 246, 0.5);
+}
+
 .form-section select {
     width: 100%;
     padding: 10px;
     margin-bottom: 10px;
+    background: linear-gradient(to bottom, #36393F 0%, #2F3136 100%);
+    border: 1px solid #9579F6;
+    color: #bbbfc488;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-section select:hover,
+.form-section select:focus {
+    border-color: #555;
+    box-shadow: 0 0 10px rgba(85, 121, 246, 0.5);
 }
 
 .form-section button {
@@ -55,13 +72,6 @@
 .form-section button:active {
     transform: translateY(0); /* Keep button in place on click */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Revert shadow on click */
-}
-
-.form-section select {
-    padding: 10px;
-    background: linear-gradient(to bottom, #36393F 0%, #2F3136 100%);;
-    border: 1px solid #9579F6;
-    color: #bbbfc488;
 }
 
 #logerror {
