@@ -71,13 +71,3 @@
 .login_txt {
     color: #9579F6;
 }
-
-.input_type_number { 
-    -moz-appearance: textfield;
-    appearance: textfield;
-}
-
-.input_type_number::-webkit-inner-spin-button,
-.input_type_number::-webkit-outer-spin-button { 
-      -webkit-appearance: none; 
-}
