@@ -20,8 +20,6 @@
     margin-bottom: 20px;
 }
 
-<<<<<<< HEAD
-=======
 .pfp {
     width: 50px;
     height: 50px;
@@ -29,7 +27,6 @@
     margin-right: 10px;
 }
 
->>>>>>> simon
 h4 {
     margin: 0;
     color: #9579F6;
@@ -147,16 +144,6 @@ button[type="submit"]:active {
     text-decoration: none;
 }
 
-<<<<<<< HEAD
-.pfp {
-    width: 50px;
-    height: 50px;
-    object-fit: cover;
-    border-radius: 50%;
-}
-
-=======
->>>>>>> simon
 .userid {
     color: #9579F6;
     font-family: "Bitter", serif;
@@ -205,4 +192,36 @@ button[type="submit"]:active {
     width: 20px;
     height: 20px;
     margin-right: 5px;
+}
+.form-section input {
+    left: 5%;
+    width: 95%;
+    padding: 10px;
+    margin-bottom: 10px;
+    background: linear-gradient(to bottom, #36393F 0%, #2F3136 100%);
+    border: 1px solid #9579F6;
+    color: #e5ebf388;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-section input:hover,
+.form-section input:focus {
+    border-color: #555;
+    box-shadow: 0 0 10px rgba(85, 121, 246, 0.5);
+}
+
+.form-section select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    background: linear-gradient(to bottom, #36393F 0%, #2F3136 100%);
+    border: 1px solid #9579F6;
+    color: #bbbfc488;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-section select:hover,
+.form-section select:focus {
+    border-color: #555;
+    box-shadow: 0 0 10px rgba(85, 121, 246, 0.5);
 }
