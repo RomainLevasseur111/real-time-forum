@@ -8,7 +8,7 @@
     max-width: 600px;
     margin: 0 auto;
     padding: 20px;
-    background: #fff;
+    background: linear-gradient(to bottom, #36393F 0%, #2F3136 100%); /* Gradient for softer look */
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     font-family: "Bitter", serif;
@@ -17,13 +17,22 @@
 /* Profile Picture and User Info */
 .postuserinfo {
     display: flex;
-    align-items: center;
     margin-bottom: 20px;
 }
 
+<<<<<<< HEAD
+=======
+.pfp {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+>>>>>>> simon
 h4 {
     margin: 0;
-    color: #2a88ad;
+    color: #9579F6;
 }
 
 /* Post Section */
@@ -35,39 +44,43 @@ h4 {
     display: block;
     margin-bottom: 5px;
     font-size: 14px;
-    color: #888;
+    color: #bbbfc488;
 }
 
 /* Inputs and Textarea */
 .postarea {
     width: 96%;
     padding: 10px;
-    border: 1px solid #ddd;
+    background: linear-gradient(to bottom, #36393F 0%, #2F3136 100%); /* Gradient for softer look */
     border-radius: 5px;
     font-size: 14px;
     margin-bottom: 15px;
+    color: #e5ebf388;
 }
 #cat1 {
     justify-content: center;
     width: 45%;
     padding: 10px;
-    border: 1px solid #ddd;
+    border: 1px solid #9579F6;
     border-radius: 5px;
     font-size: 14px;
     margin-bottom: 15px;
+    background: linear-gradient(to bottom, #36393F 0%, #2F3136 100%); /* Gradient for softer look */
 }
 #cat2 {
     justify-content: center;
     width: 45%;
     padding: 10px;
     padding-left: 20px;
-    border: 1px solid #ddd;
+    border: 1px solid #9579F6;
     border-radius: 5px;
     font-size: 14px;
     margin-bottom: 15px;
+    background: linear-gradient(to bottom, #36393F 0%, #2F3136 100%); /* Gradient for softer look */
 }
 textarea {
     resize: none;
+    border: 1px solid #9579F6;
     height: 150px;
 }
 
@@ -75,7 +88,7 @@ textarea {
 datalist {
     padding: 5px;
     border-radius: 5px;
-    border: 1px solid #ddd;
+    border: 1px solid #9579F6;
 }
 
 /* Error Box */
@@ -86,19 +99,29 @@ datalist {
 
 /* Submit Button */
 button[type="submit"] {
-    background: #2a88ad;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
     padding: 10px 20px;
     font-size: 16px;
-    cursor: pointer;
-    transition: background 0.3s ease;
+    background: linear-gradient(135deg, #5865F2, #9579F6); /* Gradient background */
+    color: #FFFFFF; /* Text color */
+    border: none; /* Remove default border */
+    border-radius: 20px; /* Rounded corners */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    cursor: pointer; /* Cursor changes to pointer on hover */
+    transition: all 0.3s ease; /* Smooth transition for hover effect */
 }
 
 button[type="submit"]:hover {
-    background: #2a6881;
+    background: linear-gradient(135deg, #6B73FF, #9579F6); /* Slightly change gradient on hover */
+    transform: translateY(+2px); /* Move button up on hover */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2); /* Increase shadow on hover */
 }
+
+button[type="submit"]:active {
+    transform: translateY(0); /* Keep button in place on click */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Revert shadow on click */
+}
+
+
 /* General Post Container */
 .allposts {
     display: grid;
@@ -109,7 +132,7 @@ button[type="submit"]:hover {
 
 /* Individual Post Card */
 .rangepost {
-    background: #fff;
+    background: linear-gradient(to bottom, #36393F 0%, #2F3136 100%); /* Gradient for softer look */
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     overflow: hidden;
@@ -124,6 +147,7 @@ button[type="submit"]:hover {
     text-decoration: none;
 }
 
+<<<<<<< HEAD
 .pfp {
     width: 50px;
     height: 50px;
@@ -131,8 +155,11 @@ button[type="submit"]:hover {
     border-radius: 50%;
 }
 
+=======
+>>>>>>> simon
 .userid {
-    color: #333;
+    color: #9579F6;
+    font-family: "Bitter", serif;
 }
 
 /* Content and Category */
@@ -144,7 +171,7 @@ button[type="submit"]:hover {
 
 .content {
     font-size: 16px;
-    color: #333;
+    color: #DCDDDE;
     margin-bottom: 20px;
 }
 
@@ -157,11 +184,10 @@ button[type="submit"]:hover {
 }
 
 .stats button {
-    background: none;
     border: none;
     cursor: pointer;
     font-size: 14px;
-    color: #888;
+    color: #FFFFFF;
 }
 
 .stats button:hover {
@@ -172,7 +198,7 @@ button[type="submit"]:hover {
 .children.comments {
     display: flex;
     align-items: center;
-    color: #888;
+    color: #FFFFFF;
 }
 
 .children.comments svg {

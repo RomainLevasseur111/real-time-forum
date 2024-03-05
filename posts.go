@@ -13,7 +13,6 @@ func Publish(writer http.ResponseWriter, request *http.Request) {
 		return
 	}
 
-
 	cookie, err := request.Cookie("sessionID")
 	if err != nil {
 		fmt.Println(err)
@@ -52,10 +51,10 @@ func Publish(writer http.ResponseWriter, request *http.Request) {
 		categories = append(categories, nil)
 	}
 
-	//ajouter publication de commentaires : il faut recup l'id du post initial
+	// ajouter publication de commentaires : il faut recup l'id du post initial
 	_, err = db.Exec(`INSERT INTO "POSTS" ("userid","username", "category", "categoryB","userpfp", "content", "postdate") VALUES (?, ?, ?, ?, ?, ?, ?);`,
 		user.Id,
-		//toInput,
+		// toInput,
 		user.NickName,
 		categories[0],
 		categories[1],
@@ -86,7 +85,7 @@ func Publish(writer http.ResponseWriter, request *http.Request) {
 	http.Redirect(writer, request, "/", http.StatusMovedPermanently)
 }
 
-func getAllPosts() (posts []POST, err error) {
+func GetAllPosts() (posts []POST, err error) {
 	db, err := sql.Open(DRIVER, DB)
 	if err != nil {
 		return nil, err
@@ -124,6 +123,7 @@ func getAllPosts() (posts []POST, err error) {
 
 	return posts, nil
 }
+
 func GetStats(postid int) (likes int, dislikes int, comments int, err error) {
 	db, err := sql.Open(DRIVER, DB)
 	if err != nil {

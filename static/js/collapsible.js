@@ -8,7 +8,7 @@ for (i = 0; i < coll.length; i++) {
     if (content.style.width){
       content.style.width = null;
     } else {
-      content.style.width = "50vw";
+      content.style.width = "29vw";
     }
   });
 }

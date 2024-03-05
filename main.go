@@ -18,7 +18,7 @@ func main() {
 	http.HandleFunc("/register", Registration)
 	http.HandleFunc("/login", Login)
 	http.HandleFunc("/logout", Logout)
-	http.HandleFunc("/echo", Websocket)
+	http.HandleFunc("/echo", Chat_Websocket)
 	http.HandleFunc("/publish", Publish)
 	http.HandleFunc("/useraction", userAction)
 

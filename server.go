@@ -13,7 +13,6 @@ func Server(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-
 	cookie, err := r.Cookie("sessionID")
 	data := map[string]interface{}{
 		"IP": IP,
@@ -35,18 +34,26 @@ func Server(w http.ResponseWriter, r *http.Request) {
 		}
 		return
 	}
-	posts, err := getAllPosts()
+
+	posts, err := GetAllPosts()
 	if err != nil {
 		fmt.Println(err)
+		Error(w, http.StatusInternalServerError)
+		return
 	}
+
+	users, err := GetAllUsers()
+	if err != nil {
+		fmt.Println(err)
+		Error(w, http.StatusInternalServerError)
+		return
+	}
+
 	var connectedUser *USER
 
-	
-	fmt.Println(err)
 	if cookie != nil {
 		connectedUser, _ = checkCookie(cookie)
 	}
-
 
 	// log the homepage
 	db, err := sql.Open(DRIVER, DB)
@@ -60,6 +67,7 @@ func Server(w http.ResponseWriter, r *http.Request) {
 	data["ConnectedUser"] = connectedUser
 	data["Posts"] = posts
 	data["Categories"] = GetCategories()
+	data["Users"] = users
 
 	tmpl, err := template.ParseFiles("./templates/index.html")
 	if err != nil {
@@ -74,5 +82,4 @@ func Server(w http.ResponseWriter, r *http.Request) {
 		Error(w, http.StatusInternalServerError)
 		return
 	}
-
 }

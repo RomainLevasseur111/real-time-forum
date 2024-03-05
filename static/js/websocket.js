@@ -3,6 +3,8 @@ let connectedUser = document
     .getElementById("connectedUser")
     .getAttribute("value");
 let socket;
+let receivername_;
+let AllUser = [];
 const parts = connectedUser.split(" ");
 parts[0] = parts[0].substring(1);
 
@@ -15,32 +17,39 @@ function connect() {
     };
 
     socket.onmessage = function (event) {
+        setTimeout(() => {
+        if (event.data.substring(0, 4) === "U_N ") {
+            AllUser = event.data.substring(4, event.data.length-1).split(" ");
+        } else {
         const messageDiv = document.createElement("div");
         messageDiv.className = "message";
 
-        let msgData = event.data.split(" "); 
-
         const senderName_msg = document.createElement("div");
         senderName_msg.className = "senderName_msg";
-        senderName_msg.innerHTML = msgData[0];
+        senderName_msg.innerHTML = event.data.split(" ")[0];
         messageDiv.appendChild(senderName_msg);
 
-        const date_msg = document.createElement("div");
-        date_msg.className = "date_msg";
-        date_msg.innerHTML = msgData[2];
-        messageDiv.appendChild(date_msg);
-
-        const pfp_msg = document.createElement("div");
+        const pfp_msg = document.createElement("img");
         pfp_msg.className = "pfp_msg";
-        pfp_msg.innerHTML = msgData[3];
+        pfp_msg.src = event.data.split(" ")[4];
         messageDiv.appendChild(pfp_msg);
+
+        let temp = event.data.split(" ").slice(5).join(" ").slice(0, -1);
 
         const content_msg = document.createElement("div");
         content_msg.className = "content_msg";
-        content_msg.innerHTML = msgData[4];
+        content_msg.innerHTML = temp;
         messageDiv.appendChild(content_msg);
+
+        const date_msg = document.createElement("div");
+        date_msg.className = "date_msg";
+        date_msg.innerHTML = event.data.split(" ")[2].split("_").join("<br>");
+        messageDiv.appendChild(date_msg);
         
         output.appendChild(messageDiv);
+        output.scrollTop = output.scrollHeight;
+        }
+        }, 50);
     };
 
     socket.onclose = function(event) {
@@ -55,11 +64,21 @@ function connect() {
 function send() {
     var chat_input = document.getElementById("chat-input");
 
-    var d = new Date();
-    var datestring = (d.getMonth()+1) + "/" + d.getDate() + "/" + d.getFullYear() + "_" + d.getHours() + ":" + d.getMinutes() + " ";
-
-    socket.send(parts[0] + " receiverNameHere " + datestring + chat_input.value);
-    chat_input.value = "";
+    if (chat_input.value != "") {
+        var d = new Date();
+        var datestring = (d.getMonth()+1).toString().padStart(2, '0') + "/" + 
+                 d.getDate().toString().padStart(2, '0') + "/" + 
+                 d.getFullYear() + "_" + 
+                 d.getHours().toString().padStart(2, '0') + ":" + 
+                 d.getMinutes().toString().padStart(2, '0') + " ";
+    
+        socket.send(parts[0] + " " + receivername_ + " " + datestring + chat_input.value);
+        chat_input.value = "";
+    }
 }
 
 connect();
+setTimeout(() => {
+    socket.send(parts[0]);
+}, 500);
+
