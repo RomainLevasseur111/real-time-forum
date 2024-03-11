@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"net/http"
+	"strconv"
 	"strings"
 )
 
@@ -14,6 +15,8 @@ func Chat_Websocket(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	defer conn.Close()
+
+	displayed := false
 
 	clients = append(clients, conn)
 
@@ -34,7 +37,7 @@ func Chat_Websocket(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 	}()
-
+	
 	send := func(msgData []string, pfp string, msgType int) {
 		temp := msgData[0] + " " + msgData[2] + " " + pfp + " " + msgData[3] + " "
 
@@ -56,13 +59,36 @@ func Chat_Websocket(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+	displayPost := func(pfp, nickname , category, categoryB, content string, msgType int){
+		temp := "PUBLISH_ " + pfp + " " + nickname+ " " +category+ " " +categoryB+ " " +content
+		for _, client := range clients{
+			if err = client.WriteMessage(msgType, []byte(temp)); err!=nil{
+				fmt.Println(err)
+				break
+			}
+		}
+	}
 	for {
 		msgType, msg, err := conn.ReadMessage()
 		if err != nil {
 			fmt.Println(err)
 			break
 		}
+		fmt.Println(string(msg))
+		if string(msg[0:8]) == "PUBLISH_"{
+			msgData := strings.SplitN(string(msg), " ", 5)
+			fmt.Println(msgData)
+			Publish(msgData[1], msgData[2], msgData[3], msgData[4])
+			user, err := GetOneUser(msgData[1])
+			if err != nil {
+				fmt.Println(err)
+				break
+			}
+			displayPost(user.Pfp, user.NickName, msgData[2], msgData[3], msgData[4], msgType)
+			
+		}else{
 
+		
 		if !strings.Contains(string(msg), " ") {
 
 			var conn_ CONNECTIONS
@@ -80,6 +106,22 @@ func Chat_Websocket(w http.ResponseWriter, r *http.Request) {
 			if err != nil {
 				fmt.Println(err)
 				return
+			}
+			if !displayed{
+				posts,err := GetAllPosts()
+				if err != nil{
+					fmt.Println(err)
+					return
+				}
+				for _,post := range posts{
+					user, err := GetOneUser(strconv.Itoa(post.Userid))
+					if err != nil{
+						fmt.Println(err)
+						return
+					}
+					displayPost(user.Pfp, user.NickName, post.Category, post.CategoryB, post.Content, msgType)
+				}
+				displayed = true
 			}
 
 			// sort users by alphabetical order
@@ -181,6 +223,7 @@ func Chat_Websocket(w http.ResponseWriter, r *http.Request) {
 		}
 
 		send(msgData, pfp, msgType)
+	}
 
 	}
 }

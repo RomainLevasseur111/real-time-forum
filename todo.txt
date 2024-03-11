@@ -1,28 +1,41 @@
-Session
+Comment Page
 
-Creation of posts and comments
-    Create posts
-        Posts will have categories as in the first forum
-    Create comments on the posts
-    See posts in a feed display
-        See comments only if they click on a post
+    Design the Comment Interface: Plan the layout for displaying comments. This includes deciding on the placement of comment threads, reply forms, and any other interactive elements.
 
+    Implement Comment Thread Display:
+        Fetch and display comments in a threaded format.
+        Comment: Consider implementing a collapsible comment section for long threads to improve readability.
 
-Private Messages
-    Section to show who is online/offline and able to talk to:
-        This section must be organized by the last message sent (just like discord). If the user is new and does not present messages you must organize it in alphabetic order.
-        The user must be able to send private messages to the users who are online.
-        This section must be visible at all times.
+    Implement Reply Form:
+        Provide a form for users to submit replies to comments.
+        Comment: Ensure to include a character limit and a preview feature.
 
-    Section that when clicked on the user that you want to send a message, reloads the past messages. Chats between users must:
-        Be visible, for this you will have to be able to see the previous messages that you had with the user
-        Reload the last 10 messages and when scrolled up to see more messages you must provide the user with 10 more, without spamming the scroll event. Do not forget what you learned!! (Throttle, Debounce)
+    Implement Comment Moderation Tools:
+        Allow moderators to flag, edit, or delete comments.
+        Comment: Implement a confirmation dialog for actions like deletion to prevent accidental clicks.
+        Comment Functionality
 
-    Messages must have a specific format:
-        A date that shows when the message was sent
-        The user name, that identifies the user that sent the message
-If a user sends a message, the other user should receive the notification of the new message without refreshing the page
+    Implement Comment Submission:
+        Create a form for users to submit new comments.
+        Comment: Validate input to prevent spam and ensure data integrity.
 
+    Implement Comment Editing:
+        Allow users to edit their comments within a certain timeframe.
+        Comment: Implement a locking mechanism to prevent simultaneous edits.
 
-Define DB
+    Implement Comment Deletion:
+        Provide an option for users to delete their comments.
+        Comment: Consider adding a confirmation dialog to prevent accidental deletions.
 
+    Implement Comment Likes and Reactions:
+        Allow users to like or react to comments.
+        Comment: Ensure to update the UI in real-time to reflect the number of likes and reactions.
+
+General Comments
+
+    Security: Ensure all user inputs are sanitized to prevent XSS attacks.
+    Performance: Optimize data fetching and rendering to provide a smooth user experience.
+    Accessibility: Make sure the UI is accessible to all users, including those with disabilities.
+    Responsiveness: Ensure the design is responsive and works well on various devices and screen sizes.
+
+    et ossi le skrol poure afiché 10 maissage part 10

@@ -50,16 +50,30 @@
                 <div id="nickname_button_div" class="nickname_button_div"></div>
 
                 <div id="header_chat" class="header_chat">
-                <button class="hide_chat_button" type="button" onclick="hide_chat()">
-                    <img class="hide_chat_img" src="../static/img/go_back.png">
-                </button>
+                    <button
+                        class="hide_chat_button"
+                        type="button"
+                        onclick="hide_chat()"
+                    >
+                        <img
+                            class="hide_chat_img"
+                            src="../static/img/go_back.png"
+                        />
+                    </button>
                 </div>
 
                 <div id="output"></div>
 
                 <div class="msg-inputs">
-                    <input class="msg-input" type="text" placeholder="Message" id="chat-input" />
-                    <button class="send-btn" type="button" onclick="send()">Send</button>
+                    <input
+                        class="msg-input"
+                        type="text"
+                        placeholder="Message"
+                        id="chat-input"
+                    />
+                    <button class="send-btn" type="button" onclick="send()">
+                        Send
+                    </button>
                 </div>
 
                 <script src="../static/js/websocket.js"></script>
@@ -70,94 +84,44 @@
         <!-- Home page content-->
 
         <div id="homepage">
-            <form action="/publish" method="post" class="posting">
-                <div class="postuserinfo">
-                    <img
-                        class="pfp"
-                        src="{{.ConnectedUser.Pfp}}"
-                        alt="{{.ConnectedUser.NickName}}'s profile picture"
-                    />
-                    <h4>{{.ConnectedUser.NickName}}</h4>
-                </div>
-                <section class="postsection">
-                    <label for="postarea">NEW POST</label>
-                    <label for="category">Category</label>
-                    <input type="text" name="category1" list="cat" id="cat1" />
-                    <datalist id="cat">
-                        {{range .Categories}}
-                        <option>{{.Name}}</option>
-                        {{end}}
-                    </datalist>
-                    <input type="text" name="category2" list="cat" id="cat2" />
-                    <datalist id="cat">
-                        {{range .Categories}}
-                        <option>{{.Name}}</option>
-                        {{end}}
-                    </datalist>
-
-                    <textarea
-                        name="content"
-                        class="postarea"
-                        placeholder="Publish a post"
-                        required
-                    ></textarea>
-                    <div class="errorBox">
-                        <span>{{.PostError}} </span>
-                    </div>
-                    <button type="submit">Post</button>
-                </section>
-            </form>
-            <div class="allposts">
-                {{range .Posts}}
-                <div class="rangepost">
-                    <!--<a href="/user/{{.Userid}}">-->
-                    <div class="postuserinfo">
-                    <img
-                        class="pfp"
-                        src="{{.Userpfp}}"
-                        alt="{{.Username}}'s profile picture"
-                    />
-                    <span class="userid">{{.Username}}</span>
-                    </div>
-                    <!--</a>-->
-                    <div class="category">{{.Category}} {{.CategoryB}}</div>
-                    <!--<a href="/post/{{.Postid}}">-->
-                    <p class="content">{{.Content}}</p>
-                    <!--</a>-->
-                    <div class="stats">
-                        <form action="/useraction" method="post">
-                            <input
-                                type="hidden"
-                                name="postid"
-                                value="{{.Postid}}"
-                            />
-                            <button name="action" type="submit" value="like">
-                                Like
-                            </button>
-                            {{.Likes}}
-                            <button name="action" type="submit" value="dislike">
-                                Dislike
-                            </button>
-                            {{.Dislikes}}
-                        </form>
-                        <div class="children comments">
-                            <!-- <a href="/post/{{.Postid}}">-->
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    d="M5.45455 15L1 18.5V3C1 2.44772 1.44772 2 2 2H17C17.5523 2 18 2.44772 18 3V15H5.45455ZM4.76282 13H16V4H3V14.3851L4.76282 13ZM8 17H18.2372L20 18.3851V8H21C21.5523 8 22 8.44772 22 9V22.5L17.5455 19H9C8.44772 19 8 18.5523 8 18V17Z"
-                                    fill="#fff"
-                                ></path>
-                            </svg>
-                            <!--</a>-->
-                            <span> {{.Comments}} </span>
-                        </div>
-                    </div>
-                </div>
-                {{end}}
+            <div class="postuserinfo">
+                <div id="userid" value="{{.ConnectedUser.Id}}"></div>
+                <img
+                    class="pfp"
+                    src="{{.ConnectedUser.Pfp}}"
+                    alt="{{.ConnectedUser.NickName}}'s profile picture"
+                />
+                <h4>{{.ConnectedUser.NickName}}</h4>
             </div>
+            <section class="postsection">
+                <label for="postarea">NEW POST</label>
+                <label for="category">Category</label>
+                <input type="text" name="category1" list="cat" id="cat1" />
+                <!-- <datalist id="cat">
+                    {{range .Categories}}
+                    <option>{{.Name}}</option>
+                    {{end}}
+                </datalist>-->
+                <input type="text" name="category2" list="cat" id="cat2" />
+                <!--<datalist id="cat">
+                    {{range .Categories}}
+                    <option>{{.Name}}</option>
+                    {{end}}
+                </datalist>-->
+
+                <textarea
+                    id="postcontent"
+                    name="content"
+                    class="postarea"
+                    placeholder="Publish a post"
+                    required
+                ></textarea>
+                <div class="errorBox">
+                    <span>{{.PostError}} </span>
+                </div>
+                <button class="button_post_yes" type="button" onclick="publish()">Post</button>
+            </section>
+            <div id="allposts"></div>
         </div>
 
         <!-- Post page content-->

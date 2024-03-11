@@ -190,3 +190,22 @@ func userAction(writer http.ResponseWriter, request *http.Request) {
 		http.Redirect(writer, request, "/", http.StatusMovedPermanently)
 	}
 }
+func GetOneUser(id string) (*USER, error) {
+	db, err := sql.Open(DRIVER, DB)
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
+	var lol USER
+	sts := `SELECT nickname, pfp FROM USERS WHERE id = ?`
+	row := db.QueryRow(sts, id)
+	err = row.Scan(
+		&lol.NickName,
+		&lol.Pfp,
+)
+	if err != nil {
+		return nil, err
+	}
+
+	return &lol, err
+}
