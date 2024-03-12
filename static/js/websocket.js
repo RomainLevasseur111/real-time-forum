@@ -154,6 +154,11 @@ function publish() {
     socket.send(
         "PUBLISH_" + " " + userId + " " + cat1 + " " + cat2 + " " + postcontent
     );
+
+    // Clear the input fields
+    document.getElementById("cat1").value = "";
+    document.getElementById("cat2").value = "";
+    document.getElementById("postcontent").value = "";
 }
 
 connect();

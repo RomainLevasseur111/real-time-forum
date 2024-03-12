@@ -160,7 +160,8 @@ button[type="submit"]:active {
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    padding: 20px;
+    padding: 10px;
+    margin-bottom: 15px;
 }
 
 /* Profile Picture and User Info */
@@ -239,8 +240,6 @@ button[type="submit"]:active {
 
 .form-section select {
     width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
     background: linear-gradient(to bottom, #36393f 0%, #2f3136 100%);
     border: 1px solid #9579f6;
     color: #bbbfc488;
@@ -265,6 +264,9 @@ button[type="submit"]:active {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
     cursor: pointer; /* Cursor changes to pointer on hover */
     transition: all 0.3s ease; /* Smooth transition for hover effect */
+    margin-bottom: 15px;
+    height: 36px;
+    width: 61px;
 }
 
 .button_post_yes:hover {
