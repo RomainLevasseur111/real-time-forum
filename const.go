@@ -29,7 +29,7 @@ type USER struct { // user structure
 }
 type POST struct { // post structure
 	Postdate, Content                         string
-	Category, CategoryB                       string
+	Category, CategoryB                       *string
 	Userid, Postid, Likes, Comments, Dislikes int
 }
 type CATEGORY struct { // Category structure

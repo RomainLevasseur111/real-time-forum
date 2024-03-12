@@ -17,4 +17,4 @@ This part is pretty similar to the first forum. Users must be able to:
         See comments only if they click on a post
 
 
-No refresh in the webpage (error page, login page)
+No refresh in the webpage (error page)

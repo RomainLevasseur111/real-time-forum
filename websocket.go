@@ -59,8 +59,15 @@ func Chat_Websocket(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	displayPost := func(pfp, nickname, category, categoryB, content string, msgType int) {
-		temp := "PUBLISH_ " + pfp + " " + nickname + " " + category + " " + categoryB + " " + content
+	displayPost := func(pfp, nickname, content string, category, categoryB *string, msgType int) {
+		var cat1, cat2 string
+		if category != nil {
+			cat1 = *category
+		}
+		if categoryB != nil {
+			cat2 = *categoryB
+		}
+		temp := "PUBLISH_ " + pfp + " " + nickname + " " + cat1 + " " + cat2 + " " + content
 		for _, client := range clients {
 			if err = client.WriteMessage(msgType, []byte(temp)); err != nil {
 				fmt.Println(err)
@@ -82,7 +89,7 @@ func Chat_Websocket(w http.ResponseWriter, r *http.Request) {
 				fmt.Println(err)
 				break
 			}
-			displayPost(user.Pfp, user.NickName, msgData[2], msgData[3], msgData[4], msgType)
+			displayPost(user.Pfp, user.NickName, msgData[2], &msgData[3], &msgData[4], msgType)
 
 		} else {
 
@@ -116,7 +123,7 @@ func Chat_Websocket(w http.ResponseWriter, r *http.Request) {
 							fmt.Println(err)
 							return
 						}
-						displayPost(user.Pfp, user.NickName, post.Category, post.CategoryB, post.Content, msgType)
+						displayPost(user.Pfp, user.NickName, post.Content, post.Category, post.CategoryB, msgType)
 					}
 					displayed = true
 				}
