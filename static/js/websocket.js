@@ -78,7 +78,7 @@ function connect() {
                     // Append the post container to the main container
                     allPostsDiv.prepend(postDiv);
 
-                }
+                } else {
 
                 // Chat
                 const messageDiv = document.createElement("div");
@@ -115,6 +115,7 @@ function connect() {
 
                 output.appendChild(messageDiv);
                 output.scrollTop = output.scrollHeight;
+                }
             }
         }, 50);
     };
