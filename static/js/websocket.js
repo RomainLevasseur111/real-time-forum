@@ -56,7 +56,13 @@ function connect() {
                     // Create the category div
                     const categoryDiv = document.createElement("div");
                     categoryDiv.className = "category";
-                    categoryDiv.textContent = array[3] + "      " + array[4];
+                    if (array[3] === "_&nbsp_") {
+                        array[3] = "";
+                    }
+                    if (array[4] === "_&nbsp_") {
+                        array[4] = "";
+                    }
+                    categoryDiv.textContent = array[3] + " " + array[4];
                     postDiv.appendChild(categoryDiv);
 
                     // Create the content paragraph
@@ -148,8 +154,8 @@ function send() {
 
 function publish() {
     userId = document.getElementById("userid").getAttribute("value");
-    cat1 = document.getElementById("cat1").value;
-    cat2 = document.getElementById("cat2").value;
+    cat1 = document.getElementById("cat1").value.replaceAll(/ /g, "_");
+    cat2 = document.getElementById("cat2").value.replaceAll(/ /g, "_");
     postcontent = document.getElementById("postcontent").value;
     socket.send(
         "PUBLISH_" + " " + userId + " " + cat1 + " " + cat2 + " " + postcontent

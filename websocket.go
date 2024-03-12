@@ -60,7 +60,7 @@ func Chat_Websocket(w http.ResponseWriter, r *http.Request) {
 	}
 
 	displayPost := func(pfp, nickname, content string, category, categoryB *string, msgType int) {
-		var cat1, cat2 string
+		cat1, cat2 := "_&nbsp_", "_&nbsp_"
 		if category != nil {
 			cat1 = *category
 		}
@@ -89,7 +89,7 @@ func Chat_Websocket(w http.ResponseWriter, r *http.Request) {
 				fmt.Println(err)
 				break
 			}
-			displayPost(user.Pfp, user.NickName, msgData[2], &msgData[3], &msgData[4], msgType)
+			displayPost(user.Pfp, user.NickName, msgData[4], &msgData[2], &msgData[3], msgType)
 
 		} else {
 
