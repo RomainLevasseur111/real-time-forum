@@ -26,7 +26,7 @@ func GiveCookie(w http.ResponseWriter, nickname string) {
 	db, err := sql.Open(DRIVER, DB)
 	if err != nil {
 		fmt.Println(err)
-		Error(w, http.StatusInternalServerError)
+		Error(w, http.StatusInternalServerError, "")
 		return
 	}
 	defer db.Close()
@@ -38,7 +38,7 @@ func GiveCookie(w http.ResponseWriter, nickname string) {
 
 	if err != nil {
 		fmt.Println(err)
-		Error(w, http.StatusInternalServerError)
+		Error(w, http.StatusInternalServerError, "")
 		return
 	}
 
@@ -49,6 +49,7 @@ func GiveCookie(w http.ResponseWriter, nickname string) {
 		Expires: expirationDate,
 	})
 }
+
 func checkCookie(cookie *http.Cookie) (*USER, error) {
 	if cookie == nil {
 		err := errors.New("no inputed cookie")

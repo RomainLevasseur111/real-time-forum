@@ -8,7 +8,7 @@ import (
 )
 
 // log error page
-func Error(w http.ResponseWriter, statusCode int) {
+func Error(w http.ResponseWriter, statusCode int, explaination string) {
 	var msg string
 	var name string
 
@@ -23,6 +23,9 @@ func Error(w http.ResponseWriter, statusCode int) {
 	case http.StatusBadRequest:
 		name = "Bad request"
 		msg = "Request header or cookie too large"
+	case http.StatusNotAcceptable:
+		name = "Not Acceptable"
+		msg = "This request is not acceptable"
 	default:
 		name = "Internal Server Error"
 		msg = "The server encountered an internal error or misconfiguration and was unable to complete your request"
@@ -36,9 +39,10 @@ func Error(w http.ResponseWriter, statusCode int) {
 	}
 
 	errmap := map[string]string{
-		"Code": fmt.Sprint(statusCode),
-		"Name": name,
-		"Msg":  msg,
+		"Code":         fmt.Sprint(statusCode),
+		"Name":         name,
+		"Msg":          msg,
+		"Explaination": explaination,
 	}
 
 	if err := t.Execute(w, errmap); err != nil {

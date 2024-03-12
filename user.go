@@ -88,10 +88,11 @@ func GetConversation(name1, name2 string) (messages []MESSAGES, err error) {
 
 	return messages, nil
 }
+
 func userAction(writer http.ResponseWriter, request *http.Request) {
 	referer := request.Referer()
 	if request.Method != "POST" {
-		Error(writer, http.StatusInternalServerError)
+		Error(writer, http.StatusInternalServerError, "")
 		return
 	}
 	cookie, err := request.Cookie("sessionID")
@@ -102,7 +103,7 @@ func userAction(writer http.ResponseWriter, request *http.Request) {
 	user, err := checkCookie(cookie)
 	if err != nil {
 		fmt.Println(err)
-		Error(writer, http.StatusInternalServerError)
+		Error(writer, http.StatusInternalServerError, "")
 		return
 	}
 
@@ -118,7 +119,7 @@ func userAction(writer http.ResponseWriter, request *http.Request) {
 		db, err := sql.Open(DRIVER, DB)
 		if err != nil {
 			fmt.Println(err)
-			Error(writer, http.StatusInternalServerError)
+			Error(writer, http.StatusInternalServerError, "")
 			return
 		}
 
@@ -132,7 +133,7 @@ func userAction(writer http.ResponseWriter, request *http.Request) {
 				_, err = db.Exec(sql, user.Id, postid, action, user.Id)
 				if err != nil {
 					fmt.Println(err)
-					Error(writer, http.StatusInternalServerError)
+					Error(writer, http.StatusInternalServerError, "")
 					return
 				}
 			} else {
@@ -141,7 +142,7 @@ func userAction(writer http.ResponseWriter, request *http.Request) {
 				_, err = db.Exec(sql, user.Id, postid, action, user.Id)
 				if err != nil {
 					fmt.Println(err)
-					Error(writer, http.StatusInternalServerError)
+					Error(writer, http.StatusInternalServerError, "")
 					return
 				}
 			}
@@ -152,7 +153,7 @@ func userAction(writer http.ResponseWriter, request *http.Request) {
 					`, user.Id, postid, user.Id)
 					if err != nil {
 						fmt.Println(err)
-						Error(writer, http.StatusInternalServerError)
+						Error(writer, http.StatusInternalServerError, "")
 						return
 					}
 				} else {
@@ -160,7 +161,7 @@ func userAction(writer http.ResponseWriter, request *http.Request) {
 					`, user.Id, postid)
 					if err != nil {
 						fmt.Println(err)
-						Error(writer, http.StatusInternalServerError)
+						Error(writer, http.StatusInternalServerError, "")
 						return
 					}
 				}
@@ -170,7 +171,7 @@ func userAction(writer http.ResponseWriter, request *http.Request) {
 					`, action, user.Id, postid)
 					if err != nil {
 						fmt.Println(err)
-						Error(writer, http.StatusInternalServerError)
+						Error(writer, http.StatusInternalServerError, "")
 						return
 					}
 				} else {
@@ -178,7 +179,7 @@ func userAction(writer http.ResponseWriter, request *http.Request) {
 					`, action, user.Id, postid)
 					if err != nil {
 						fmt.Println(err)
-						Error(writer, http.StatusInternalServerError)
+						Error(writer, http.StatusInternalServerError, "")
 						return
 					}
 				}
@@ -190,6 +191,7 @@ func userAction(writer http.ResponseWriter, request *http.Request) {
 		http.Redirect(writer, request, "/", http.StatusMovedPermanently)
 	}
 }
+
 func GetOneUser(id string) (*USER, error) {
 	db, err := sql.Open(DRIVER, DB)
 	if err != nil {
@@ -202,7 +204,7 @@ func GetOneUser(id string) (*USER, error) {
 	err = row.Scan(
 		&lol.NickName,
 		&lol.Pfp,
-)
+	)
 	if err != nil {
 		return nil, err
 	}

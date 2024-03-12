@@ -14,7 +14,7 @@ import (
 
 func Registration(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "POST" {
-		Error(w, http.StatusMethodNotAllowed)
+		Error(w, http.StatusMethodNotAllowed, "")
 		return
 	}
 
@@ -31,28 +31,33 @@ func Registration(w http.ResponseWriter, r *http.Request) {
 	if len(nickname) > 9 {
 		errMsg = "Nickname can't have more than 9 characters"
 		fmt.Println(errMsg)
+		Error(w, http.StatusNotAcceptable, errMsg)
 		return
 	}
 	errMsg = CheckName(nickname)
 	if errMsg != "" {
 		fmt.Println(errMsg)
+		Error(w, http.StatusNotAcceptable, errMsg)
 		return
 	}
 	if !NicknameAlreadyExists(nickname) {
 		errMsg = "Nickname already exists"
 		fmt.Println(errMsg)
+		Error(w, http.StatusNotAcceptable, errMsg)
 		return
 	}
 
 	errMsg = CheckName(firstname)
 	if errMsg != "" {
 		fmt.Println(errMsg)
+		Error(w, http.StatusNotAcceptable, errMsg)
 		return
 	}
 
 	errMsg = CheckName(lastname)
 	if errMsg != "" {
 		fmt.Println(errMsg)
+		Error(w, http.StatusNotAcceptable, errMsg)
 		return
 	}
 
@@ -60,17 +65,20 @@ func Registration(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		errMsg = "Invalid age format"
 		fmt.Println(errMsg)
+		Error(w, http.StatusNotAcceptable, errMsg)
 		return
 	}
 	if ageInt < 0 {
 		errMsg = "Age can't be negative"
 		fmt.Println(errMsg)
+		Error(w, http.StatusNotAcceptable, errMsg)
 		return
 	}
 
 	if gender != "male" && gender != "female" && gender != "other" {
 		errMsg = "Invalid gender format"
 		fmt.Println(errMsg)
+		Error(w, http.StatusNotAcceptable, errMsg)
 		return
 	}
 
@@ -78,28 +86,33 @@ func Registration(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		errMsg = "Invalid email address"
 		fmt.Println(errMsg)
+		Error(w, http.StatusNotAcceptable, errMsg)
 		return
 	}
 	if !EmailAlreadyExist(email) {
 		errMsg = "Email already exists"
 		fmt.Println(errMsg)
+		Error(w, http.StatusNotAcceptable, errMsg)
 		return
 	}
 
 	if len(password) > 30 {
 		errMsg = "Password can't have more than 30 characters"
 		fmt.Println(errMsg)
+		Error(w, http.StatusNotAcceptable, errMsg)
 		return
 	}
 	if len(password) < 8 {
 		errMsg = "Password can't have less than 8 characters"
 		fmt.Println(errMsg)
+		Error(w, http.StatusNotAcceptable, errMsg)
 		return
 	}
 	psw, err := HashPassword(password)
 	if err != nil {
 		errMsg = "Error hashing your password, try another password"
 		fmt.Println(errMsg)
+		Error(w, http.StatusNotAcceptable, errMsg)
 		return
 	}
 
@@ -108,7 +121,7 @@ func Registration(w http.ResponseWriter, r *http.Request) {
 	db, err := sql.Open(DRIVER, DB)
 	if err != nil {
 		fmt.Println(err)
-		Error(w, http.StatusInternalServerError)
+		Error(w, http.StatusInternalServerError, "")
 		return
 	}
 	defer db.Close()
@@ -126,7 +139,7 @@ func Registration(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		fmt.Println(err)
-		Error(w, http.StatusInternalServerError)
+		Error(w, http.StatusInternalServerError, "")
 		return
 	}
 

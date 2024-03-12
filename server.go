@@ -9,7 +9,7 @@ import (
 
 func Server(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
-		Error(w, http.StatusNotFound)
+		Error(w, http.StatusNotFound, "")
 		return
 	}
 
@@ -23,13 +23,13 @@ func Server(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			fmt.Print("Error in finding the template")
 			fmt.Println(err)
-			Error(w, http.StatusInternalServerError)
+			Error(w, http.StatusInternalServerError, "")
 			return
 		}
 		if tmpl.Execute(w, data) != nil {
 			fmt.Print("Error in executing the template")
 			fmt.Println(tmpl.Execute(w, data))
-			Error(w, http.StatusInternalServerError)
+			Error(w, http.StatusInternalServerError, "")
 			return
 		}
 		return
@@ -38,14 +38,14 @@ func Server(w http.ResponseWriter, r *http.Request) {
 	posts, err := GetAllPosts()
 	if err != nil {
 		fmt.Println(err)
-		Error(w, http.StatusInternalServerError)
+		Error(w, http.StatusInternalServerError, "")
 		return
 	}
 
 	users, err := GetAllUsers()
 	if err != nil {
 		fmt.Println(err)
-		Error(w, http.StatusInternalServerError)
+		Error(w, http.StatusInternalServerError, "")
 		return
 	}
 
@@ -59,7 +59,7 @@ func Server(w http.ResponseWriter, r *http.Request) {
 	db, err := sql.Open(DRIVER, DB)
 	if err != nil {
 		fmt.Println(err)
-		Error(w, http.StatusInternalServerError)
+		Error(w, http.StatusInternalServerError, "")
 		return
 	}
 	defer db.Close()
@@ -73,13 +73,13 @@ func Server(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Print("Error in finding the template")
 		fmt.Println(err)
-		Error(w, http.StatusInternalServerError)
+		Error(w, http.StatusInternalServerError, "")
 		return
 	}
 	if tmpl.Execute(w, data) != nil {
 		fmt.Print("Error in executing the template")
 		fmt.Println(tmpl.Execute(w, data))
-		Error(w, http.StatusInternalServerError)
+		Error(w, http.StatusInternalServerError, "")
 		return
 	}
 }
