@@ -6,7 +6,9 @@ let socket;
 let receivername_;
 let AllUser = [];
 let array = [];
+let AllMessages = [];
 let leftovers;
+let max_Messages = 10;
 const parts = connectedUser.split(" ");
 parts[0] = parts[0].substring(1);
 
@@ -19,7 +21,6 @@ function connect() {
 
     socket.onmessage = function (event) {
         setTimeout(() => {
-            console.log(event.data);
             if (event.data.substring(0, 4) === "U_N ") {
                 AllUser = event.data
                     .substring(4, event.data.length - 1)
@@ -71,7 +72,6 @@ function connect() {
                     // Append the post container to the main container
                     allPostsDiv.prepend(postDiv);
 
-                    // Append the main container to the body or another existing element
                 }
 
                 // Chat
@@ -151,7 +151,6 @@ function publish() {
     cat1 = document.getElementById("cat1").value;
     cat2 = document.getElementById("cat2").value;
     postcontent = document.getElementById("postcontent").value;
-    console.log(userId, cat1, cat2, postcontent);
     socket.send(
         "PUBLISH_" + " " + userId + " " + cat1 + " " + cat2 + " " + postcontent
     );

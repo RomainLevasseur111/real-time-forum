@@ -21,7 +21,7 @@
     background: linear-gradient(45deg, #36393F, #2C2F33);
     height: calc(100vh - 80px);
     width: 0vw;
-    overflow-y: scroll; /* Enable vertical scrolling */
+    overflow-y: hidden;
     overflow-x: hidden;
     word-wrap: break-word;
     transition: width 0.2s ease-out;
@@ -105,7 +105,7 @@
 }
 
 #chat-input {
-    width: 80%;
+    width: calc(100% - 110px);
     padding: 10px;
     border-radius: 5px;
     border: none;
@@ -126,6 +126,7 @@
     border-radius: 5px;
     cursor: pointer;
     margin-left: 10px;
+    width: 61px;
 }
 
 .send-btn:hover {
@@ -136,6 +137,7 @@
     display: none;
     width: 100%;
     padding: 10px;
+    height: 36px;
 }
 
 .msg-inputs .msg-input {
@@ -182,6 +184,8 @@
 
  #output {
     display: none;
+    overflow-y: scroll;
+    height: calc(100vh - 80px - 100px);
  }
 
  .nickname_button_div {

@@ -9,7 +9,7 @@ import (
 const (
 	DB      = "./data.db"
 	DRIVER  = "sqlite3"
-	IP      = "192.168.101.10"
+	IP      = "192.168.100.250"
 	DATEFMT = "2006-01-02 15:04:05"
 )
 
@@ -28,9 +28,9 @@ type USER struct { // user structure
 	CreationDate                                      time.Time
 }
 type POST struct { // post structure
-	Postdate, Content string
-	Category, CategoryB                        string
-	Userid, Postid, Likes, Comments, Dislikes  int
+	Postdate, Content                         string
+	Category, CategoryB                       string
+	Userid, Postid, Likes, Comments, Dislikes int
 }
 type CATEGORY struct { // Category structure
 	Name  string

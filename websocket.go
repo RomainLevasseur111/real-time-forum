@@ -37,7 +37,7 @@ func Chat_Websocket(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 	}()
-	
+
 	send := func(msgData []string, pfp string, msgType int) {
 		temp := msgData[0] + " " + msgData[2] + " " + pfp + " " + msgData[3] + " "
 
@@ -59,10 +59,10 @@ func Chat_Websocket(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	displayPost := func(pfp, nickname , category, categoryB, content string, msgType int){
-		temp := "PUBLISH_ " + pfp + " " + nickname+ " " +category+ " " +categoryB+ " " +content
-		for _, client := range clients{
-			if err = client.WriteMessage(msgType, []byte(temp)); err!=nil{
+	displayPost := func(pfp, nickname, category, categoryB, content string, msgType int) {
+		temp := "PUBLISH_ " + pfp + " " + nickname + " " + category + " " + categoryB + " " + content
+		for _, client := range clients {
+			if err = client.WriteMessage(msgType, []byte(temp)); err != nil {
 				fmt.Println(err)
 				break
 			}
@@ -74,10 +74,8 @@ func Chat_Websocket(w http.ResponseWriter, r *http.Request) {
 			fmt.Println(err)
 			break
 		}
-		fmt.Println(string(msg))
-		if string(msg[0:8]) == "PUBLISH_"{
+		if string(msg[0:8]) == "PUBLISH_" {
 			msgData := strings.SplitN(string(msg), " ", 5)
-			fmt.Println(msgData)
 			Publish(msgData[1], msgData[2], msgData[3], msgData[4])
 			user, err := GetOneUser(msgData[1])
 			if err != nil {
@@ -85,145 +83,144 @@ func Chat_Websocket(w http.ResponseWriter, r *http.Request) {
 				break
 			}
 			displayPost(user.Pfp, user.NickName, msgData[2], msgData[3], msgData[4], msgType)
-			
-		}else{
 
-		
-		if !strings.Contains(string(msg), " ") {
+		} else {
 
-			var conn_ CONNECTIONS
-			conn_.Conn = conn
-			conn_.Name = string(msg)
+			if !strings.Contains(string(msg), " ") {
 
-			fmt.Printf("Connection of %s from %s\n", conn_.Name, conn.RemoteAddr())
+				var conn_ CONNECTIONS
+				conn_.Conn = conn
+				conn_.Name = string(msg)
 
-			connection = append(connection, conn_)
-			continue
-		}
+				fmt.Printf("Connection of %s from %s\n", conn_.Name, conn.RemoteAddr())
 
-		if string(msg)[0:4] == "U_N " {
-			users, err := GetAllUsers()
-			if err != nil {
-				fmt.Println(err)
-				return
+				connection = append(connection, conn_)
+				continue
 			}
-			if !displayed{
-				posts,err := GetAllPosts()
-				if err != nil{
+
+			if string(msg)[0:4] == "U_N " {
+				users, err := GetAllUsers()
+				if err != nil {
 					fmt.Println(err)
 					return
 				}
-				for _,post := range posts{
-					user, err := GetOneUser(strconv.Itoa(post.Userid))
-					if err != nil{
+				if !displayed {
+					posts, err := GetAllPosts()
+					if err != nil {
 						fmt.Println(err)
 						return
 					}
-					displayPost(user.Pfp, user.NickName, post.Category, post.CategoryB, post.Content, msgType)
-				}
-				displayed = true
-			}
-
-			// sort users by alphabetical order
-			for i := range users {
-				for j := i; j < len(users); j++ {
-					if strings.ToLower(users[i].NickName) > strings.ToLower(users[j].NickName) {
-						users[i], users[j] = users[j], users[i]
-					}
-				}
-			}
-
-			temp := "U_N "
-			for _, user := range users {
-				isConnected := "../static/img/disconnected.webp"
-				for _, c := range connection {
-					if c.Name == user.NickName {
-						isConnected = "../static/img/connected.png"
-					}
-				}
-				temp += user.NickName + " " + user.Pfp + " " + isConnected + " "
-			}
-
-			for _, client := range clients {
-				for _, c := range connection {
-					if string(msg)[4:] == c.Name && c.Conn == client {
-						if err = client.WriteMessage(msgType, []byte(temp)); err != nil {
+					for _, post := range posts {
+						user, err := GetOneUser(strconv.Itoa(post.Userid))
+						if err != nil {
 							fmt.Println(err)
+							return
+						}
+						displayPost(user.Pfp, user.NickName, post.Category, post.CategoryB, post.Content, msgType)
+					}
+					displayed = true
+				}
+
+				// sort users by alphabetical order
+				for i := range users {
+					for j := i; j < len(users); j++ {
+						if strings.ToLower(users[i].NickName) > strings.ToLower(users[j].NickName) {
+							users[i], users[j] = users[j], users[i]
+						}
+					}
+				}
+
+				temp := "U_N "
+				for _, user := range users {
+					isConnected := "../static/img/disconnected.webp"
+					for _, c := range connection {
+						if c.Name == user.NickName {
+							isConnected = "../static/img/connected.png"
+						}
+					}
+					temp += user.NickName + " " + user.Pfp + " " + isConnected + " "
+				}
+
+				for _, client := range clients {
+					for _, c := range connection {
+						if string(msg)[4:] == c.Name && c.Conn == client {
+							if err = client.WriteMessage(msgType, []byte(temp)); err != nil {
+								fmt.Println(err)
+								break
+							}
+							temp = ""
 							break
 						}
-						temp = ""
+					}
+					if temp == "" {
 						break
 					}
 				}
-				if temp == "" {
-					break
-				}
+
+				continue
 			}
 
-			continue
-		}
+			// format: sendername/receivername/date/content
+			msgData := strings.SplitAfterN(string(msg), " ", 4)
 
-		// format: sendername/receivername/date/content
-		msgData := strings.SplitAfterN(string(msg), " ", 4)
+			if len(msgData) != 4 || msgData[3] == "" {
+				fmt.Println("empty message")
+				continue
+			}
 
-		if len(msgData) != 4 || msgData[3] == "" {
-			fmt.Println("empty message")
-			continue
-		}
+			if msgData[0] == "GAM " && msgData[3] == "_" {
+				messages, err := GetConversation(msgData[1], msgData[2])
+				if err != nil {
+					fmt.Println(err)
+					return
+				}
 
-		if msgData[0] == "GAM " && msgData[3] == "_" {
-			messages, err := GetConversation(msgData[1], msgData[2])
+				for _, message := range messages {
+					var temp []string
+					temp = append(temp, message.sendername, message.receivername, message.date, message.content)
+					send(temp, message.pfp, msgType)
+				}
+
+				continue
+			}
+
+			var conn_ CONNECTIONS
+			conn_.Conn = conn
+			conn_.Name = msgData[0][:len(msgData[0])-1]
+
+			fmt.Printf("%s\n", string(msg))
+
+			connection = append(connection, conn_)
+
+			db, err := sql.Open(DRIVER, DB)
+			if err != nil {
+				fmt.Println(err)
+				return
+			}
+			defer db.Close()
+
+			rows := db.QueryRow("SELECT pfp FROM USERS WHERE nickname = ?", msgData[0][:len(msgData[0])-1])
+			var pfp string
+			err = rows.Scan(&pfp)
 			if err != nil {
 				fmt.Println(err)
 				return
 			}
 
-			for _, message := range messages {
-				var temp []string
-				temp = append(temp, message.sendername, message.receivername, message.date, message.content)
-				send(temp, message.pfp, msgType)
+			_, err = db.Exec(`INSERT INTO MESSAGES VALUES(NULL, ?, ?, ?, ?, ?)`,
+				msgData[0],
+				msgData[1],
+				msgData[2],
+				pfp,
+				msgData[3])
+
+			if err != nil {
+				fmt.Println(err)
+				return
 			}
 
-			continue
+			send(msgData, pfp, msgType)
 		}
-
-		var conn_ CONNECTIONS
-		conn_.Conn = conn
-		conn_.Name = msgData[0][:len(msgData[0])-1]
-
-		fmt.Printf("%s\n", string(msg))
-
-		connection = append(connection, conn_)
-
-		db, err := sql.Open(DRIVER, DB)
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-		defer db.Close()
-
-		rows := db.QueryRow("SELECT pfp FROM USERS WHERE nickname = ?", msgData[0][:len(msgData[0])-1])
-		var pfp string
-		err = rows.Scan(&pfp)
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-
-		_, err = db.Exec(`INSERT INTO MESSAGES VALUES(NULL, ?, ?, ?, ?, ?)`,
-			msgData[0],
-			msgData[1],
-			msgData[2],
-			pfp,
-			msgData[3])
-
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-
-		send(msgData, pfp, msgType)
-	}
 
 	}
 }

@@ -25,6 +25,10 @@ function render_chat(nickname) {
     // ask the websocket the conversation
     socket.send("GAM " + nickname + " " + parts[0] + " _");
 
+    setTimeout(() => {
+        hide_messages();
+    }, 75);
+
     document.querySelector('.msg-inputs').style.display = 'block';
     document.querySelector('#output').style.display = 'block';
     document.querySelector('.header_chat').style.display = 'flex';
@@ -35,6 +39,7 @@ function hide_chat() {
     document.querySelector('.msg-inputs').style.display = 'none';
     document.querySelector('#output').style.display = 'none';
     document.querySelector('.header_chat').style.display = 'none';
+    max_Messages = 10;
 
     // ask the websocket all the user
     socket.send("U_N " + parts[0]);
@@ -74,6 +79,46 @@ function hide_chat() {
         }
     }, 2500);
 }
+
+
+function hide_messages() {
+    let height = 0;
+
+    let messageCount = output.childElementCount;
+    for (let i = 0; i < messageCount; i++) {
+        if (i >= messageCount - max_Messages) {
+            if (output.children[i].style.display != 'flex') {
+                output.children[i].style.display = 'flex';
+                height += output.children[i].offsetHeight + 10;
+            }
+        } else {
+            output.children[i].style.display = 'none';
+        }
+    }
+    output.scrollTop = height;
+}
+
+function debounce(func, wait) {
+    let timeout;
+    return function() {
+        const context = this, args = arguments;
+        clearTimeout(timeout);
+        timeout = setTimeout(function() {
+            func.apply(context, args);
+        }, wait);
+    };
+}
+
+const output = document.getElementById('output');
+
+const handleScroll = debounce(function() {
+    if (output.scrollTop === 0) {
+        max_Messages += 10;
+        hide_messages();
+    }
+}, 500);
+
+output.addEventListener('scroll', handleScroll);
 
 setTimeout(() => {
     hide_chat()
