@@ -8,6 +8,7 @@ let AllUser = [];
 let array = [];
 let AllMessages = [];
 let leftovers;
+let IsConnected;
 let max_Messages = 10;
 const parts = connectedUser.split(" ");
 parts[0] = parts[0].substring(1);
@@ -21,7 +22,9 @@ function connect() {
 
     socket.onmessage = function (event) {
         setTimeout(() => {
-            if (event.data.substring(0, 4) === "U_N ") {
+            if (event.data === "IsCo_Yes" || event.data === "IsCo_No") {
+                IsConnected = event.data;
+            } else if (event.data.substring(0, 4) === "U_N ") {
                 AllUser = event.data
                     .substring(4, event.data.length - 1)
                     .split(" ");

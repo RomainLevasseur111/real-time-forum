@@ -8,31 +8,37 @@ document.getElementById("chat-input").addEventListener('keydown', function(event
 
 function render_chat(nickname) {
     receivername_ = nickname
-    
-    let header_chat = document.getElementById("header_chat");
-
-    let conversations = document.getElementsByClassName("conversation_with");
-    while (conversations.length > 0) {
-        conversations[0].parentNode.removeChild(conversations[0]);
-    }    
-
-    const conversation = document.createElement("span");
-    conversation.className = "conversation_with";
-    conversation.innerHTML = "Conversation with " + nickname
-    header_chat.appendChild(conversation);
-
-    document.querySelector('#output').innerHTML = "";
-    // ask the websocket the conversation
-    socket.send("GAM " + nickname + " " + parts[0] + " _");
-
+    socket.send("IsCo " + nickname + " " + parts[0]);
     setTimeout(() => {
-        hide_messages();
-    }, 75);
-
-    document.querySelector('.msg-inputs').style.display = 'block';
-    document.querySelector('#output').style.display = 'block';
-    document.querySelector('.header_chat').style.display = 'flex';
-    document.querySelector('.nickname_button_div').style.display = 'none';
+        if (IsConnected === "IsCo_Yes") {
+            IsConnected = "";
+        
+            let header_chat = document.getElementById("header_chat");
+    
+            let conversations = document.getElementsByClassName("conversation_with");
+            while (conversations.length > 0) {
+                conversations[0].parentNode.removeChild(conversations[0]);
+            }    
+    
+            const conversation = document.createElement("span");
+            conversation.className = "conversation_with";
+            conversation.innerHTML = "Conversation with " + nickname
+            header_chat.appendChild(conversation);
+    
+            document.querySelector('#output').innerHTML = "";
+            // ask the websocket the conversation
+            socket.send("GAM " + nickname + " " + parts[0] + " _");
+    
+            setTimeout(() => {
+                hide_messages();
+            }, 75);
+    
+            document.querySelector('.msg-inputs').style.display = 'block';
+            document.querySelector('#output').style.display = 'block';
+            document.querySelector('.header_chat').style.display = 'flex';
+            document.querySelector('.nickname_button_div').style.display = 'none';
+        }
+    }, 100);
 }
 
 function hide_chat() {

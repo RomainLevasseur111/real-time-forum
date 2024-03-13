@@ -81,6 +81,33 @@ func Chat_Websocket(w http.ResponseWriter, r *http.Request) {
 			fmt.Println(err)
 			break
 		}
+
+		if string(msg[0:5]) == "IsCo " && len(strings.Split(string(msg), " ")) == 3 {
+			response := "IsCo_No"
+			for _, c := range connection {
+				if c.Name == strings.Split(string(msg), " ")[1] {
+					response = "IsCo_Yes"
+				}
+			}
+
+			for _, client := range clients {
+				for _, c := range connection {
+					if c.Name == strings.Split(string(msg), " ")[2] && c.Conn == client {
+						if err = client.WriteMessage(msgType, []byte(response)); err != nil {
+							fmt.Println(err)
+							break
+						}
+						response = ""
+						break
+					}
+				}
+				if response == "" {
+					break
+				}
+			}
+			continue
+		}
+
 		if string(msg[0:8]) == "PUBLISH_" {
 			msgData := strings.SplitN(string(msg), " ", 5)
 			Publish(msgData[1], msgData[2], msgData[3], msgData[4])
