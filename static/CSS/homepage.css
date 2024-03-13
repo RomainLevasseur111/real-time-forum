@@ -1,4 +1,3 @@
-#userpage,
 #postpage {
     visibility: hidden;
 }
@@ -282,4 +281,30 @@ button[type="submit"]:active {
 .button_post_yes:active {
     transform: translateY(0); /* Keep button in place on click */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Revert shadow on click */
+}
+
+.comment_button {
+    float: right;
+    width: 40px;
+    height: 35px;
+    background: none;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer; /* Cursor changes to pointer on hover */
+    transition: all 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.comment_button:hover {
+    transform: translateY(-2px); /* Move button up on hover */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2); /* Increase shadow on hover */
+}
+
+.comment_button:active {
+    transform: translateY(0); /* Keep button in place on click */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Revert shadow on click */
+}
+
+.comment_img {
+    width: 100%;
+    height: 100%;
 }

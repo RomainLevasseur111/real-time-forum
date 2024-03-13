@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-func Publish(userId, category1, category2, content string) {
+func Publish(userId, category1, category2, content string) int {
 	categories, err := InsertCategories(category1, category2)
 	if err != nil {
 		fmt.Println(err)
@@ -15,17 +15,15 @@ func Publish(userId, category1, category2, content string) {
 	db, err := sql.Open(DRIVER, DB)
 	if err != nil {
 		fmt.Println(err)
-		return
+		return -1
 	}
 	defer db.Close()
 	for len(categories) < 2 {
 		categories = append(categories, nil)
 	}
 
-	// ajouter publication de commentaires : il faut recup l'id du post initial
-	_, err = db.Exec(`INSERT INTO "POSTS" ("userid", "category", "categoryB", "content", "postdate") VALUES (?, ?,?, ?, ?);`,
+	res, err := db.Exec(`INSERT INTO "POSTS" ("userid", "category", "categoryB", "content", "postdate") VALUES (?, ?, ?, ?, ?);`,
 		userId,
-		// toInput,
 		categories[0],
 		categories[1],
 		content,
@@ -33,8 +31,17 @@ func Publish(userId, category1, category2, content string) {
 	)
 	if err != nil {
 		fmt.Println(err)
-		return
+		return -1
 	}
+
+	// Get the last inserted ID
+	lastInsertID, err := res.LastInsertId()
+	if err != nil {
+		fmt.Println(err)
+		return -1
+	}
+
+	return int(lastInsertID)
 
 	//sql := ""
 	/*if toInput == nil {
@@ -48,7 +55,6 @@ func Publish(userId, category1, category2, content string) {
 		fmt.Println(err)
 		return
 	}*/
-
 }
 
 func GetAllPosts() (posts []POST, err error) {

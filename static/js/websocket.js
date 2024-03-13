@@ -30,7 +30,7 @@ function connect() {
                     .split(" ");
             } else {
                 if (event.data.substring(0, 8) === "PUBLISH_") {
-                    array = event.data.split(" ", 5);
+                    array = event.data.split(" ", 6);
 
                     // Create the post container
                     const postDiv = document.createElement("div");
@@ -76,6 +76,22 @@ function connect() {
                         .slice(5)
                         .join(" ");
                     postDiv.appendChild(contentP);
+
+                    // Create the comment button
+                    const comment_button = document.createElement("button");
+                    comment_button.className = "comment_button";
+                    comment_button.type = "button";
+                    comment_button.onclick = () => {
+                        Open_Comments(array[5]); // post id
+                    };
+
+                    const comment_img = document.createElement("img");
+                    comment_img.src = "../static/img/comment_img.png";
+                    comment_img.className = "comment_img";
+                    comment_button.appendChild(comment_img);
+                    postDiv.appendChild(comment_button);
+
+                    postDiv.appendChild(comment_button);
 
                     let allPostsDiv = document.getElementById("allposts");
                     // Append the post container to the main container
