@@ -8,7 +8,7 @@ document.getElementById("chat-input").addEventListener('keydown', function(event
 
 function render_chat(nickname) {
     receivername_ = nickname
-    socket.send("IsCo " + nickname + " " + parts[0]);
+    chat_socket.send("IsCo " + nickname + " " + parts[0]);
     setTimeout(() => {
         if (IsConnected === "IsCo_Yes") {
             IsConnected = "";
@@ -27,7 +27,7 @@ function render_chat(nickname) {
     
             document.querySelector('#output').innerHTML = "";
             // ask the websocket the conversation
-            socket.send("GAM " + nickname + " " + parts[0] + " _");
+            chat_socket.send("GAM " + nickname + " " + parts[0] + " _");
     
             setTimeout(() => {
                 hide_messages();
@@ -48,7 +48,7 @@ function hide_chat() {
     max_Messages = 10;
 
     // ask the websocket all the user
-    socket.send("U_N " + parts[0]);
+    chat_socket.send("U_N " + parts[0]);
 
     setTimeout(() => {
         document.getElementById("nickname_button_div").innerHTML = "";
@@ -128,4 +128,4 @@ output.addEventListener('scroll', handleScroll);
 
 setTimeout(() => {
     hide_chat()
-}, 500);
+}, 400);

@@ -18,8 +18,10 @@ func main() {
 	http.HandleFunc("/register", Registration)
 	http.HandleFunc("/login", Login)
 	http.HandleFunc("/logout", Logout)
-	http.HandleFunc("/echo", Chat_Websocket)
+	http.HandleFunc("/chat_websocket", Chat_Websocket)
 	http.HandleFunc("/useraction", userAction)
+	http.HandleFunc("/post_websocket", Post_Websocket)
+	http.HandleFunc("/comment_websocket", Comment_Websocket)
 
 	if err := http.ListenAndServe("0.0.0.0:8989", nil); err != nil {
 		fmt.Println("Error starting the server")

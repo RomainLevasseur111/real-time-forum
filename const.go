@@ -14,12 +14,11 @@ const (
 )
 
 var (
-	clients  []*websocket.Conn
 	upgrader = websocket.Upgrader{
 		ReadBufferSize:  1024,
 		WriteBufferSize: 1024,
 	}
-	connection []CONNECTIONS
+	chat_connection, post_connection []CONNECTIONS
 )
 
 type USER struct { // user structure

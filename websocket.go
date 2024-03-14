@@ -16,65 +16,30 @@ func Chat_Websocket(w http.ResponseWriter, r *http.Request) {
 	}
 	defer conn.Close()
 
-	displayed := false
-
-	clients = append(clients, conn)
-
+	// Remove the connection of a client when it's closed
 	defer func() {
-		// Remove the connection from the clients slice when it's closed
-		for i, client := range clients {
-			if client == conn {
-				clients = append(clients[:i], clients[i+1:]...)
-				break
-			}
-		}
-
-		// Remove the connection from the clients in the struct
-		for i, c := range connection {
+		for i, c := range chat_connection {
 			if c.Conn == conn {
-				connection = append(connection[:i], connection[i+1:]...)
+				chat_connection = append(chat_connection[:i], chat_connection[i+1:]...)
 				break
 			}
 		}
 	}()
 
+	// Send a private message
 	send := func(msgData []string, pfp string, msgType int) {
 		temp := msgData[0] + " " + msgData[2] + " " + pfp + " " + msgData[3] + " "
 
-		count := 0
-		for _, client := range clients {
-			for _, c := range connection {
-				if (c.Name == msgData[1][:len(msgData[1])-1] || c.Name == msgData[0][:len(msgData[0])-1]) && c.Conn == client {
-					count++
-					if err = client.WriteMessage(msgType, []byte(temp)); err != nil {
-						fmt.Println(err)
-						break
-					}
+		for _, c := range chat_connection {
+			if c.Name == msgData[1][:len(msgData[1])-1] || c.Name == msgData[0][:len(msgData[0])-1] {
+				if err = c.Conn.WriteMessage(msgType, []byte(temp)); err != nil {
+					fmt.Println(err)
 					break
 				}
-			}
-			if count == 2 {
-				break
 			}
 		}
 	}
 
-	displayPost := func(pfp, nickname, content string, category, categoryB *string, msgType, postid int) {
-		cat1, cat2 := "_&nbsp_", "_&nbsp_"
-		if category != nil {
-			cat1 = *category
-		}
-		if categoryB != nil {
-			cat2 = *categoryB
-		}
-		temp := "PUBLISH_ " + pfp + " " + nickname + " " + cat1 + " " + cat2 + " " + strconv.Itoa(postid) + " " + content
-		for _, client := range clients {
-			if err = client.WriteMessage(msgType, []byte(temp)); err != nil {
-				fmt.Println(err)
-				break
-			}
-		}
-	}
 	for {
 		msgType, msg, err := conn.ReadMessage()
 		if err != nil {
@@ -82,77 +47,47 @@ func Chat_Websocket(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 
+		// Is the client given connected ?
 		if string(msg[0:5]) == "IsCo " && len(strings.Split(string(msg), " ")) == 3 {
 			response := "IsCo_No"
-			for _, c := range connection {
+			for _, c := range chat_connection {
 				if c.Name == strings.Split(string(msg), " ")[1] {
 					response = "IsCo_Yes"
 				}
 			}
 
-			for _, client := range clients {
-				for _, c := range connection {
-					if c.Name == strings.Split(string(msg), " ")[2] && c.Conn == client {
-						if err = client.WriteMessage(msgType, []byte(response)); err != nil {
-							fmt.Println(err)
-							break
-						}
-						response = ""
+			for _, c := range chat_connection {
+				if c.Name == strings.Split(string(msg), " ")[2] {
+					if err = c.Conn.WriteMessage(msgType, []byte(response)); err != nil {
+						fmt.Println(err)
 						break
 					}
-				}
-				if response == "" {
 					break
 				}
 			}
+
 			continue
 		}
 
-		if string(msg[0:8]) == "PUBLISH_" {
-			msgData := strings.SplitN(string(msg), " ", 5)
-			postid := Publish(msgData[1], msgData[2], msgData[3], msgData[4])
-			user, err := GetOneUser(msgData[1])
-			if err != nil {
-				fmt.Println(err)
-				break
-			}
-			displayPost(user.Pfp, user.NickName, msgData[4], &msgData[2], &msgData[3], msgType, postid)
-			continue
-		}
-
+		// New connection of a client
 		if !strings.Contains(string(msg), " ") {
 
 			var conn_ CONNECTIONS
 			conn_.Conn = conn
 			conn_.Name = string(msg)
 
-			fmt.Printf("Connection of %s from %s\n", conn_.Name, conn.RemoteAddr())
+			fmt.Printf("Connection of %s from %s at the chat_websocket\n", conn_.Name, conn.RemoteAddr())
 
-			connection = append(connection, conn_)
+			chat_connection = append(chat_connection, conn_)
 			continue
 		}
 
+		// Ask for all the client in the database
 		if string(msg)[0:4] == "U_N " {
 			users, err := GetAllUsers()
 			if err != nil {
 				fmt.Println(err)
 				return
-			}
-			if !displayed {
-				posts, err := GetAllPosts()
-				if err != nil {
-					fmt.Println(err)
-					return
-				}
-				for _, post := range posts {
-					user, err := GetOneUser(strconv.Itoa(post.Userid))
-					if err != nil {
-						fmt.Println(err)
-						return
-					}
-					displayPost(user.Pfp, user.NickName, post.Content, post.Category, post.CategoryB, msgType, post.Postid)
-				}
-				displayed = true
 			}
 
 			// sort users by alphabetical order
@@ -167,7 +102,7 @@ func Chat_Websocket(w http.ResponseWriter, r *http.Request) {
 			temp := "U_N "
 			for _, user := range users {
 				isConnected := "../static/img/disconnected.webp"
-				for _, c := range connection {
+				for _, c := range chat_connection {
 					if c.Name == user.NickName {
 						isConnected = "../static/img/connected.png"
 					}
@@ -175,18 +110,13 @@ func Chat_Websocket(w http.ResponseWriter, r *http.Request) {
 				temp += user.NickName + " " + user.Pfp + " " + isConnected + " "
 			}
 
-			for _, client := range clients {
-				for _, c := range connection {
-					if string(msg)[4:] == c.Name && c.Conn == client {
-						if err = client.WriteMessage(msgType, []byte(temp)); err != nil {
-							fmt.Println(err)
-							break
-						}
-						temp = ""
+			for _, c := range chat_connection {
+				if string(msg)[4:] == c.Name {
+					if err = c.Conn.WriteMessage(msgType, []byte(temp)); err != nil {
+						fmt.Println(err)
 						break
 					}
-				}
-				if temp == "" {
+					temp = ""
 					break
 				}
 			}
@@ -202,6 +132,7 @@ func Chat_Websocket(w http.ResponseWriter, r *http.Request) {
 			continue
 		}
 
+		// Ask for a conversation
 		if msgData[0] == "GAM " && msgData[3] == "_" {
 			messages, err := GetConversation(msgData[1], msgData[2])
 			if err != nil {
@@ -224,7 +155,7 @@ func Chat_Websocket(w http.ResponseWriter, r *http.Request) {
 
 		fmt.Printf("%s\n", string(msg))
 
-		connection = append(connection, conn_)
+		chat_connection = append(chat_connection, conn_)
 
 		db, err := sql.Open(DRIVER, DB)
 		if err != nil {
@@ -255,4 +186,135 @@ func Chat_Websocket(w http.ResponseWriter, r *http.Request) {
 
 		send(msgData, pfp, msgType)
 	}
+}
+
+func Post_Websocket(w http.ResponseWriter, r *http.Request) {
+	conn, err := upgrader.Upgrade(w, r, nil)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer conn.Close()
+
+	// Remove the connection of a client when it's closed
+	defer func() {
+		for i, c := range post_connection {
+			if c.Conn == conn {
+				post_connection = append(post_connection[:i], post_connection[i+1:]...)
+				break
+			}
+		}
+	}()
+
+	// Display a given post
+	displayPost := func(pfp, nickname, content string, category, categoryB *string, msgType, postid int, userNameToSend string) {
+		fmt.Println(userNameToSend)
+		fmt.Println(post_connection)
+		cat1, cat2 := "_&nbsp_", "_&nbsp_"
+		if category != nil {
+			cat1 = *category
+		}
+		if categoryB != nil {
+			cat2 = *categoryB
+		}
+		temp := "PUBLISH_ " + pfp + " " + nickname + " " + cat1 + " " + cat2 + " " + strconv.Itoa(postid) + " " + content
+		for _, c := range post_connection {
+			if userNameToSend == "" {
+				if err = c.Conn.WriteMessage(msgType, []byte(temp)); err != nil {
+					fmt.Println(err)
+					return
+				}
+				continue
+			}
+			if c.Name == userNameToSend {
+				if err = c.Conn.WriteMessage(msgType, []byte(temp)); err != nil {
+					fmt.Println(err)
+					return
+				}
+				break
+			}
+
+		}
+	}
+
+	for {
+		msgType, msg, err := conn.ReadMessage()
+		if err != nil {
+			fmt.Println(err)
+			break
+		}
+
+		// New connection of a client
+		if !strings.Contains(string(msg), " ") {
+
+			var conn_ CONNECTIONS
+			conn_.Conn = conn
+			conn_.Name = string(msg)
+
+			fmt.Printf("Connection of %s from %s at the post_websocket\n", conn_.Name, conn.RemoteAddr())
+
+			post_connection = append(post_connection, conn_)
+			continue
+		}
+
+		// Publish a post to all user
+		if string(msg[0:8]) == "PUBLISH_" {
+			msgData := strings.SplitN(string(msg), " ", 5)
+			postid := Publish(msgData[1], msgData[2], msgData[3], msgData[4])
+			user, err := GetOneUser(msgData[1])
+			if err != nil {
+				fmt.Println(err)
+				break
+			}
+			displayPost(user.Pfp, user.NickName, msgData[4], &msgData[2], &msgData[3], msgType, postid, "")
+			continue
+		}
+
+		// Display all post to a new user
+		if string(msg[0:4]) == "1_D " {
+
+			// Register new connection
+			var conn_ CONNECTIONS
+			conn_.Conn = conn
+			conn_.Name = string(msg[4:])
+
+			fmt.Printf("Connection of %s from %s at the post_websocket\n", conn_.Name, conn.RemoteAddr())
+
+			post_connection = append(post_connection, conn_)
+
+			// Display all post
+			userNameToSend := string(msg[4:])
+
+			posts, err := GetAllPosts()
+			if err != nil {
+				fmt.Println(err)
+				return
+			}
+			for _, post := range posts {
+				user, err := GetOneUser(strconv.Itoa(post.Userid))
+				if err != nil {
+					fmt.Println(err)
+					return
+				}
+				displayPost(user.Pfp, user.NickName, post.Content, post.Category, post.CategoryB, msgType, post.Postid, userNameToSend)
+			}
+		}
+	}
+}
+
+func Comment_Websocket(w http.ResponseWriter, r *http.Request) {
+	conn, err := upgrader.Upgrade(w, r, nil)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer conn.Close()
+
+	/*for {
+		msgType, msg, err := conn.ReadMessage()
+		if err != nil {
+			fmt.Println(err)
+			break
+		}
+	}*/
 }
