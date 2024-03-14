@@ -13,4 +13,4 @@ This part is pretty similar to the first forum. Users must be able to:
 
     Create comments on the posts:
         See posts in a feed display
-        See comments only if they click on a post
+        See comments only if they click on a post ==> suivre les commentaires en francais dans le code (websocket.go et comments.js)

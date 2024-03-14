@@ -13,7 +13,7 @@ function Open_Comments(postid) {
 
     comment_socket.onmessage = function (event) {
         setTimeout(() => {
-            
+            // récupérer un comments et l'afficher
         }, 50);
     };
 
@@ -25,6 +25,10 @@ function Open_Comments(postid) {
         console.log("Error in websocket");
         console.log(error);
     };
+
+    setTimeout(() => {
+        comment_socket.send("C_M " + parts[0] + " " + postid);
+    }, 300);
 }
 
 function LoadHomePage() {

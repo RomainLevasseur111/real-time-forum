@@ -18,7 +18,7 @@ var (
 		ReadBufferSize:  1024,
 		WriteBufferSize: 1024,
 	}
-	chat_connection, post_connection []CONNECTIONS
+	chat_connection, post_connection, comment_connection []CONNECTIONS
 )
 
 type USER struct { // user structure

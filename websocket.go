@@ -316,5 +316,23 @@ func Comment_Websocket(w http.ResponseWriter, r *http.Request) {
 			fmt.Println(err)
 			break
 		}
+
+		// Show all comments of a post to a new user
+		if string(msg[0:4]) == "C_M " {
+
+			// Register new connection
+			var conn_ CONNECTIONS
+			conn_.Conn = conn
+			conn_.Name = strings.Split(string(msg), " ")[1]
+
+			fmt.Printf("Connection of %s from %s at the comment_websocket\n", conn_.Name, conn.RemoteAddr())
+
+			post_connection = append(post_connection, conn_)
+
+			// aller chercher dans la database tous les "posts" qui ont un commentid == strings.Split(string(msg), " ")[2]
+
+			// boucler sur tous les comments et les envoyer dans la websocket
+
+		}
 	}*/
 }
