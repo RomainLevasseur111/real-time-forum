@@ -217,7 +217,7 @@ func Post_Websocket(w http.ResponseWriter, r *http.Request) {
 		if categoryB != nil {
 			cat2 = *categoryB
 		}
-		temp := "PUBLISH_ " + pfp + " " + nickname + " " + cat1 + " " + cat2 + " " + strconv.Itoa(postid) + " " + content
+		temp := "P_B " + pfp + " " + nickname + " " + cat1 + " " + cat2 + " " + strconv.Itoa(postid) + " " + content
 		for _, c := range post_connection {
 			if userNameToSend == "" {
 				if err = c.Conn.WriteMessage(msgType, []byte(temp)); err != nil {
@@ -258,7 +258,7 @@ func Post_Websocket(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// Publish a post to all user
-		if string(msg[0:8]) == "PUBLISH_" {
+		if string(msg[0:4]) == "P_B " {
 			msgData := strings.SplitN(string(msg), " ", 5)
 			postid := Publish(msgData[1], msgData[2], msgData[3], msgData[4])
 			user, err := GetOneUser(msgData[1])

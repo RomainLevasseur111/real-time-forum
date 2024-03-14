@@ -10,7 +10,7 @@ function post_websocket() {
 
     post_socket.onmessage = function (event) {
         setTimeout(() => {
-            if (event.data.substring(0, 8) === "PUBLISH_") {
+            if (event.data.substring(0, 4) === "P_B ") {
                 array = event.data.split(" ", 6);
     
                 // Create the post container
@@ -98,7 +98,7 @@ function publish() {
     cat2 = document.getElementById("cat2").value.replaceAll(/ /g, "_");
     postcontent = document.getElementById("postcontent").value;
     post_socket.send(
-        "PUBLISH_" + " " + userId + " " + cat1 + " " + cat2 + " " + postcontent
+        "P_B" + " " + userId + " " + cat1 + " " + cat2 + " " + postcontent
     );
 
     // Clear the input fields
