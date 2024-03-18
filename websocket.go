@@ -308,15 +308,39 @@ func Comment_Websocket(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(err)
 		return
 	}
+	posttype := ""
 	defer conn.Close()
-
-	/*for {
+	// Remove the connection of a client when it's closed
+	defer func() {
+		for i, c := range comment_connection {
+			if c.Conn == conn {
+				comment_connection = append(comment_connection[:i], comment_connection[i+1:]...)
+				break
+			}
+		}
+	}()
+	for {
 		msgType, msg, err := conn.ReadMessage()
 		if err != nil {
 			fmt.Println(err)
 			break
 		}
-
+		displayComment := func(posttype, pfp, nickname, content string, category, categoryB *string, msgType, postid int) {
+			cat1, cat2 := "_&nbsp_", "_&nbsp_"
+			if category != nil {
+				cat1 = *category
+			}
+			if categoryB != nil {
+				cat2 = *categoryB
+			}
+			temp := posttype + pfp + " " + nickname + " " + cat1 + " " + cat2 + " " + strconv.Itoa(postid) + " " + content
+			for _, c := range comment_connection {
+				if err = c.Conn.WriteMessage(msgType, []byte(temp)); err != nil {
+					fmt.Println(err)
+					return
+				}
+			}
+		}
 		// Show all comments of a post to a new user
 		if string(msg[0:4]) == "C_M " {
 
@@ -327,12 +351,45 @@ func Comment_Websocket(w http.ResponseWriter, r *http.Request) {
 
 			fmt.Printf("Connection of %s from %s at the comment_websocket\n", conn_.Name, conn.RemoteAddr())
 
-			post_connection = append(post_connection, conn_)
+			comment_connection = append(comment_connection, conn_)
 
-			// aller chercher dans la database tous les "posts" qui ont un commentid == strings.Split(string(msg), " ")[2]
+			post, err := GetOnePost(strings.Split(string(msg), " ")[2])
+			if err != nil{
+				fmt.Println(err)
+				break
+			}
+			postuser, err := GetOneUser(strconv.Itoa(post.Userid))
+			if err != nil{
+				fmt.Println(err)
+				break
+			}
+			// Post initial
+			posttype = "P_M "
+			displayComment(posttype, postuser.Pfp, postuser.NickName, post.Content, post.Category, post.CategoryB, msgType, post.Postid)
 
-			// boucler sur tous les comments et les envoyer dans la websocket
+			comments, err := GetComments(strings.Split(string(msg), " ")[2])
+			if err != nil{
+				fmt.Println(err)
+				break
+			}
+			for _,comment := range comments{
+				user, err := GetOneUser(strconv.Itoa(comment.Userid))
+				if err != nil{
+					fmt.Println(err)
+					break
+				}
+				// Tous ses commentaires
+				posttype = "C_M "
+				displayComment(posttype, user.Pfp, user.NickName, comment.Content, comment.Category, comment.CategoryB, msgType, comment.Postid)
+			}
+			// PB: a chaque fois qu'on clique sur le bouton comment, ouvre un nouvelle connexion websocket, donc tout se fait autant de fois qu'il y a 
+			// connexion donc duplique tous les commentaires.
+			// conn.Close() permet d'annuler ça, mais je pense pas que ce soit une bonne solution.
+			conn.Close()
+		} else if string(msg[0:4]) == "P_C "{
+			msgData := strings.SplitN(string(msg), " ",6)
+			Comment(msgData[1], msgData[2], msgData[3], msgData[4], msgData[5])
 
 		}
-	}*/
+	}
 }

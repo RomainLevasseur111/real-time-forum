@@ -124,7 +124,13 @@
                 <!--<div class="errorBox">
                     <span>{{.PostError}} </span>
                 </div>-->
-                <button class="button_post_yes" type="button" onclick="publish()">Post</button>
+                <button
+                    class="button_post_yes"
+                    type="button"
+                    onclick="publish()"
+                >
+                    Post
+                </button>
             </section>
             <div id="allposts"></div>
         </div>
@@ -132,9 +138,42 @@
         <!-- Post page content-->
 
         <div id="postpage">
+            <button type="button" onclick="LoadHomePage()">HomePage</button>
+            <section class="postsection">
+                <label for="postarea">NEW COMMENT</label>
+                <label for="category">Category</label>
+                <input type="text" name="category1" list="cat" id="cat1" />
+                <!-- <datalist id="cat">
+                    {{range .Categories}}
+                    <option>{{.Name}}</option>
+                    {{end}}
+                </datalist>-->
+                <input type="text" name="category2" list="cat" id="cat2" />
+                <!--<datalist id="cat">
+                    {{range .Categories}}
+                    <option>{{.Name}}</option>
+                    {{end}}
+                </datalist>-->
 
-            <button type="button" onclick="LoadHomePage()">HomePage</button> 
-
+                <textarea
+                    id="postcontent"
+                    name="content"
+                    class="postarea"
+                    placeholder="Publish a comment"
+                    required
+                ></textarea>
+                <!--<div class="errorBox">
+                    <span>{{.PostError}} </span>
+                </div>-->
+                <button
+                    class="button_post_yes"
+                    type="button"
+                    onclick="PublishComment()"
+                >
+                    Post
+                </button>
+            </section>
+            <div id="allcomments"></div>
         </div>
 
         <!--login page-->
