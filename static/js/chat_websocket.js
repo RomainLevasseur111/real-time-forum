@@ -21,6 +21,7 @@ function chat_websocket() {
     };
 
     chat_socket.onmessage = function (event) {
+        console.log(event.data);
         setTimeout(() => {
             if (event.data === "IsCo_Yes" || event.data === "IsCo_No") {
                 IsConnected = event.data;

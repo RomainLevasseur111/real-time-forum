@@ -155,8 +155,6 @@ func Chat_Websocket(w http.ResponseWriter, r *http.Request) {
 
 		fmt.Printf("%s\n", string(msg))
 
-		chat_connection = append(chat_connection, conn_)
-
 		db, err := sql.Open(DRIVER, DB)
 		if err != nil {
 			fmt.Println(err)
@@ -260,6 +258,7 @@ func Post_Websocket(w http.ResponseWriter, r *http.Request) {
 		// Publish a post to all user
 		if string(msg[0:4]) == "P_B " {
 			msgData := strings.SplitN(string(msg), " ", 5)
+			fmt.Println(len(msgData))
 			postid := Publish(msgData[1], msgData[2], msgData[3], msgData[4])
 			user, err := GetOneUser(msgData[1])
 			if err != nil {
@@ -319,6 +318,7 @@ func Comment_Websocket(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 	}()
+
 	for {
 		msgType, msg, err := conn.ReadMessage()
 		if err != nil {
@@ -354,12 +354,12 @@ func Comment_Websocket(w http.ResponseWriter, r *http.Request) {
 			comment_connection = append(comment_connection, conn_)
 
 			post, err := GetOnePost(strings.Split(string(msg), " ")[2])
-			if err != nil{
+			if err != nil {
 				fmt.Println(err)
 				break
 			}
 			postuser, err := GetOneUser(strconv.Itoa(post.Userid))
-			if err != nil{
+			if err != nil {
 				fmt.Println(err)
 				break
 			}
@@ -368,13 +368,13 @@ func Comment_Websocket(w http.ResponseWriter, r *http.Request) {
 			displayComment(posttype, postuser.Pfp, postuser.NickName, post.Content, post.Category, post.CategoryB, msgType, post.Postid)
 
 			comments, err := GetComments(strings.Split(string(msg), " ")[2])
-			if err != nil{
+			if err != nil {
 				fmt.Println(err)
 				break
 			}
-			for _,comment := range comments{
+			for _, comment := range comments {
 				user, err := GetOneUser(strconv.Itoa(comment.Userid))
-				if err != nil{
+				if err != nil {
 					fmt.Println(err)
 					break
 				}
@@ -382,12 +382,12 @@ func Comment_Websocket(w http.ResponseWriter, r *http.Request) {
 				posttype = "C_M "
 				displayComment(posttype, user.Pfp, user.NickName, comment.Content, comment.Category, comment.CategoryB, msgType, comment.Postid)
 			}
-			// PB: a chaque fois qu'on clique sur le bouton comment, ouvre un nouvelle connexion websocket, donc tout se fait autant de fois qu'il y a 
+			// PB: a chaque fois qu'on clique sur le bouton comment, ouvre un nouvelle connexion websocket, donc tout se fait autant de fois qu'il y a
 			// connexion donc duplique tous les commentaires.
 			// conn.Close() permet d'annuler ça, mais je pense pas que ce soit une bonne solution.
 			conn.Close()
-		} else if string(msg[0:4]) == "P_C "{
-			msgData := strings.SplitN(string(msg), " ",6)
+		} else if string(msg[0:4]) == "P_C " {
+			msgData := strings.SplitN(string(msg), " ", 6)
 			Comment(msgData[1], msgData[2], msgData[3], msgData[4], msgData[5])
 
 		}

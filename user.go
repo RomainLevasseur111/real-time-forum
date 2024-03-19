@@ -42,7 +42,7 @@ func GetConversation(name1, name2 string) (messages []MESSAGES, err error) {
 	}
 	defer db.Close()
 
-	rows, err := db.Query("SELECT sendername, receivername, date, pfp, content FROM MESSAGES WHERE sendername = ? AND receivername = ?;", name1, name2)
+	rows, err := db.Query("SELECT sendername, receivername, date, pfp, content FROM MESSAGES WHERE sendername = ? AND receivername = ? ORDER BY messageid ASC;", name1, name2)
 	if err != nil {
 		return nil, err
 	}
