@@ -385,11 +385,20 @@ func Comment_Websocket(w http.ResponseWriter, r *http.Request) {
 			// PB: a chaque fois qu'on clique sur le bouton comment, ouvre un nouvelle connexion websocket, donc tout se fait autant de fois qu'il y a
 			// connexion donc duplique tous les commentaires.
 			// conn.Close() permet d'annuler ça, mais je pense pas que ce soit une bonne solution.
-			conn.Close()
 		} else if string(msg[0:4]) == "P_C " {
-			msgData := strings.SplitN(string(msg), " ", 6)
-			Comment(msgData[1], msgData[2], msgData[3], msgData[4], msgData[5])
-
+			msgData := strings.SplitN(string(msg), " ", 4)
+			newCommentId := Comment(msgData[1], msgData[2], msgData[3])
+			post, err := GetOnePost(strconv.Itoa(newCommentId))
+			if err != nil {
+				fmt.Println(err)
+				break
+			}
+			postuser, err := GetOneUser(strconv.Itoa(post.Userid))
+			if err != nil {
+				fmt.Println(err)
+				break
+			}
+			displayComment("C_M ",postuser.Pfp, postuser.NickName, post.Content, nil, nil, msgType, newCommentId )
 		}
 	}
 }

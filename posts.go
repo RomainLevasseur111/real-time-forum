@@ -229,11 +229,7 @@ func GetOnePost(postid string) (*POST, error) {
 	return &lol, err
 }
 
-func Comment(postid, userId, category1, category2, content string) int {
-	categories, err := InsertCategories(category1, category2)
-	if err != nil {
-		fmt.Println(err)
-	}
+func Comment(postid, userId,content string) int {
 
 	db, err := sql.Open(DRIVER, DB)
 	if err != nil {
@@ -241,15 +237,10 @@ func Comment(postid, userId, category1, category2, content string) int {
 		return -1
 	}
 	defer db.Close()
-	for len(categories) < 2 {
-		categories = append(categories, nil)
-	}
 
-	res, err := db.Exec(`INSERT INTO "POSTS" ("commentid", "userid", "category", "categoryB", "content", "postdate") VALUES (?,?, ?, ?, ?, ?);`,
+	res, err := db.Exec(`INSERT INTO "POSTS" ("commentid", "userid", "content", "postdate") VALUES (?, ?, ?, ?);`,
 		postid,
 		userId,
-		categories[0],
-		categories[1],
 		content,
 		time.Now().Format(DATEFMT),
 	)

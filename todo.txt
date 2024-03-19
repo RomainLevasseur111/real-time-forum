@@ -1,16 +1,6 @@
-Private Messages
 
-Users will be able to send private messages to each other, so you will need to create a chat, where it will exist :
+NOTIF
 
-    A section to show who is online/offline and able to talk to:
-        This section must be organized by the last message sent (just like discord). If the user is new and does not present messages
-        you must organize it in alphabetic order.
+TRI DES USER DANS LE CHAT
 
-
-Posts and Comments
-
-This part is pretty similar to the first forum. Users must be able to:
-
-    Create comments on the posts:
-        See posts in a feed display
-        See comments only if they click on a post ==> suivre les commentaires en francais dans le code (websocket.go et comments.js)
+COMMENTAIRE QUI MARCHENT

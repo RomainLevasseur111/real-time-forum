@@ -15,9 +15,9 @@ function Open_Comments(postid) {
     };
 
     comment_socket.onmessage = function (event) {
+        console.log(event.data);
         setTimeout(() => {
             if (event.data.substring(0, 4) === "P_M ") {
-                console.log("samoihgz");
                 array = event.data.split(" ", 6);
 
                 // Create the post container
@@ -68,7 +68,7 @@ function Open_Comments(postid) {
                 contentP.textContent = event.data.split(" ").slice(6).join(" ");
                 postDiv.appendChild(contentP);
 
-                let commentsDiv = document.getElementById("allcomments");
+                let commentsDiv = document.getElementById("initialpost");
                 // Append the post container to the main container
                 commentsDiv.append(postDiv);
             }
@@ -76,7 +76,6 @@ function Open_Comments(postid) {
                 "../static/CSS/postpage.css";
 
             if (event.data.substring(0, 4) === "C_M ") {
-                console.log("samoihgz");
                 array = event.data.split(" ", 6);
 
                 // Create the post container
@@ -103,18 +102,6 @@ function Open_Comments(postid) {
                 // Append user info to the post container
                 postDiv.appendChild(userInfoDiv);
 
-                // Create the category div
-                const categoryDiv = document.createElement("div");
-                categoryDiv.className = "category";
-                if (array[3] === "_&nbsp_") {
-                    array[3] = "";
-                }
-                if (array[4] === "_&nbsp_") {
-                    array[4] = "";
-                }
-                categoryDiv.textContent = array[3] + " " + array[4];
-                postDiv.appendChild(categoryDiv);
-
                 // Create the content paragraph
                 const contentP = document.createElement("p");
                 contentP.className = "content";
@@ -123,7 +110,7 @@ function Open_Comments(postid) {
 
                 let commentsDiv = document.getElementById("allcomments");
                 // Append the post container to the main container
-                commentsDiv.append(postDiv);
+                commentsDiv.prepend(postDiv);
             }
             document.querySelector('link[rel="stylesheet"]').href =
                 "../static/CSS/postpage.css";
@@ -145,6 +132,7 @@ function Open_Comments(postid) {
 }
 
 function LoadHomePage() {
+    comment_socket.close(1000, "Normal closure");
     document.querySelectorAll(".rangecomment").forEach((el) => el.remove());
     document.querySelector("#homepage").style.display = "block";
     document.querySelector("#postpage").style.display = "none";
@@ -153,27 +141,19 @@ function LoadHomePage() {
 }
 
 function PublishComment() {
-    userId = document.getElementById("userid").getAttribute("value");
-    cat1 = document.getElementById("cat1").value.replaceAll(/ /g, "_");
-    cat2 = document.getElementById("cat2").value.replaceAll(/ /g, "_");
-    postcontent = document.getElementById("postcontent").value;
-    postid = document.getElementById("postid");
-    comment_socket.send(
-        "P_C" +
-            " " +
-            postid.value +
-            " " +
-            userId +
-            " " +
-            cat1 +
-            " " +
-            cat2 +
-            " " +
-            postcontent
-    );
+    var userId = document.getElementById("userid").getAttribute("value");
+    var postcontent = document.getElementById("postcontent_").value;
+    var postid = document.getElementById("postid").value;
 
-    // Clear the input fields
-    document.getElementById("cat1").value = "";
-    document.getElementById("cat2").value = "";
-    document.getElementById("postcontent").value = "";
+    // Ensure the WebSocket connection is open before sending
+    if (comment_socket.readyState === WebSocket.OPEN) {
+        comment_socket.send(
+            "P_C" + " " + postid + " " + userId + " " + postcontent
+        );
+
+        // Clear the input fields
+        document.getElementById("postcontent_").value = "";
+    } else {
+        console.error("WebSocket connection is not open. Cannot send message.");
+    }
 }

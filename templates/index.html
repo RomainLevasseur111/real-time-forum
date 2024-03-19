@@ -83,9 +83,6 @@
             </div>
         </div>
 
-        <script src="../static/js/post_websocket.js"></script>
-        <script src="../static/js/comment.js"></script>
-
         <!-- Home page content-->
 
         <div id="homepage">
@@ -102,17 +99,7 @@
                 <label for="postarea">NEW POST</label>
                 <label for="category">Category</label>
                 <input type="text" name="category1" list="cat" id="cat1" />
-                <!-- <datalist id="cat">
-                    {{range .Categories}}
-                    <option>{{.Name}}</option>
-                    {{end}}
-                </datalist>-->
                 <input type="text" name="category2" list="cat" id="cat2" />
-                <!--<datalist id="cat">
-                    {{range .Categories}}
-                    <option>{{.Name}}</option>
-                    {{end}}
-                </datalist>-->
 
                 <textarea
                     id="postcontent"
@@ -121,9 +108,7 @@
                     placeholder="Publish a post"
                     required
                 ></textarea>
-                <!--<div class="errorBox">
-                    <span>{{.PostError}} </span>
-                </div>-->
+
                 <button
                     class="button_post_yes"
                     type="button"
@@ -139,32 +124,15 @@
 
         <div id="postpage">
             <button type="button" onclick="LoadHomePage()">HomePage</button>
+            <div id="initialpost"></div>
             <section class="postsection">
                 <label for="postarea">NEW COMMENT</label>
-                <label for="category">Category</label>
-                <input type="text" name="category1" list="cat" id="cat1" />
-                <!-- <datalist id="cat">
-                    {{range .Categories}}
-                    <option>{{.Name}}</option>
-                    {{end}}
-                </datalist>-->
-                <input type="text" name="category2" list="cat" id="cat2" />
-                <!--<datalist id="cat">
-                    {{range .Categories}}
-                    <option>{{.Name}}</option>
-                    {{end}}
-                </datalist>-->
-
                 <textarea
-                    id="postcontent"
-                    name="content"
-                    class="postarea"
+                    id="postcontent_"
                     placeholder="Publish a comment"
                     required
                 ></textarea>
-                <!--<div class="errorBox">
-                    <span>{{.PostError}} </span>
-                </div>-->
+
                 <button
                     class="button_post_yes"
                     type="button"
@@ -257,5 +225,7 @@
             </section>
         </div>
         {{end}}
+        <script src="../static/js/post_websocket.js"></script>
+        <script src="../static/js/comment.js"></script>
     </body>
 </html>
