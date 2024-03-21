@@ -398,7 +398,7 @@ func Comment_Websocket(w http.ResponseWriter, r *http.Request) {
 				fmt.Println(err)
 				break
 			}
-			displayComment("C_M ",postuser.Pfp, postuser.NickName, post.Content, nil, nil, msgType, newCommentId )
+			displayComment("C_M ", postuser.Pfp, postuser.NickName, post.Content, nil, nil, msgType, newCommentId)
 		}
 	}
 }

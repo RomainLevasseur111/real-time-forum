@@ -238,3 +238,8 @@
 .conn_img, .pfp_chat_img {
     margin-left: 10px; /* Space out images from the text */
 }
+
+.notif {
+width: 20px;
+height: 20px;
+}

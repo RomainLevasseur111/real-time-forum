@@ -1,4 +1,3 @@
-var coll = document.getElementsByClassName("collapsible");
 var i;
 
 for (i = 0; i < coll.length; i++) {
@@ -7,8 +6,11 @@ for (i = 0; i < coll.length; i++) {
     var content = this.nextElementSibling;
     if (content.style.width){
       content.style.width = null;
+      IsMsgOpen = false;
+      notif = false;
     } else {
       content.style.width = "29vw";
+      IsMsgOpen = true;
     }
   });
 }

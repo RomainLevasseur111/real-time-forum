@@ -9,7 +9,10 @@ let array = [];
 let AllMessages = [];
 let leftovers;
 let IsConnected;
+let IsMsgOpen = false;
+let notif = false;
 let max_Messages = 10;
+var coll = document.getElementsByClassName("collapsible");
 const parts = connectedUser.split(" ");
 parts[0] = parts[0].substring(1);
 
@@ -67,6 +70,16 @@ function chat_websocket() {
 
                 output.appendChild(messageDiv);
                 output.scrollTop = output.scrollHeight;
+
+                if (!IsMsgOpen && !notif) {
+                    console.log("notif")
+                    const notif = document.createElement("img");
+                    notif.className = "notif";
+                    notif.src = "../static/img/disconnected.webp";
+                    collapsible = document.getElementById("collapsible");
+                    collapsible.appendChild(notif);
+                    notif = true;
+                }
             }
         }, 50);
     };
