@@ -27,11 +27,11 @@ func Chat_Websocket(w http.ResponseWriter, r *http.Request) {
 	}()
 
 	// Send a private message
-	send := func(msgData []string, pfp string, msgType int) {
+	send := func(msgData []string, pfp, name1, name2 string, msgType int) {
 		temp := msgData[0] + " " + msgData[2] + " " + pfp + " " + msgData[3] + " "
 
 		for _, c := range chat_connection {
-			if c.Name == msgData[1][:len(msgData[1])-1] || c.Name == msgData[0][:len(msgData[0])-1] {
+			if c.Name == name1 || c.Name == name2 {
 				if err = c.Conn.WriteMessage(msgType, []byte(temp)); err != nil {
 					fmt.Println(err)
 					break
@@ -143,7 +143,7 @@ func Chat_Websocket(w http.ResponseWriter, r *http.Request) {
 			for _, message := range messages {
 				var temp []string
 				temp = append(temp, message.sendername, message.receivername, message.date, message.content)
-				send(temp, message.pfp, msgType)
+				send(temp, message.pfp, msgData[2][:len(msgData[2])-1], "", msgType)
 			}
 
 			continue
@@ -182,7 +182,7 @@ func Chat_Websocket(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		send(msgData, pfp, msgType)
+		send(msgData, pfp, msgData[1][:len(msgData[1])-1], msgData[0][:len(msgData[0])-1], msgType)
 	}
 }
 

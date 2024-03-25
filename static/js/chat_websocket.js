@@ -10,7 +10,7 @@ let AllMessages = [];
 let leftovers;
 let IsConnected;
 let IsMsgOpen = false;
-let notif = false;
+let Isnotif = false;
 let max_Messages = 10;
 var coll = document.getElementsByClassName("collapsible");
 const parts = connectedUser.split(" ");
@@ -24,7 +24,6 @@ function chat_websocket() {
     };
 
     chat_socket.onmessage = function (event) {
-        console.log(event.data);
         setTimeout(() => {
             if (event.data === "IsCo_Yes" || event.data === "IsCo_No") {
                 IsConnected = event.data;
@@ -71,14 +70,14 @@ function chat_websocket() {
                 output.appendChild(messageDiv);
                 output.scrollTop = output.scrollHeight;
 
-                if (!IsMsgOpen && !notif) {
-                    console.log("notif")
+                if (!IsMsgOpen && !Isnotif) {
                     const notif = document.createElement("img");
                     notif.className = "notif";
+                    notif.id = "notif";
                     notif.src = "../static/img/disconnected.webp";
                     collapsible = document.getElementById("collapsible");
                     collapsible.appendChild(notif);
-                    notif = true;
+                    Isnotif = true;
                 }
             }
         }, 50);

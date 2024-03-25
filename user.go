@@ -42,7 +42,7 @@ func GetConversation(name1, name2 string) (messages []MESSAGES, err error) {
 	}
 	defer db.Close()
 
-	rows, err := db.Query("SELECT sendername, receivername, date, pfp, content FROM MESSAGES WHERE sendername = ? AND receivername = ? ORDER BY messageid ASC;", name1, name2)
+	rows, err := db.Query("SELECT sendername, receivername, date, pfp, content FROM MESSAGES WHERE sendername = ? AND receivername = ? OR sendername = ? AND receivername = ? ORDER BY messageid ASC;", name1, name2, name2, name1)
 	if err != nil {
 		return nil, err
 	}
@@ -50,28 +50,6 @@ func GetConversation(name1, name2 string) (messages []MESSAGES, err error) {
 	for rows.Next() {
 		var message MESSAGES
 		err = rows.Scan(
-			&message.sendername,
-			&message.receivername,
-			&message.date,
-			&message.pfp,
-			&message.content,
-		)
-		if err != nil {
-			return nil, err
-		}
-
-		messages = append(messages, message)
-
-	}
-
-	rows_, err := db.Query("SELECT sendername, receivername, date, pfp, content FROM MESSAGES WHERE sendername = ? AND receivername = ?;", name2, name1)
-	if err != nil {
-		return nil, err
-	}
-
-	for rows_.Next() {
-		var message MESSAGES
-		err = rows_.Scan(
 			&message.sendername,
 			&message.receivername,
 			&message.date,
