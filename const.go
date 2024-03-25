@@ -9,7 +9,7 @@ import (
 const (
 	DB      = "./data.db"
 	DRIVER  = "sqlite3"
-	IP      = "192.168.100.250"
+	IP      = "192.168.1.23"
 	DATEFMT = "2006-01-02 15:04:05"
 )
 
@@ -43,4 +43,5 @@ type CONNECTIONS struct {
 
 type MESSAGES struct {
 	sendername, receivername, date, pfp, content string
+	messageid int
 }

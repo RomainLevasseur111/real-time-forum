@@ -84,23 +84,39 @@ func Chat_Websocket(w http.ResponseWriter, r *http.Request) {
 
 		// Ask for all the client in the database
 		if string(msg)[0:4] == "U_N " {
-			users, err := GetAllUsers()
+
+			loggedUser, err := GetOneUserNickname(string(msg[4:]))
 			if err != nil {
 				fmt.Println(err)
 				return
 			}
 
-			// sort users by alphabetical order
-			for i := range users {
-				for j := i; j < len(users); j++ {
-					if strings.ToLower(users[i].NickName) > strings.ToLower(users[j].NickName) {
-						users[i], users[j] = users[j], users[i]
+			users, err := GetAllUsers()
+			if err != nil {
+				fmt.Println(err)
+				return
+			}
+			temp := "U_N "
+
+			convusers, err := ConvExist(loggedUser)
+			if err != nil{
+				fmt.Println(err)
+				break
+			}
+			SortUsers(users)
+			for _,i := range users{
+				isIn := false
+				for _,j := range convusers{
+					if i == j{
+						isIn = true
+						break
 					}
 				}
+				if !isIn{
+					convusers = append(convusers, i)
+				}
 			}
-
-			temp := "U_N "
-			for _, user := range users {
+			for _, user := range convusers {
 				isConnected := "../static/img/disconnected.webp"
 				for _, c := range chat_connection {
 					if c.Name == user.NickName {

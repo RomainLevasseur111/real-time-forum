@@ -3,7 +3,9 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"log"
 	"net/http"
+	"strings"
 )
 
 func GetAllUsers() (users []USER, err error) {
@@ -189,3 +191,110 @@ func GetOneUser(id string) (*USER, error) {
 
 	return &lol, err
 }
+func GetOneUserNickname(nickname string) (*USER, error) {
+	db, err := sql.Open(DRIVER, DB)
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
+	var lol USER
+	sts := `SELECT nickname, pfp FROM USERS WHERE nickname = ?`
+	row := db.QueryRow(sts, nickname)
+	err = row.Scan(
+		&lol.NickName,
+		&lol.Pfp,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	return &lol, err
+}
+// Sort users by alphabetical order
+func SortUsers(users []USER)[]USER{
+	for i := range users {
+		for j := i; j < len(users); j++ {
+			if strings.ToLower(users[i].NickName) > strings.ToLower(users[j].NickName) {
+				users[i], users[j] = users[j], users[i]
+			}
+		}
+	}
+	return users
+}
+
+// Check if conversation between two users exists
+func ConvExist(loggeduser *USER) ([]USER, error) {
+    db, err := sql.Open(DRIVER, DB)
+    if err != nil {
+        log.Fatal(err)
+    }
+    defer db.Close()
+
+    loggedname := loggeduser.NickName + " "
+    var messages []MESSAGES
+    query := `SELECT messageid, sendername, receivername FROM MESSAGES WHERE sendername = ? OR receivername = ? ORDER BY messageid DESC;`
+    rows, err := db.Query(query, loggedname, loggedname)
+    if err != nil {
+        return nil, err
+    }
+    defer rows.Close()
+
+    for rows.Next() {
+        var message MESSAGES
+        if err := rows.Scan(&message.messageid, &message.sendername, &message.receivername); err != nil {
+            return nil, err
+        }
+        messages = append(messages, message)
+    }
+
+    if err = rows.Err(); err != nil {
+        return nil, err
+    }
+	var names []string
+	for _,message := range messages{
+		if message.sendername == loggedname{
+			dup := false
+			for _,i := range names{
+				if message.receivername[:len(message.receivername)-1] == i{
+					dup = true
+					break
+				}
+
+			}
+			if !dup{
+				names = append(names, message.receivername[:len(message.receivername)-1])
+			}
+		}else if message.receivername ==  loggedname{
+			dup := false
+			for _,i := range names{
+				if message.sendername[:len(message.sendername)-1] == i{
+					dup = true
+					break
+				}
+			}
+			if !dup{
+				names = append(names, message.sendername[:len(message.sendername)-1])
+			}
+		}
+	}
+	var result []USER
+	for _,name := range names{
+		user, err := GetOneUserNickname(name)
+		if err != nil{
+			fmt.Println(err)
+			break
+		}
+		result = append(result, *user)
+	}
+
+    return result, nil
+}
+
+
+
+
+
+
+
+
+// 
