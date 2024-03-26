@@ -64,6 +64,7 @@
     margin-left: auto; /* Align messages to the right */
     background: linear-gradient(to bottom, #36393F 0%, #2F3136 100%); /* Gradient for softer look */
     word-wrap: break-word;
+    min-height: 60px;
 }
 
 

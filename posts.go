@@ -115,6 +115,7 @@ func GetStats(postid int) (likes int, dislikes int, comments int, err error) {
 
 	return
 }
+
 func GetComments(commentid string) (res []*POST, err error) {
 	db, err := sql.Open(DRIVER, DB)
 	if err != nil {
@@ -229,8 +230,7 @@ func GetOnePost(postid string) (*POST, error) {
 	return &lol, err
 }
 
-func Comment(postid, userId,content string) int {
-
+func Comment(postid, userId, content string) int {
 	db, err := sql.Open(DRIVER, DB)
 	if err != nil {
 		fmt.Println(err)

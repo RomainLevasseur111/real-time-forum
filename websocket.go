@@ -99,20 +99,20 @@ func Chat_Websocket(w http.ResponseWriter, r *http.Request) {
 			temp := "U_N "
 
 			convusers, err := ConvExist(loggedUser)
-			if err != nil{
+			if err != nil {
 				fmt.Println(err)
 				break
 			}
 			SortUsers(users)
-			for _,i := range users{
+			for _, i := range users {
 				isIn := false
-				for _,j := range convusers{
-					if i == j{
+				for _, j := range convusers {
+					if i == j {
 						isIn = true
 						break
 					}
 				}
-				if !isIn{
+				if !isIn {
 					convusers = append(convusers, i)
 				}
 			}
@@ -222,8 +222,6 @@ func Post_Websocket(w http.ResponseWriter, r *http.Request) {
 
 	// Display a given post
 	displayPost := func(pfp, nickname, content string, category, categoryB *string, msgType, postid int, userNameToSend string) {
-		fmt.Println(userNameToSend)
-		fmt.Println(post_connection)
 		cat1, cat2 := "_&nbsp_", "_&nbsp_"
 		if category != nil {
 			cat1 = *category
@@ -274,7 +272,10 @@ func Post_Websocket(w http.ResponseWriter, r *http.Request) {
 		// Publish a post to all user
 		if string(msg[0:4]) == "P_B " {
 			msgData := strings.SplitN(string(msg), " ", 5)
-			fmt.Println(len(msgData))
+			if msgData[4] == "" {
+				fmt.Println("Empty Post")
+				continue
+			}
 			postid := Publish(msgData[1], msgData[2], msgData[3], msgData[4])
 			user, err := GetOneUser(msgData[1])
 			if err != nil {
@@ -341,6 +342,7 @@ func Comment_Websocket(w http.ResponseWriter, r *http.Request) {
 			fmt.Println(err)
 			break
 		}
+
 		displayComment := func(posttype, pfp, nickname, content string, category, categoryB *string, msgType, postid int) {
 			cat1, cat2 := "_&nbsp_", "_&nbsp_"
 			if category != nil {
@@ -357,6 +359,7 @@ func Comment_Websocket(w http.ResponseWriter, r *http.Request) {
 				}
 			}
 		}
+
 		// Show all comments of a post to a new user
 		if string(msg[0:4]) == "C_M " {
 
@@ -379,7 +382,7 @@ func Comment_Websocket(w http.ResponseWriter, r *http.Request) {
 				fmt.Println(err)
 				break
 			}
-			// Post initial
+			// Initial post
 			posttype = "P_M "
 			displayComment(posttype, postuser.Pfp, postuser.NickName, post.Content, post.Category, post.CategoryB, msgType, post.Postid)
 
@@ -394,21 +397,26 @@ func Comment_Websocket(w http.ResponseWriter, r *http.Request) {
 					fmt.Println(err)
 					break
 				}
-				// Tous ses commentaires
+				// All its comments
 				posttype = "C_M "
 				displayComment(posttype, user.Pfp, user.NickName, comment.Content, comment.Category, comment.CategoryB, msgType, comment.Postid)
 			}
-			// PB: a chaque fois qu'on clique sur le bouton comment, ouvre un nouvelle connexion websocket, donc tout se fait autant de fois qu'il y a
-			// connexion donc duplique tous les commentaires.
-			// conn.Close() permet d'annuler ça, mais je pense pas que ce soit une bonne solution.
+
+			// New comment
 		} else if string(msg[0:4]) == "P_C " {
 			msgData := strings.SplitN(string(msg), " ", 4)
+			if msgData[3] == "" {
+				fmt.Println("Empty comment")
+				continue
+			}
+
 			newCommentId := Comment(msgData[1], msgData[2], msgData[3])
 			post, err := GetOnePost(strconv.Itoa(newCommentId))
 			if err != nil {
 				fmt.Println(err)
 				break
 			}
+
 			postuser, err := GetOneUser(strconv.Itoa(post.Userid))
 			if err != nil {
 				fmt.Println(err)

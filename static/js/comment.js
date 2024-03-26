@@ -113,7 +113,7 @@ function Open_Comments(postid) {
                 commentsDiv.prepend(postDiv);
             }
             document.querySelector('link[rel="stylesheet"]').href =
-                "../static/CSS/postpage.css";
+                "/static/CSS/postpage.css";
         }, 50);
     };
 
