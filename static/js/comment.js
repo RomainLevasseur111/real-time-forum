@@ -4,7 +4,7 @@ function Open_Comments(postid) {
     document.querySelector("#homepage").style.display = "none";
     document.querySelector("#postpage").style.display = "block";
     document.querySelector('link[rel="stylesheet"]').href =
-        "../static/CSS/postpage.css";
+        "../static/css/postpage.css";
 
     comment_socket = new WebSocket("ws://" + IP + ":8989/comment_websocket");
 
@@ -73,7 +73,7 @@ function Open_Comments(postid) {
                 commentsDiv.append(postDiv);
             }
             document.querySelector('link[rel="stylesheet"]').href =
-                "../static/CSS/postpage.css";
+                "../static/css/postpage.css";
 
             if (event.data.substring(0, 4) === "C_M ") {
                 array = event.data.split(" ", 6);
@@ -113,7 +113,7 @@ function Open_Comments(postid) {
                 commentsDiv.prepend(postDiv);
             }
             document.querySelector('link[rel="stylesheet"]').href =
-                "/static/CSS/postpage.css";
+                "/static/css/postpage.css";
         }, 50);
     };
 
@@ -136,7 +136,7 @@ function LoadHomePage() {
     document.querySelectorAll(".rangecomment").forEach((el) => el.remove());
     document.querySelector("#homepage").style.display = "block";
     document.querySelector("#postpage").style.display = "none";
-    document.querySelector('link[rel="stylesheet"]').href = "/static/CSS/homepage.css";
+    document.querySelector('link[rel="stylesheet"]').href = "/static/css/homepage.css";
 }
 
 function PublishComment() {

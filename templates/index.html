@@ -5,8 +5,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Real Time Forum</title>
         <link rel="stylesheet" href="" />
-        <link rel="stylesheet" href="/static/CSS/header.css" />
-        <link rel="stylesheet" href="/static/CSS/chat.css" />
+        <link rel="stylesheet" href="/static/css/header.css" />
+        <link rel="stylesheet" href="/static/css/chat.css" />
     </head>
     <body>
         <header>
@@ -22,7 +22,7 @@
         {{if and (.Code) (.Name) (.Msg)}}
         <script>
             document.querySelector('link[rel="stylesheet"]').href =
-                "/static/CSS/error.css";
+                "/static/css/error.css";
         </script>
 
         <div class="Box">
@@ -38,7 +38,7 @@
         {{else if .ConnectedUser}}
         <script>
             document.querySelector('link[rel="stylesheet"]').href =
-                "/static/CSS/homepage.css";
+                "/static/css/homepage.css";
         </script>
         <div class="collapsible-chat">
             <button type="button" id="collapsible" class="collapsible">
@@ -148,7 +148,7 @@
         {{else}}
         <script>
             document.querySelector('link[rel="stylesheet"]').href =
-                "/static/CSS/login.css";
+                "/static/css/login.css";
         </script>
 
         <div id="forms-container">
