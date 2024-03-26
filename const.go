@@ -37,8 +37,8 @@ type CATEGORY struct { // Category structure
 }
 
 type CONNECTIONS struct {
-	Conn *websocket.Conn
-	Name string
+	Conn            *websocket.Conn
+	Name, CommentId string
 }
 
 type MESSAGES struct {

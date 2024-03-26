@@ -343,7 +343,7 @@ func Comment_Websocket(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 
-		displayComment := func(posttype, pfp, nickname, content string, category, categoryB *string, msgType, postid int) {
+		displayComment := func(name, originalPostId, posttype, pfp, nickname, content string, category, categoryB *string, msgType, postid int) {
 			cat1, cat2 := "_&nbsp_", "_&nbsp_"
 			if category != nil {
 				cat1 = *category
@@ -353,9 +353,11 @@ func Comment_Websocket(w http.ResponseWriter, r *http.Request) {
 			}
 			temp := posttype + pfp + " " + nickname + " " + cat1 + " " + cat2 + " " + strconv.Itoa(postid) + " " + content
 			for _, c := range comment_connection {
-				if err = c.Conn.WriteMessage(msgType, []byte(temp)); err != nil {
-					fmt.Println(err)
-					return
+				if c.Name == name || (name == "ALL" && originalPostId == c.CommentId) {
+					if err = c.Conn.WriteMessage(msgType, []byte(temp)); err != nil {
+						fmt.Println(err)
+						return
+					}
 				}
 			}
 		}
@@ -367,12 +369,13 @@ func Comment_Websocket(w http.ResponseWriter, r *http.Request) {
 			var conn_ CONNECTIONS
 			conn_.Conn = conn
 			conn_.Name = strings.Split(string(msg), " ")[1]
+			conn_.CommentId = strings.Split(string(msg), " ")[2]
 
 			fmt.Printf("Connection of %s from %s at the comment_websocket\n", conn_.Name, conn.RemoteAddr())
 
 			comment_connection = append(comment_connection, conn_)
 
-			post, err := GetOnePost(strings.Split(string(msg), " ")[2])
+			post, err := GetOnePost(conn_.CommentId)
 			if err != nil {
 				fmt.Println(err)
 				break
@@ -384,13 +387,14 @@ func Comment_Websocket(w http.ResponseWriter, r *http.Request) {
 			}
 			// Initial post
 			posttype = "P_M "
-			displayComment(posttype, postuser.Pfp, postuser.NickName, post.Content, post.Category, post.CategoryB, msgType, post.Postid)
+			displayComment(conn_.Name, "", posttype, postuser.Pfp, postuser.NickName, post.Content, post.Category, post.CategoryB, msgType, post.Postid)
 
-			comments, err := GetComments(strings.Split(string(msg), " ")[2])
+			comments, err := GetComments(conn_.CommentId)
 			if err != nil {
 				fmt.Println(err)
 				break
 			}
+
 			for _, comment := range comments {
 				user, err := GetOneUser(strconv.Itoa(comment.Userid))
 				if err != nil {
@@ -399,7 +403,7 @@ func Comment_Websocket(w http.ResponseWriter, r *http.Request) {
 				}
 				// All its comments
 				posttype = "C_M "
-				displayComment(posttype, user.Pfp, user.NickName, comment.Content, comment.Category, comment.CategoryB, msgType, comment.Postid)
+				displayComment(conn_.Name, "", posttype, user.Pfp, user.NickName, comment.Content, comment.Category, comment.CategoryB, msgType, comment.Postid)
 			}
 
 			// New comment
@@ -422,7 +426,7 @@ func Comment_Websocket(w http.ResponseWriter, r *http.Request) {
 				fmt.Println(err)
 				break
 			}
-			displayComment("C_M ", postuser.Pfp, postuser.NickName, post.Content, nil, nil, msgType, newCommentId)
+			displayComment("ALL", msgData[1], "C_M ", postuser.Pfp, postuser.NickName, post.Content, nil, nil, msgType, newCommentId)
 		}
 	}
 }
