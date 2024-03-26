@@ -136,8 +136,7 @@ function LoadHomePage() {
     document.querySelectorAll(".rangecomment").forEach((el) => el.remove());
     document.querySelector("#homepage").style.display = "block";
     document.querySelector("#postpage").style.display = "none";
-    document.querySelector('link[rel="stylesheet"]').href =
-        "/static/CSS/homepage.css";
+    document.querySelector('link[rel="stylesheet"]').href = "/static/CSS/homepage.css";
 }
 
 function PublishComment() {

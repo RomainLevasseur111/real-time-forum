@@ -61,6 +61,7 @@ h4 {
     margin-bottom: 15px;
     color: #e5ebf388;
 }
+
 #cat1 {
     justify-content: center;
     width: 45%;
@@ -90,6 +91,7 @@ h4 {
         #2f3136 100%
     ); /* Gradient for softer look */
 }
+
 textarea {
     resize: none;
     border: 1px solid #9579f6;

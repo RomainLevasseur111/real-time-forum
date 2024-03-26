@@ -2,6 +2,10 @@ h2 {
     color: red;
 }
 
+#postpage {
+    width: 680px;
+}
+
 /* Profile Picture and User Info */
 .postuserinfo {
     display: flex;
@@ -33,7 +37,7 @@ h4 {
 }
 
 /* Inputs and Textarea */
-.postarea {
+#postcontent_ {
     width: 96%;
     padding: 10px;
     background: linear-gradient(
@@ -129,7 +133,7 @@ button[type="submit"]:active {
 /* General Post Container */
 #allcomments {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(600px, 1fr));
     gap: 20px;
     padding: 20px;
 }
@@ -172,6 +176,7 @@ button[type="submit"]:active {
     font-size: 16px;
     color: #dcddde;
     margin-bottom: 20px;
+    word-wrap: break-word;
 }
 
 /* Interaction Buttons */
@@ -294,23 +299,27 @@ button[type="submit"]:active {
     height: 100%;
 }
 
-.comment_button {
-    float: right;
-    width: 40px;
-    height: 35px;
-    background: none;
-    border: none;
-    border-radius: 20px;
+.back_to_homepage_button {
+    font-size: 17px;
+    padding: 10px 15px; /* Add padding for better spacing */
+    background: linear-gradient(135deg, #5865F2, #9579F6); /* Gradient background */
+    color: #FFFFFF; /* Text color */
+    border: none; /* Remove default border */
+    border-radius: 20px; /* Rounded corners */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
     cursor: pointer; /* Cursor changes to pointer on hover */
     transition: all 0.3s ease; /* Smooth transition for hover effect */
+    margin-bottom: 20px;
+    width: 100%;
 }
 
-.comment_button:hover {
+.back_to_homepage_button:hover {
+    background: linear-gradient(135deg, #6B73FF, #9579F6); /* Slightly change gradient on hover */
     transform: translateY(-2px); /* Move button up on hover */
     box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2); /* Increase shadow on hover */
 }
 
-.comment_button:active {
+.back_to_homepage_button:active {
     transform: translateY(0); /* Keep button in place on click */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Revert shadow on click */
 }
