@@ -1,4 +1,4 @@
-package main
+package research
 
 import (
 	"database/sql"
@@ -6,10 +6,12 @@ import (
 	"log"
 	"net/http"
 	"strings"
+
+	"real-time-forum/initial"
 )
 
-func GetAllUsers() (users []USER, err error) {
-	db, err := sql.Open(DRIVER, DB)
+func GetAllUsers() (users []initial.USER, err error) {
+	db, err := sql.Open(initial.DRIVER, initial.DB)
 	if err != nil {
 		return nil, err
 	}
@@ -21,7 +23,7 @@ func GetAllUsers() (users []USER, err error) {
 	}
 
 	for rows.Next() {
-		var user USER
+		var user initial.USER
 		err = rows.Scan(
 			&user.NickName,
 			&user.Pfp,
@@ -37,8 +39,8 @@ func GetAllUsers() (users []USER, err error) {
 	return users, nil
 }
 
-func GetConversation(name1, name2 string) (messages []MESSAGES, err error) {
-	db, err := sql.Open(DRIVER, DB)
+func GetConversation(name1, name2 string) (messages []initial.MESSAGES, err error) {
+	db, err := sql.Open(initial.DRIVER, initial.DB)
 	if err != nil {
 		return nil, err
 	}
@@ -50,13 +52,13 @@ func GetConversation(name1, name2 string) (messages []MESSAGES, err error) {
 	}
 
 	for rows.Next() {
-		var message MESSAGES
+		var message initial.MESSAGES
 		err = rows.Scan(
-			&message.sendername,
-			&message.receivername,
-			&message.date,
-			&message.pfp,
-			&message.content,
+			&message.Sendername,
+			&message.Receivername,
+			&message.Date,
+			&message.Pfp,
+			&message.Content,
 		)
 		if err != nil {
 			return nil, err
@@ -69,10 +71,10 @@ func GetConversation(name1, name2 string) (messages []MESSAGES, err error) {
 	return messages, nil
 }
 
-func userAction(writer http.ResponseWriter, request *http.Request) {
+func UserAction(writer http.ResponseWriter, request *http.Request) {
 	referer := request.Referer()
 	if request.Method != "POST" {
-		Error(writer, http.StatusInternalServerError, "")
+		initial.Error(writer, http.StatusInternalServerError, "")
 		return
 	}
 	cookie, err := request.Cookie("sessionID")
@@ -80,10 +82,10 @@ func userAction(writer http.ResponseWriter, request *http.Request) {
 		http.Redirect(writer, request, referer, http.StatusMovedPermanently)
 		return
 	}
-	user, err := checkCookie(cookie)
+	user, err := initial.CheckCookie(cookie)
 	if err != nil {
 		fmt.Println(err)
-		Error(writer, http.StatusInternalServerError, "")
+		initial.Error(writer, http.StatusInternalServerError, "")
 		return
 	}
 
@@ -96,10 +98,10 @@ func userAction(writer http.ResponseWriter, request *http.Request) {
 	}
 	switch action {
 	case "like", "dislike":
-		db, err := sql.Open(DRIVER, DB)
+		db, err := sql.Open(initial.DRIVER, initial.DB)
 		if err != nil {
 			fmt.Println(err)
-			Error(writer, http.StatusInternalServerError, "")
+			initial.Error(writer, http.StatusInternalServerError, "")
 			return
 		}
 
@@ -113,7 +115,7 @@ func userAction(writer http.ResponseWriter, request *http.Request) {
 				_, err = db.Exec(sql, user.Id, postid, action, user.Id)
 				if err != nil {
 					fmt.Println(err)
-					Error(writer, http.StatusInternalServerError, "")
+					initial.Error(writer, http.StatusInternalServerError, "")
 					return
 				}
 			} else {
@@ -122,7 +124,7 @@ func userAction(writer http.ResponseWriter, request *http.Request) {
 				_, err = db.Exec(sql, user.Id, postid, action, user.Id)
 				if err != nil {
 					fmt.Println(err)
-					Error(writer, http.StatusInternalServerError, "")
+					initial.Error(writer, http.StatusInternalServerError, "")
 					return
 				}
 			}
@@ -133,7 +135,7 @@ func userAction(writer http.ResponseWriter, request *http.Request) {
 					`, user.Id, postid, user.Id)
 					if err != nil {
 						fmt.Println(err)
-						Error(writer, http.StatusInternalServerError, "")
+						initial.Error(writer, http.StatusInternalServerError, "")
 						return
 					}
 				} else {
@@ -141,7 +143,7 @@ func userAction(writer http.ResponseWriter, request *http.Request) {
 					`, user.Id, postid)
 					if err != nil {
 						fmt.Println(err)
-						Error(writer, http.StatusInternalServerError, "")
+						initial.Error(writer, http.StatusInternalServerError, "")
 						return
 					}
 				}
@@ -151,7 +153,7 @@ func userAction(writer http.ResponseWriter, request *http.Request) {
 					`, action, user.Id, postid)
 					if err != nil {
 						fmt.Println(err)
-						Error(writer, http.StatusInternalServerError, "")
+						initial.Error(writer, http.StatusInternalServerError, "")
 						return
 					}
 				} else {
@@ -159,7 +161,7 @@ func userAction(writer http.ResponseWriter, request *http.Request) {
 					`, action, user.Id, postid)
 					if err != nil {
 						fmt.Println(err)
-						Error(writer, http.StatusInternalServerError, "")
+						initial.Error(writer, http.StatusInternalServerError, "")
 						return
 					}
 				}
@@ -172,13 +174,13 @@ func userAction(writer http.ResponseWriter, request *http.Request) {
 	}
 }
 
-func GetOneUser(id string) (*USER, error) {
-	db, err := sql.Open(DRIVER, DB)
+func GetOneUser(id string) (*initial.USER, error) {
+	db, err := sql.Open(initial.DRIVER, initial.DB)
 	if err != nil {
 		return nil, err
 	}
 	defer db.Close()
-	var lol USER
+	var lol initial.USER
 	sts := `SELECT nickname, pfp FROM USERS WHERE id = ?`
 	row := db.QueryRow(sts, id)
 	err = row.Scan(
@@ -191,13 +193,14 @@ func GetOneUser(id string) (*USER, error) {
 
 	return &lol, err
 }
-func GetOneUserNickname(nickname string) (*USER, error) {
-	db, err := sql.Open(DRIVER, DB)
+
+func GetOneUserNickname(nickname string) (*initial.USER, error) {
+	db, err := sql.Open(initial.DRIVER, initial.DB)
 	if err != nil {
 		return nil, err
 	}
 	defer db.Close()
-	var lol USER
+	var lol initial.USER
 	sts := `SELECT nickname, pfp FROM USERS WHERE nickname = ?`
 	row := db.QueryRow(sts, nickname)
 	err = row.Scan(
@@ -210,8 +213,9 @@ func GetOneUserNickname(nickname string) (*USER, error) {
 
 	return &lol, err
 }
+
 // Sort users by alphabetical order
-func SortUsers(users []USER)[]USER{
+func SortUsers(users []initial.USER) []initial.USER {
 	for i := range users {
 		for j := i; j < len(users); j++ {
 			if strings.ToLower(users[i].NickName) > strings.ToLower(users[j].NickName) {
@@ -223,78 +227,70 @@ func SortUsers(users []USER)[]USER{
 }
 
 // Check if conversation between two users exists
-func ConvExist(loggeduser *USER) ([]USER, error) {
-    db, err := sql.Open(DRIVER, DB)
-    if err != nil {
-        log.Fatal(err)
-    }
-    defer db.Close()
+func ConvExist(loggeduser *initial.USER) ([]initial.USER, error) {
+	db, err := sql.Open(initial.DRIVER, initial.DB)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
 
-    loggedname := loggeduser.NickName + " "
-    var messages []MESSAGES
-    query := `SELECT messageid, sendername, receivername FROM MESSAGES WHERE sendername = ? OR receivername = ? ORDER BY messageid DESC;`
-    rows, err := db.Query(query, loggedname, loggedname)
-    if err != nil {
-        return nil, err
-    }
-    defer rows.Close()
+	loggedname := loggeduser.NickName + " "
+	var messages []initial.MESSAGES
+	query := `SELECT messageid, sendername, receivername FROM MESSAGES WHERE sendername = ? OR receivername = ? ORDER BY messageid DESC;`
+	rows, err := db.Query(query, loggedname, loggedname)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
 
-    for rows.Next() {
-        var message MESSAGES
-        if err := rows.Scan(&message.messageid, &message.sendername, &message.receivername); err != nil {
-            return nil, err
-        }
-        messages = append(messages, message)
-    }
+	for rows.Next() {
+		var message initial.MESSAGES
+		if err := rows.Scan(&message.Messageid, &message.Sendername, &message.Receivername); err != nil {
+			return nil, err
+		}
+		messages = append(messages, message)
+	}
 
-    if err = rows.Err(); err != nil {
-        return nil, err
-    }
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
 	var names []string
-	for _,message := range messages{
-		if message.sendername == loggedname{
+	for _, message := range messages {
+		if message.Sendername == loggedname {
 			dup := false
-			for _,i := range names{
-				if message.receivername[:len(message.receivername)-1] == i{
-					dup = true
-					break
-				}
-
-			}
-			if !dup{
-				names = append(names, message.receivername[:len(message.receivername)-1])
-			}
-		}else if message.receivername ==  loggedname{
-			dup := false
-			for _,i := range names{
-				if message.sendername[:len(message.sendername)-1] == i{
+			for _, i := range names {
+				if message.Receivername[:len(message.Receivername)-1] == i {
 					dup = true
 					break
 				}
 			}
-			if !dup{
-				names = append(names, message.sendername[:len(message.sendername)-1])
+			if !dup {
+				names = append(names, message.Receivername[:len(message.Receivername)-1])
+			}
+		} else if message.Receivername == loggedname {
+			dup := false
+			for _, i := range names {
+				if message.Sendername[:len(message.Sendername)-1] == i {
+					dup = true
+					break
+				}
+			}
+			if !dup {
+				names = append(names, message.Sendername[:len(message.Sendername)-1])
 			}
 		}
 	}
-	var result []USER
-	for _,name := range names{
+	var result []initial.USER
+	for _, name := range names {
 		user, err := GetOneUserNickname(name)
-		if err != nil{
+		if err != nil {
 			fmt.Println(err)
 			break
 		}
 		result = append(result, *user)
 	}
 
-    return result, nil
+	return result, nil
 }
 
-
-
-
-
-
-
-
-// 
+//

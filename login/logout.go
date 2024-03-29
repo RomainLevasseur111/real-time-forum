@@ -1,13 +1,15 @@
-package main
+package login
 
 import (
 	"net/http"
 	"time"
+
+	"real-time-forum/initial"
 )
 
 func Logout(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "POST" {
-		Error(w, http.StatusMethodNotAllowed, "")
+		initial.Error(w, http.StatusMethodNotAllowed, "")
 		return
 	}
 

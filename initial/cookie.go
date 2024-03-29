@@ -1,4 +1,4 @@
-package main
+package initial
 
 import (
 	"database/sql"
@@ -50,7 +50,7 @@ func GiveCookie(w http.ResponseWriter, nickname string) {
 	})
 }
 
-func checkCookie(cookie *http.Cookie) (*USER, error) {
+func CheckCookie(cookie *http.Cookie) (*USER, error) {
 	if cookie == nil {
 		err := errors.New("no inputed cookie")
 		return nil, err

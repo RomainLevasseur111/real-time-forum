@@ -1,18 +1,21 @@
-package main
+package web
 
 import (
 	"database/sql"
 	"fmt"
 	"time"
+
+	"real-time-forum/initial"
+	"real-time-forum/research"
 )
 
 func Publish(userId, category1, category2, content string) int {
-	categories, err := InsertCategories(category1, category2)
+	categories, err := research.InsertCategories(category1, category2)
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	db, err := sql.Open(DRIVER, DB)
+	db, err := sql.Open(initial.DRIVER, initial.DB)
 	if err != nil {
 		fmt.Println(err)
 		return -1
@@ -27,7 +30,7 @@ func Publish(userId, category1, category2, content string) int {
 		categories[0],
 		categories[1],
 		content,
-		time.Now().Format(DATEFMT),
+		time.Now().Format(initial.DATEFMT),
 	)
 	if err != nil {
 		fmt.Println(err)
@@ -57,8 +60,8 @@ func Publish(userId, category1, category2, content string) int {
 	}*/
 }
 
-func GetAllPosts() (posts []POST, err error) {
-	db, err := sql.Open(DRIVER, DB)
+func GetAllPosts() (posts []initial.POST, err error) {
+	db, err := sql.Open(initial.DRIVER, initial.DB)
 	if err != nil {
 		return nil, err
 	}
@@ -70,7 +73,7 @@ func GetAllPosts() (posts []POST, err error) {
 	}
 
 	for rows.Next() {
-		var post POST
+		var post initial.POST
 		err = rows.Scan(
 			&post.Userid,
 			&post.Postid,
@@ -89,7 +92,7 @@ func GetAllPosts() (posts []POST, err error) {
 }
 
 func GetStats(postid int) (likes int, dislikes int, comments int, err error) {
-	db, err := sql.Open(DRIVER, DB)
+	db, err := sql.Open(initial.DRIVER, initial.DB)
 	if err != nil {
 		return
 	}
@@ -116,8 +119,8 @@ func GetStats(postid int) (likes int, dislikes int, comments int, err error) {
 	return
 }
 
-func GetComments(commentid string) (res []*POST, err error) {
-	db, err := sql.Open(DRIVER, DB)
+func GetComments(commentid string) (res []*initial.POST, err error) {
+	db, err := sql.Open(initial.DRIVER, initial.DB)
 	if err != nil {
 		return nil, err
 	}
@@ -125,7 +128,7 @@ func GetComments(commentid string) (res []*POST, err error) {
 	sts := `SELECT postid ,userid, category, categoryB, content, postdate FROM POSTS WHERE commentid = ? ORDER BY postdate DESC;`
 	rows, err := db.Query(sts, commentid)
 	for rows.Next() {
-		var post POST
+		var post initial.POST
 		err = rows.Scan(
 			&post.Postid,
 			&post.Userid,
@@ -199,13 +202,13 @@ func FormatDate(value string) (res string) {
 	}
 }
 
-func GetOnePost(postid string) (*POST, error) {
-	db, err := sql.Open(DRIVER, DB)
+func GetOnePost(postid string) (*initial.POST, error) {
+	db, err := sql.Open(initial.DRIVER, initial.DB)
 	if err != nil {
 		return nil, err
 	}
 	defer db.Close()
-	var lol POST
+	var lol initial.POST
 	sts := `SELECT postid , userid, category, categoryB, content, postdate FROM POSTS WHERE postid = ?;`
 	row := db.QueryRow(sts, postid)
 	err = row.Scan(
@@ -231,7 +234,7 @@ func GetOnePost(postid string) (*POST, error) {
 }
 
 func Comment(postid, userId, content string) int {
-	db, err := sql.Open(DRIVER, DB)
+	db, err := sql.Open(initial.DRIVER, initial.DB)
 	if err != nil {
 		fmt.Println(err)
 		return -1
@@ -242,7 +245,7 @@ func Comment(postid, userId, content string) int {
 		postid,
 		userId,
 		content,
-		time.Now().Format(DATEFMT),
+		time.Now().Format(initial.DATEFMT),
 	)
 	if err != nil {
 		fmt.Println(err)

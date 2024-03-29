@@ -1,4 +1,4 @@
-package main
+package initial
 
 import (
 	"time"
@@ -14,11 +14,11 @@ const (
 )
 
 var (
-	upgrader = websocket.Upgrader{
+	Upgrader = websocket.Upgrader{
 		ReadBufferSize:  1024,
 		WriteBufferSize: 1024,
 	}
-	chat_connection, post_connection, comment_connection []CONNECTIONS
+	Chat_connection, Post_connection, Comment_connection []CONNECTIONS
 )
 
 type USER struct { // user structure
@@ -42,6 +42,6 @@ type CONNECTIONS struct {
 }
 
 type MESSAGES struct {
-	sendername, receivername, date, pfp, content string
-	messageid                                    int
+	Sendername, Receivername, Date, Pfp, Content string
+	Messageid                                    int
 }

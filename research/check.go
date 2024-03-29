@@ -1,15 +1,17 @@
-package main
+package research
 
 import (
 	"database/sql"
 	"fmt"
+
+	"real-time-forum/initial"
 
 	"golang.org/x/crypto/bcrypt"
 )
 
 // Check if Email already Exist
 func EmailAlreadyExist(email string) bool {
-	db, err := sql.Open(DRIVER, DB)
+	db, err := sql.Open(initial.DRIVER, initial.DB)
 	if err != nil {
 		fmt.Println(err)
 		return false
@@ -32,7 +34,7 @@ func EmailAlreadyExist(email string) bool {
 
 // Check if nickname already exists
 func NicknameAlreadyExists(nickname string) bool {
-	db, err := sql.Open(DRIVER, DB)
+	db, err := sql.Open(initial.DRIVER, initial.DB)
 	if err != nil {
 		fmt.Println(err)
 		return false

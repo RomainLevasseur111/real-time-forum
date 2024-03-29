@@ -1,11 +1,14 @@
-package main
+package research
 
 import (
 	"database/sql"
 	"errors"
+
+	"real-time-forum/initial"
 )
+
 func InsertCategories(cat1, cat2 string) (res []*string, err error) {
-	db, err := sql.Open(DRIVER, DB)
+	db, err := sql.Open(initial.DRIVER, initial.DB)
 	if err != nil {
 		return nil, err
 	}
@@ -45,8 +48,9 @@ func InsertCategories(cat1, cat2 string) (res []*string, err error) {
 
 	return res, nil
 }
-func GetCategories() (cats []CATEGORY) {
-	db, err := sql.Open(DRIVER, DB)
+
+func GetCategories() (cats []initial.CATEGORY) {
+	db, err := sql.Open(initial.DRIVER, initial.DB)
 	if err != nil {
 		return nil
 	}
@@ -57,7 +61,7 @@ func GetCategories() (cats []CATEGORY) {
 	}
 
 	for rows.Next() {
-		var c CATEGORY
+		var c initial.CATEGORY
 		err = rows.Scan(&c.Name, &c.Posts)
 		if err != nil {
 			return nil
